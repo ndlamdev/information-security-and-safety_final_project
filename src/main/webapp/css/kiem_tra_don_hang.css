@@ -1,0 +1,15 @@
+#main .container-md{
+    background-color: #2F189A;;
+}
+
+#main button{
+    background-color: #F30;
+}
+
+#main .input_data .input{
+    display: none;
+}
+
+#main .input_data .active{
+    display: block;
+}

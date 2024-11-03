@@ -1,0 +1,242 @@
+/********************Phần sánh sách sản phẩm************************/
+#list-product .product {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+    border: solid 1px black;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#list-product .product > input {
+    height: 20px;
+    width: 20px;
+    margin: 0 10px;
+}
+
+#list-product .product .info-product {
+    display: flex;
+    width: 410px;
+}
+
+#list-product .product .info-product img {
+    height: 40px;
+    width: 40px;
+    border: 1px solid black;
+}
+
+#list-product .product .info-product .name-product {
+    font-size: 12px;
+}
+
+#list-product .product .change-amount {
+    display: flex;
+    border: rgba(0, 0, 0, 0.2) solid 2px;
+    border-radius: 5px;
+}
+
+#list-product .product .change-amount button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    border: none;
+}
+
+#list-product .product .change-amount button.down {
+    border-right: rgba(0, 0, 0, 0.2) solid 2px;
+    border-radius: 5px 0 0 5px;
+}
+
+#list-product .product .change-amount button.up {
+    border-left: rgba(0, 0, 0, 0.2) solid 2px;
+    border-radius: 0 5px 5px 0;
+}
+
+
+#list-product .product .change-amount input {
+    width: 50px;
+    text-align: center !important;
+    outline: none;
+    border: none;
+}
+
+#list-product .product .price,
+#list-product .product .total-price {
+    width: 150px;
+    text-align: center;
+}
+
+
+#list-product .product > button {
+    font-size: 15px;
+    border: none;
+    background: none;
+    margin-left: 25px;
+}
+
+/***************Phần thanh toán********************/
+.list-option-pay{
+    display: flex;
+}
+
+.list-option-pay label{
+    margin-right: 10px;
+}
+
+
+.list-option-pay img {
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}
+
+.payment-info {
+    background: rgba(47, 24, 154, 1);
+    padding: 10px;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+}
+
+.product-details {
+    padding: 10px;
+}
+
+.cart {
+    background: #fff;
+}
+
+.p-about {
+    font-size: 12px;
+}
+
+.table-shadow {
+    -webkit-box-shadow: 5px 5px 15px -2px rgba(0, 0, 0, 0.42);
+    box-shadow: 5px 5px 15px -2px rgba(0, 0, 0, 0.42);
+}
+
+.type {
+    font-weight: 400;
+    font-size: 10px;
+}
+
+label.radio {
+    cursor: pointer;
+}
+
+label.radio input {
+    position: absolute;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+label.radio span {
+    padding: 1px 12px;
+    border: 2px solid #ada9a9;
+    display: inline-block;
+    color: #8f37aa;
+    border-radius: 3px;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 300;
+}
+
+label.radio input:checked + span {
+    border-color: #fff;
+    background-color: rgba(47, 24, 154, 1);
+    color: #fff;
+}
+
+.info-payer {
+    display: block;
+    border-radius: 5px;
+    padding: 5px 8px;
+    width: 100%;
+    background: rgb(102, 102, 221);
+    color: #fff !important;
+    border-color: rgb(102, 102, 221);
+    outline: rgb(102, 102, 221);
+    box-shadow: rgba(47, 24, 154, 1);
+}
+
+.info-payer:focus {
+    box-shadow: rgba(47, 24, 154, 1);
+    outline: rgb(102, 102, 221);
+}
+
+.info-payer::placeholder {
+    color: #fff;
+    font-size: 13px;
+}
+
+.credit-card-label {
+    font-size: 9px;
+    font-weight: 300;
+}
+
+.form-control.info-payer:focus {
+    background: rgb(102, 102, 221);
+    border: rgb(102, 102, 221);
+}
+
+.line {
+    border-bottom: 1px solid rgb(102, 102, 221);
+}
+
+.information span {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.information {
+    margin-bottom: 5px;
+}
+
+.items {
+    -webkit-box-shadow: 5px 5px 4px -1px rgba(0, 0, 0, 0.25);
+    box-shadow: 5px 5px 4px -1px rgba(0, 0, 0, 0.08);
+}
+
+.items .input-amount button,
+.items .input-amount input {
+    border: 1px solid black;
+}
+
+.items .input-amount button:nth-of-type(1) {
+    border-radius: 5px 0 0 5px;
+}
+
+.items .input-amount button:nth-of-type(2) {
+    border-radius: 0 5px 5px 0;
+}
+
+.items .amount-product-item {
+    width: 50px;
+}
+
+.items .amount-product-item:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.items .amount-product-item::-webkit-outer-spin-button,
+.items .amount-product-item::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.option {
+    font-size: 11px;
+}
+
+#qr-pay .modal-body{
+    display: flex;
+    justify-content: center;
+}
+
+#qr-pay .modal-body img{
+    width: 200px;
+}

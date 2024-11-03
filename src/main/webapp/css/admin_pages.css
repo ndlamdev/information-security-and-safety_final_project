@@ -1,0 +1,191 @@
+/*******************Phần filter*********************/
+#main .filter .filter-item > div {
+    margin-left: 25px;
+}
+
+#main .filter .filter-body .filter-item select {
+    height: 40px;
+    width: 240px;
+    padding: 0 5px;
+}
+/*******************Phần search*********************/
+#main .filter,
+#main .search {
+    border-radius: 10px;
+    border: rgba(0, 0, 0, 0.3) solid 2px;
+    margin: 0 -10px 15px;
+}
+
+#main .filter .filter_header,
+#main .search .search_header {
+    position: relative;
+    background-color: #fff;
+    top: -15px;
+    width: fit-content;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#main .search .search-item {
+    margin-left: 25px;
+    width: fit-content;
+    display: flex;
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+}
+
+#main .search .search-item input {
+    border: none;
+    border-radius: 10px;
+    padding-left: 8px;
+}
+
+#main .search .search-item input:focus {
+    outline: none;
+}
+
+#main .search .search-item span {
+    border-left: rgba(0, 0, 0, 0.5) solid 2px;
+}
+
+#main .search .addProduct {
+    background-color: var(--color-blue-origin);
+    width: fit-content;
+    border-radius: 5px;
+    padding: 0;
+}
+
+#main .search .addProduct span {
+    color: #fff;
+    font-weight: bold;
+}
+
+#main .search .addProduct span:nth-of-type(2) {
+    border-left: 2px solid #bebebe;
+    margin-left: 5px;
+    padding-left: 5px;
+}
+
+/*Table*/
+/*header-table*/
+#main .table .header-table {
+    background-color: var(--color-blue-origin);
+    border-radius: 10px 10px 0 0;
+    padding: 20px 0;
+    font-weight: 600;
+    color: #fff;
+}
+
+/*body-table*/
+#main .table .body-table .product {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    border-top: none;
+    padding: 10px 0;
+    align-items: center;
+}
+
+#main .table .body-table .product > div {
+    padding: 5px 0 5px 12px;
+}
+
+#main .table .header-table > div:nth-of-type(6),
+#main .table .body-table .product > .price-after-sale {
+    padding-left: 70px;
+}
+
+#main .table .body-table .product > div:last-of-type {
+    text-align: center;
+}
+
+/*Phần img và text*/
+#main .table .body-table .product .img-product {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    width: fit-content;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+#main .table .body-table .product .img-product img {
+    width: 60px;
+    height: 60px;
+}
+
+#main .table .body-table .info-product .name-product {
+}
+
+
+#main .table .body-table .product .info-product .id-product {
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--color-blue-origin);
+}
+
+#main .table .body-table .info-product select {
+    width: 70%;
+}
+
+/*Kết thúc phần avatar và text*/
+
+#main .table .body-table .product input {
+    width: 25px;
+    height: 25px;
+}
+
+/*footer-table*/
+#main .table .footer-table {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    border-radius: 0 0 10px 10px;
+}
+
+#main .table .footer-table .change-page-display-list button {
+    border-radius: 50px;
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+}
+
+#main .table .footer-table .change-page-display-list button:hover,
+#main .table .footer-table .change-page-display-list button.active {
+    color: #fff;
+    background-color: var(--color-blue-origin);
+    font-weight: 550;
+}
+
+
+.filter-item .dropdown ul,
+.filter-item .dropdown button {
+    width: 300px;
+}
+
+.filter-item .dropdown button {
+    background: #fff;
+    text-align: left;
+    color: black;
+    border: 2px black solid;
+}
+
+.filter-item .dropdown button.btn-secondary {
+    --bs-btn-active-color: black;
+    --bs-btn-active-bg: #fff;
+    --bs-btn-active-border-color: #fff;
+}
+
+.dropdown-toggle::after {
+    position: absolute;
+    top: 18px;
+    left: 275px;
+}
+
+.dropdown .dropdown-menu {
+    --bs-dropdown-link-active-color: black;
+    --bs-dropdown-link-active-bg: #fff;
+}
+
+.dropdown .dropdown-menu.show {
+    max-height: 250px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.dropdown .dropdown-menu .dropdown-title{
+    padding-left: 16px;
+}

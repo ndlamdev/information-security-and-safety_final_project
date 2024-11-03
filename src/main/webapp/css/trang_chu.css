@@ -1,0 +1,545 @@
+section:not(#silder-section){
+    padding: 40px 0;
+}
+/***************************************Main**********************************/
+/************section 1*****************/
+#slider {
+    margin-bottom: 40px;
+}
+
+#section_slide .container-slider {
+    width: 100%;
+    height: auto;
+}
+
+#section_slider .item img {
+    width: 100%;
+    height: 460px;
+    object-fit: cover;
+
+}
+
+#section_slider .item {
+    display: none;
+}
+
+#section_slider .item.active {
+    display: block;
+}
+
+#myCarousel {
+    position: relative;
+}
+
+#section_slider .slick-next, #section_slider .slick-prev {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: #FFFFFF;
+    background: #FFFFFF;
+}
+
+#section_slider .slick-next {
+    right: 0;
+}
+
+#section_slider .slick-prev {
+    left: 32px;
+}
+
+#section_slider #myCarousel button:hover {
+    background: var(--color-blue-origin);
+    color: #FFFFFF;
+}
+
+#section_slider .carousel ul {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#section_slider ul li button {
+    width: 12px;
+    height: 6px;
+    background: #FFFFFF;
+    border: #FFFFFF;
+}
+
+#section_slider .slick-active {
+    background: var(--color-blue-origin);
+    border: var(--color-blue-origin);
+}
+
+/*****section fsale************/
+.home-fSale-wrap {
+    background: linear-gradient(to bottom, #2D0798, #4a90e2);
+    border-radius: 12px;
+    padding: 25px 25px 10px;
+}
+.container-fluid{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.img-item-sale{
+    text-align: center;
+    object-fit: cover;
+    padding: 10px 0;
+}
+#fsale .text-label {
+    font-weight: 400;
+    color: #fff;
+    font-size: 1rem;
+    margin: 0;
+    margin-right: 10px;
+    text-transform: uppercase;
+    text-align: left;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.days, .hours, .minutes, .seconds {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #999;
+    background: white;
+    border-radius: 12px;
+    width: 60px;
+    height: 66px;
+    font-size: 0.85rem;
+    line-height: .8;
+    margin-right: 16px;
+    text-align: center;
+}
+
+#fsale .time-fsale {
+    bottom: 0;
+    left: 50%;
+    transform: translate(-45%, 0%);
+
+}
+/***************************Phần danh sách sản phẩm*********************************/
+.show-item-sale  .pro-loop{
+    padding: 0 10px;
+    width: 300px;
+    margin: 0 10px 10px 0;
+    height: 415px;
+    background-color: #FFFFFF;
+}
+.show-item-sale  .pro-loop:hover{
+    background-color: #f2f2f2;
+}
+
+/*Phạm vi ô hiển thị*/
+.show-item-sale  .pro-loop .pro-loop-wrap{
+    top: 10px;
+    padding-bottom: 10px;
+}
+
+/*Phần hình ảnh*/
+.show-item-sale  .pro-loop .pro-loop-image .pro-loop-sd{
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    padding: 2px 10px;
+    top: 5px;
+    left: 5px;
+}
+.show-item-sale  .pro-loop .pro-loop-image picture.img-show-when-hover{
+    display: none;
+}
+.show-item-sale  .pro-loop .pro-loop-image picture.img-hidden-when-hover{
+    display: block;
+}
+.show-item-sale  .pro-loop:hover .pro-loop-image picture.img-hidden-when-hover{
+    display: none;
+}
+.show-item-sale  .pro-loop:hover .pro-loop-image picture.img-show-when-hover{
+    display: block;
+}
+.show-item-sale  .pro-loop .pro-loop-image img{
+    width: 280px;
+    height: 280px;
+}
+
+/*Phần độ hot*/
+.show-item-sale  .pro-loop .pro-loop-sold{
+    z-index: 1;
+    top: 5px;
+    right: 5px;
+}
+.show-item-sale  .pro-loop .pro-loop-sold img{
+    width: 30px;
+}
+
+/*Phần tên brand*/
+.show-item-sale  .pro-loop .pro-loop-brand{
+    font-size: 9px;
+    color: rgba(0, 0, 0, 0.5);
+    margin: 5px 0;
+}
+
+/*Phần tên sản phẩm*/
+.show-item-sale  .pro-loop .pro-loop-name{
+    font-size: 15px;
+    height: 18px;
+    width: 280px;
+    overflow: hidden;
+}
+
+/*Phần giá sản phẩm*/
+.show-item-sale  .pro-loop .pro-loop-price p{
+    color: #F30;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.show-item-sale  .pro-loop .pro-loop-price del{
+    color: rgba(0, 0, 0, 0.5);
+    font-size: 10px;
+}
+
+/*Phần đánh giá và số lượng bán*/
+.show-item-sale  .pro-loop .sold_qty{
+    font-size: 11px;
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+}
+.show-item-sale  .pro-loop .sold_qty .h-line{
+    border: rgba(0, 0, 0, 0.5) solid 1px;
+    margin: 0 5px;
+    height: 10px;
+}
+
+/*Phần nút điều kiển*/
+.show-item-sale  .pro-loop .pro-loop-bottom{
+    display: none;
+}
+.show-item-sale  .pro-loop:hover .pro-loop-bottom{
+    display: block;
+    font-size: 10px;
+}
+.show-item-sale  .pro-loop:hover .pro-loop-bottom button{
+    border: none;
+    padding: 5px;
+    width: 120px;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.show-item-sale .pro-loop:hover .pro-loop-bottom button:nth-of-type(1){
+    background-color: rgba(47, 24, 154, 1);
+    margin-left: 15px;
+    color: #fff;
+}
+
+.show-item-sale .pro-loop:hover .pro-loop-bottom button:nth-of-type(2){
+    background-color: #F30;
+    float: right;
+    margin-right: 5px;
+    color: #fff;
+}
+
+
+/***************************************section home about**********************************/
+.home-about{
+    background-color: #f4f4f4;
+}
+
+.home-about img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    object-fit: cover;
+
+}
+.home-about .home-about-top{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+
+}
+.home-about .home-about-top > span{
+    transition: box-shadow 0.3s;
+    border-radius: 10px;
+
+}
+.home-about .home-about-top > span:hover{
+    box-shadow: 0 0 20px 5px var(--color-blue-origin);
+    opacity: 0.5;
+}
+
+.home-about .home-about-top .section-title-all{
+    width: 50%;
+    align-content: center;
+    padding-left: 50px;
+    padding-bottom: 5%;
+}
+.section-title-all span {
+    margin: 0 0 5px;
+    display: block;
+    color: var(--color-blue-origin);
+    font-weight: 500;
+    font-size: 1rem;
+    text-transform: uppercase;
+}
+.section-title-all a {
+    font-weight: bold;
+    text-transform: uppercase;
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+    transition: all .5s;
+}
+.section-title-all a:hover{
+    letter-spacing: 1.5px;
+    color: var(--color-blue-origin);
+}
+.home-about .home-about-bot span {
+    display: block;
+    width: calc(50% + 100px);
+    margin-left: auto;
+    margin-top: -75px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: 10px;
+    transition: box-shadow 0.3s;
+}
+.home-about .home-about-bot span:hover{
+    box-shadow: 0 0 20px 5px var(--color-blue-origin);
+    opacity: 0.5;
+}
+/********home-product-slider**********/
+.home-product-slider{
+    background: #FFFFFF;
+}
+.home-product-slider-wrap-header .section-title-all{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.section-title-all h2{
+    font-size: 24px;
+    font-weight: bold;
+}
+.carousel-indicators button{
+    margin-top: 16px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.carousel-indicators .active{
+    background-color: var(--color-blue-origin);
+}
+.carousel-control-color{
+    background-color: var(--color-blue-origin);
+    width: 64px;
+    height: 64px;
+    position: absolute;
+    top: 50%;
+    border-radius: 50%;
+    transform: translateX(-12%);
+}
+
+/******home-gallery**********/
+.home-gallery{
+    background-color: #f4f4f4;
+}
+.home-gallery img{
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: box-shadow 0.3s;
+}
+.home-gallery img:hover{
+    box-shadow: 0 4px 10px rgba(47, 24, 154, 1);
+}
+.home-gallery .khung-trong{
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+.home-gallery .khung-trong .home-gallery-wrap-body .home-gallery-wrap-body-item a:first-child img{
+    margin-bottom: 20px;
+}
+.home-gallery .khung-trong .home-gallery-wrap-body .home-gallery-wrap-body-item a{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+.home-gallery .khung-trong .home-gallery-wrap-body .home-gallery-wrap-body-item a span {
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    left: 5%;
+    width: 150px;
+    height: 20px;
+    border-radius: 5px;
+    padding: 35px 0;
+    color: #FFFFFF;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    transition: visibility .25s 0s;
+    transform: translateY(20%);
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+/***********home-product*******/
+.home-product {
+    background-color: #FFFFFF;
+}
+.home-product .home-product-slider-wrap-body .item-sale{
+    background-color: #FFFFFF;
+    margin: 0 10px;
+}
+/***********home-banner*******/
+.home-banner{
+    background-color: #f4f4f4;
+}
+.home-banner img{
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.home-banner .home-banner-wrap .home-banner-wrap-left h2 {
+    font-size: 4rem;
+    font-weight: bold;
+    position: relative;
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+}
+.home-banner .home-banner-wrap .home-banner-wrap-left p {
+    font-size: 2rem;
+    font-weight: 500;
+    max-width: 60%;
+    margin: 0 auto 20px;
+    position: relative;
+}
+.home-banner .home-banner-wrap .home-banner-wrap-left p::after{
+    position: absolute;
+    content: '';
+    top: -16px;
+    left: 50%;
+    border: 1px #000000 dashed;
+    width: 212px;
+    transform: translate(-50%, -50%);
+}
+.home-banner .home-banner-wrap .home-banner-wrap-left a {
+    display: inline-block;
+    background: var(--color-blue-origin);
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 10px 20px;
+    transition: all .5s;
+    border: 2px solid var(--color-blue-origin);
+    border-radius: 10px;
+}
+.home-banner .home-banner-wrap .home-banner-wrap-left a:hover{
+    background-color: #FFFFFF;
+    color: var(--color-blue-origin);
+
+}
+/******home blog****/
+.home-blog{
+    background-color: #FFFFFF;
+}
+.article-item {
+    display: block;
+    box-shadow: rgba(0, 0 ,0 ,0.5);
+    transition: box-shadow 0.3s;
+}
+.article-item:hover{
+    box-shadow: rgb(47, 24, 154, 1);
+
+}
+.article-item .article-item-bottom {
+    max-width: 85%;
+    background: #fff;
+    border-radius: 10px;
+    margin: -75px auto 0;
+    position: relative;
+    padding: 10px;
+    text-align: center;
+}
+.article-item .article-item-bottom .article-item-bottom-name a {
+    transition: all .5s;
+    font-size: 16px;
+    color: #212121;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+.article-item .article-item-bottom .article-item-bottom-des {
+    color: #333;
+    margin-top: 10px;
+    overflow: hidden;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+.article-item .article-item-top a{
+    display: block;
+    position: relative;
+}
+.article-item .article-item-top a:hover::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(232, 159, 72, 0.5);
+    z-index: 1;
+    transition: all .5s;
+}
+.home-blog .carousel-indicators button{
+        background-color: rgba(0, 0, 0, 1) !important;
+}
+.home-blog .carousel-indicators .active{
+    background-color: var(--color-blue-origin) !important;
+}
+/***************************************LogInController-Signup-forget_password**********************************/
+.form-login{
+    max-width: 800px;
+    margin: auto;
+    border: 1px solid lightgray;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px lightgray;
+}
+
+.d-flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.banner-account {
+    background-image: url('../images/bannerAccount.png');
+    background-size: cover;
+    border-radius: 10px;
+
+}
+
+.form-login label, .form-forgot label {
+    font-size: 14px;
+}
+
+.form-login input, .form-forgot input {
+    font-size: 14px;
+}
+

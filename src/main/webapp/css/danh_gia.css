@@ -1,0 +1,95 @@
+#main {
+    height: auto;
+}
+
+#submit-review,
+#main button.back-to-home {
+    background-color: var(--color-blue-origin);
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+}
+
+#main button.button-remove {
+    color: #fff;
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: none;
+}
+
+/***********************************Phẩn body*************************************/
+#main .review-product .review-product-body {
+    position: relative;
+    display: flex;
+}
+
+/************Phần thông tin sản phẩm************/
+#main .info-product .name-product {
+    font-weight: bold;
+    font-size: 22px;
+}
+
+#main .info-product .img-product img {
+    width: 400px;
+    height: 400px;
+    border-radius: 10px;
+    border: black 1px solid;
+}
+
+/************Phần review*************/
+#main .review-product .review {
+    width: 60%;
+    position: relative;
+    left: 100px;
+}
+
+
+#main .review-product .review .quality-product .list-star li {
+    font-size: 25px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#text-quality-product {
+    font-size: 20px;
+}
+
+#main .review-product .review .evaluate-product textarea {
+    width: 100%;
+    border-radius: 10px;
+}
+
+#main .review-product .review .list-img-review-product>div{
+    margin-right: 10px;
+}
+
+#main .review-product .review .list-img-review-product .a-img-review-product{
+    position: relative;
+}
+
+#main .review-product .review .list-img-review-product .a-img-review-product .cancel{
+    border: 0;
+    background: none;
+    font-size: 20px;
+    position: absolute;
+    top: -17px;
+    right: -10px;
+}
+
+#main .review-product .review .list-img-review-product .a-img-review-product img{
+    width: 80px;
+    height: 80px;
+}
+
+#main .review-product .review .list-img-review-product .a-img-review-product,
+#main .review-product .review .list-img-review-product label {
+    border-radius: 5px;
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    font-size: 60px;
+    height: 100px;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

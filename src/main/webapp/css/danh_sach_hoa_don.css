@@ -1,0 +1,121 @@
+#main{
+    background-color: #FFFFFF;
+}
+#main .container{
+    border-radius: 10px;
+    background-color: #FFFFFF;
+}
+/*******Search***/
+#main .search{
+    border-radius: 10px;
+    border: rgba(0, 0, 0, 0.3) solid 2px;
+    margin: 0 -10px 15px;
+}
+
+#main .search .search_header{
+    position: relative;
+    background-color: #fff;
+    top: -15px;
+    width: fit-content;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#main .search .search-item {
+    margin-left: 25px;
+    width: fit-content;
+    display: flex;
+    border-radius: 10px;
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+}
+
+#main .search .search-item input {
+    border: none;
+    border-radius: 10px;
+}
+
+#main .search .search-item input:focus {
+    outline: none;
+}
+
+#main .search .search-item span {
+    border-left: rgba(0, 0, 0, 0.5) solid 2px;
+}
+
+#main .search  input[type='checkbox']{
+    width: 25px;
+    height: 25px;
+}
+
+/****show list bill****/
+.show-list-bill .name-col{
+    width: auto;
+    padding: 20px 0;
+    background-color: var(--color-blue-origin);
+    color: #FFFFFF;
+    font-weight: bold;
+    border-radius: 10px 10px 0 0;
+}
+
+.show-list-bill .list-bill .item-bill{
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+    border-right: 2px solid rgba(0, 0, 0, 0.5);
+    border-left: 2px solid rgba(0, 0, 0, 0.5);
+}
+.show-list-bill .list-bill .item-bill .id-item{
+    color: var(--color-blue-origin);
+    font-weight: bold;
+}
+/*Phần footer, coppy*/
+.footer-table {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+    border-right: 2px solid rgba(0, 0, 0, 0.5);
+    border-left: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 0 0 10px 10px;
+}
+
+.footer-table .change-page-display-list button {
+    border-radius: 50px;
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+    background-color: #FFFFFF;
+}
+
+.footer-table .change-page-display-list button:hover,
+.footer-table .change-page-display-list button.active {
+    color: #fff;
+    background-color: var(--color-blue-origin);
+    font-weight: 550;
+}
+/*Phần avatar và text, coppy*/
+.avatar-customer {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    width: fit-content;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.avatar-customer img {
+    width: 40px;
+    height: 40px;
+}
+
+.info-customer p:nth-of-type(1) {
+    font-size: 20px;
+}
+
+.info-customer p:nth-of-type(2) {
+    font-size: 15px;
+}
+.list-bill .item-bill .option-edit button{
+    border: none;
+    background-color: #FFFFFF;
+}
+.list-bill .item-bill .option-edit button:hover{
+    font-size: 20px;
+    color: var(--color-blue-origin);
+}
+.show-list-bill .list-bill .item-bill .option-edit a:hover {
+    color: var(--color-blue-origin);
+}

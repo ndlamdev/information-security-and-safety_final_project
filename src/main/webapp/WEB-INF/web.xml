@@ -1,0 +1,102 @@
+<!DOCTYPE web-app PUBLIC
+        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+        "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+    <display-name>Web Application</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Chỉ áp dụng Filter cho các URL trong thư mục admin_pages-->
+    <filter>
+        <filter-name>AdminAccessFilter</filter-name>
+        <filter-class>filter.AdminAccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AdminAccessFilter</filter-name>
+        <url-pattern>/admin_pages/*</url-pattern>
+    </filter-mapping>
+    <!-- Phần filler trang chủ-->
+    <filter>
+        <filter-name>index_filter</filter-name>
+        <filter-class>filter.IndexFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>index_filter</filter-name>
+        <url-pattern>/index.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>index_filter</filter-name>
+        <url-pattern>/</url-pattern>
+    </filter-mapping>
+    <!--Phần filler trang quản lý sản phẩm-->
+    <filter>
+        <filter-name>product_manager</filter-name>
+        <filter-class>filter.ProductManagerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>product_manager</filter-name>
+        <url-pattern>/admin_pages/quan_ly_san_pham.jsp
+        </url-pattern> <!-- Chỉ áp dụng Filter cho các URL trong thư mục admin_pages -->
+    </filter-mapping>
+    <!--Phần filler trang gian hàng-->
+    <filter>
+        <filter-name>product_booth</filter-name>
+        <filter-class>filter.ProductBoothFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>product_booth</filter-name>
+        <url-pattern>/gian_hang.jsp</url-pattern> <!-- Chỉ áp dụng Filter cho các URL trong thư mục admin_pages -->
+    </filter-mapping>
+    <!--Phần filler trang quan lý banner-->
+    <filter>
+        <filter-name>banner_manager</filter-name>
+        <filter-class>filter.BannerManagerFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>banner_manager</filter-name>
+        <url-pattern>/admin_pages/quan_ly_banner.jsp</url-pattern>
+    </filter-mapping>
+    <!--Phần filler trang reivew
+    <filter>
+      <filter-name>review</filter-name>
+      <filter-class>filter.ReviewFilter</filter-class>
+    </filter>
+    <filter-mapping>
+      <filter-name>review</filter-name>
+      <url-pattern>/danh_gia.jsp</url-pattern>
+    </filter-mapping>-->
+    <!--Phần filler trang thanh toán thành công-->
+    <filter>
+        <filter-name>finishedPlaying</filter-name>
+        <filter-class>filter.FinishedPayingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>finishedPlaying</filter-name>
+        <url-pattern>/thanh_toan_thanh_cong.jsp</url-pattern>
+    </filter-mapping>
+
+    <!--Phần servlet-->
+    <!--Cấu hình servlet cho ckeditor và ckfinder-->
+    <servlet>
+        <servlet-name>ConnectorServlet</servlet-name>
+        <servlet-class>com.ckfinder.connector.ConnectorServlet</servlet-class>
+        <init-param>
+            <description>Path to configuration file can be relative path inside application, absolute path on local file
+                system or UNC path.
+            </description>
+            <param-name>XMLConfig</param-name>
+            <param-value>/WEB-INF/config.xml</param-value>
+        </init-param>
+        <init-param>
+            <param-name>debug</param-name>
+            <param-value>false</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConnectorServlet</servlet-name>
+        <url-pattern>/ckfinder/core/connector/java/connector.java</url-pattern>
+    </servlet-mapping>
+</web-app>

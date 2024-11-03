@@ -1,0 +1,69 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Tahoma, Arial, sans-serif;
+    color: black !important;
+    --color-blue-origin: #2F189A;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+}
+
+ul, li, a{
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    text-decoration: none;
+    color: black;
+}
+
+@font-face {
+    font-family: 'Material Symbols Outlined';
+    font-style: normal;
+    font-weight: 100 700;
+    src: url("../font/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsI.woff2") format('woff2');
+}
+
+#thanh-toan-thanh-cong .tttv-frame{
+    width: 50%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+   margin: auto;
+}
+.tttv-frame .tttc-top h3{
+   font-weight: bold;
+    color: var(--color-blue-origin);
+}
+.tttv-frame .icon-tttc{
+    font-size: 36px;
+    color: green;
+}
+.tttv-frame .time-tttc{
+    color: var(--color-blue-origin);
+}
+.tttc-bot div{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+.tttc-bot div:not(div:last-child){
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+.tttv-frame .btn-tttc{
+    display: flex;
+    justify-content: space-around;
+}
+.tttv-frame .btn-tttc a{
+    border-radius: 5px;
+    background-color: var(--color-blue-origin);
+    color: #FFFFFF;
+    border: 2px solid var(--color-blue-origin);
+    padding: 10px 5px;
+}
+.tttv-frame .btn-tttc a:hover{
+    background-color: #FFFFFF;
+    color: var(--color-blue-origin);
+    border: 2px solid var(--color-blue-origin);
+}

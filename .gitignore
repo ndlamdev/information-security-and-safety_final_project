@@ -1,0 +1,8 @@
+.metadata/
+target/
+.idea/
+conf/
+logs/
+maven.iml
+work/
+/.smarttomcat/

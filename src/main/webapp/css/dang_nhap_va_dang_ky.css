@@ -1,0 +1,46 @@
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+.form-login{
+    max-width: 800px;
+    margin: auto;
+    border: 1px solid lightgray;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px lightgray;
+}
+
+.d-flex-center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.banner-account{
+    background-image: url('../images/bannerAccount.png');
+    background-size: cover;
+    border-radius: 10px;
+
+}
+.form-login label, .form-forgot label{
+    font-size: 14px;
+}
+.form-login input, .form-forgot input{
+    font-size: 14px;
+}
+
+.form-login .ngay_sinh input:nth-of-type(2){
+    width: 70px;
+}
+
+.form-login select{
+    margin: 0 5px;
+}
+
+
+main .login-error {
+    height: 25px;
+}

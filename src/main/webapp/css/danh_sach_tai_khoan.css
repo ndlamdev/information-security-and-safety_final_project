@@ -1,0 +1,120 @@
+/*******************Phần search*********************/
+#main .search{
+    border-radius: 10px;
+    border: rgba(0, 0, 0, 0.3) solid 2px;
+    margin: 0 -10px 15px;
+}
+#table-body .account{
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    border-top: unset;
+}
+
+#main .search .search_header{
+    position: relative;
+    background-color: #fff;
+    top: -15px;
+    width: fit-content;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#main .search .option-search{
+    padding-left: 25px;
+}
+
+#main .search .option-search .search-item {
+    width: fit-content;
+    display: flex;
+    border-radius: 10px;
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+}
+
+#main .search .option-search .search-item input {
+    border: none;
+    border-radius: 10px;
+    padding-left: 8px;
+}
+
+#main .search .option-search .search-item input:focus {
+    outline: none;
+}
+
+#main .search .option-search .search-item span {
+    border-left: rgba(0, 0, 0, 0.5) solid 2px;
+}
+
+#main .search .option-search>div input[type='checkbox']{
+    width: 25px;
+    height: 25px;
+}
+
+/*************Phần table*************/
+#main .table .header-table {
+    background-color: var(--color-blue-origin);
+    border-radius: 10px 10px 0 0;
+    padding: 15px 0;
+    font-weight: 600;
+    color: #fff;
+}
+
+#main .table .body-table .account {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    border-top: none;
+    padding: 5px 0;
+}
+
+#main .table .body-table .account .id-account {
+    color: var(--color-blue-origin);
+    font-weight: bold;
+}
+
+/*Phần avatar và text, coppy*/
+#main .table .body-table .account .avatar-account {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    width: 50px;
+    margin-right: 20px;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+#main .table .body-table .account .avatar-account img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+#main .table .body-table .account .info-account p:nth-of-type(1) {
+    font-size: 20px;
+}
+
+#main .table .body-table .account .info-account p:nth-of-type(2) {
+    font-size: 15px;
+}
+/*Kết thúc phần avatar và text*/
+
+#main .table .body-table .account input{
+    width: 25px;
+    height: 25px;
+}
+
+/*Phần footer, coppy*/
+#main .table .footer-table {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    border-radius: 0 0 10px 10px;
+}
+
+#main .table .footer-table .change-page-display-list button {
+    border-radius: 50px;
+    width: 35px;
+    height: 35px;
+    margin: 0 5px;
+}
+
+#main .table .footer-table .change-page-display-list button:hover,
+#main .table .footer-table .change-page-display-list button.active {
+    color: #fff;
+    background-color: var(--color-blue-origin);
+    font-weight: 550;
+}
+
+/*Kết thúc phần footer*/

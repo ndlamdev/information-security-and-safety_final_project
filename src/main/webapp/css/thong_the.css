@@ -1,0 +1,19 @@
+#main .search .search-item > span.select2{
+    height: 35px;
+    padding: 2.5px 0;
+    border: 0 !important;
+    outline: 0 !important;
+}
+
+#main .search .search-item > span span{
+    border: 0 !important;
+}
+
+#main .search .search-item > span .select2-selection__arrow{
+    margin-top: 2.5px;
+}
+
+select:focus-visible{
+    border: 0 !important;
+    outline: 0 !important;
+}

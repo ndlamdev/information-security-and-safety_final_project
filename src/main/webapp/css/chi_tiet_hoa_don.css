@@ -1,0 +1,267 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box !important;
+}
+
+#main {
+    background-color: #FFFFFF;
+}
+
+/****top***/
+.in4-bill-top .id-bill-and-in4-ship .in4-ship {
+    background-color: var(--color-blue-origin);
+    color: #FFFFFF;
+    border-radius: 5px;
+}
+
+.in4-bill-top .time-order {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.in4-right button {
+    border: none;
+    padding: 5px 10px;
+    background-color: var(--color-origan-origin);
+    color: #FFFFFF;
+    border-radius: 10px;
+}
+
+/*thông tin sản phẩm và thông tin khách hàng*/
+#main .container {
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+#main .in4-item-frame {
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.col-name-item {
+    background-color: var(--color-blue-origin);
+    color: #FFFFFF;
+    border-radius: 8px 8px 0 0;
+    margin: auto;
+}
+
+.list-item {
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 448px;
+    border-bottom: rgba(0, 0, 0, 0.3) solid 2px;
+}
+
+.list-item .item > div:nth-of-type(1) {
+    text-align: left;
+}
+
+.list-item .item:not(.item:last-child) {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.list-item .item .img-item .img-60x60 {
+    width: 60px;
+    height: 60px;
+    border: 2px solid #000000;
+    font-size: 12px;
+    position: relative;
+}
+
+.list-item .item .img-item .img-60x60 span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-30%, -50%);
+}
+
+.item div:not(div:first-child) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.item div:not(div:first-child) span {
+    padding-right: 30px;
+}
+
+/*hiện thị số tiền*/
+.show-total-money .show-total {
+    width: 50%;
+    height: auto;
+    background-color: var(--color-blue-origin);
+    border-radius: 10px;
+}
+
+.show-total-money .show-total ul li {
+    color: #FFFFFF;
+    font-weight: bold;
+    padding: 10px 0;
+}
+
+.show-total ul li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/*thông tin khách hàng*/
+.in4-customer, .trip-ship {
+    border: 2px solid rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+}
+
+.in4-customer .col-name-in4-customer {
+    font-size: 12px;
+    background-color: var(--color-blue-origin);
+    color: #FFFFFF;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+}
+
+/*Phần avatar và text, coppy*/
+.avatar-customer {
+    border: rgba(0, 0, 0, 0.5) solid 2px;
+    width: fit-content;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.avatar-customer img {
+    width: 40px;
+    height: 40px;
+}
+
+.info-customer p:nth-of-type(1) {
+    font-size: 20px;
+}
+
+.info-customer p:nth-of-type(2) {
+    font-size: 15px;
+}
+
+.in4-customer .tong-san-pham .icon-cart {
+    background-color: var(--color-blue-origin);
+    color: #FFFFFF;
+    border-radius: 50%;
+    padding: 16px;
+}
+
+.in4-customer .tong-san-pham p {
+    padding: 10px;
+}
+
+.address .edit-address p {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.address .edit-address button:hover {
+    color: var(--color-blue-origin);
+}
+
+.address > p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.in4-customer .address {
+    position: relative;
+    border-top: 2px solid rgba(0, 0, 0, 0.5);
+}
+
+.in4-customer .address::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: 0;
+
+}
+
+/*lộ trình vận chuyển hàng*/
+/*.trip-ship {*/
+/*    width: 65.68%;*/
+/*    height: auto;*/
+/*    background-color: #FFFFFF;*/
+/*    border-radius: 10px;*/
+/*}*/
+
+.trip-ship .header-trip-ship{
+    background-color: var(--color-blue-origin);
+    font-weight: bold;
+    color: #fff;
+    border-radius: 8px 8px 0 0;
+}
+
+.in4-trip .icon-trip > span {
+    font-size: 8px;
+    color: var(--color-blue-origin);
+}
+
+.in4-trip .icon-trip .has-one-line p:not(p:first-child) {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.in4-trip .icon-trip .has-one-line {
+    position: relative;
+}
+
+.in4-trip .icon-trip .has-one-line::after {
+    position: absolute;
+    content: "";
+    top: 0;
+    left: -5px;
+    height: 32px;
+    transform: translate(0%, 30%);
+    border: 1px solid var(--color-blue-origin);
+}
+
+.show-list-trip .trip {
+    margin-bottom: 10px;
+}
+
+.in4-trip .icon-trip .da-giao p:not(p:first-child) {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+}
+
+/**overflow-y**/
+.show-list-trip {
+    height: 240px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Tùy chỉnh thanh cuộn dọc */
+::-webkit-scrollbar {
+    width: 8px; /* Chiều rộng thanh cuộn dọc */
+    height: 16px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color-blue-origin); /* Màu nền của "nút" thanh cuộn */
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: rgba(0, 0, 0, 0.2); /* Màu nền của "vùng" thanh cuộn */
+    border-radius: 6px;
+}
+
+.bill-id {
+    color: var(--color-blue-origin);
+}
+
+.list-item .item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+}
+
+button.back{
+    background-color: var(--color-blue-origin);
+    font-weight: bold;
+    color: #fff;
+}
+

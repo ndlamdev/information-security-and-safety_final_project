@@ -1,0 +1,18 @@
+#main .verify{
+    height: 500px;
+}
+
+#main .verify .verify-body button{
+    background-color: var(--color-blue-origin);
+
+}
+
+#main .background{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#main .background img{
+    height: 500px;
+}
