@@ -28,7 +28,7 @@ public class ChangePageBuyNowAction implements Action {
         int quantity = 0;
         try {
             productId = Integer.parseInt(request.getParameter("product-id"));
-            modelId = Integer.parseInt(request.getParameter("com.lamnguyen.mat_kinh_kimi.model-id"));
+            modelId = Integer.parseInt(request.getParameter("model-id"));
             quantity = Integer.parseInt(request.getParameter("quantity"));
         } catch (NumberFormatException e) {
         }

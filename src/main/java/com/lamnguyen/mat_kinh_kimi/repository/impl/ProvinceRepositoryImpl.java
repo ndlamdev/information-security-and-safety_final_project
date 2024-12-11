@@ -14,11 +14,12 @@ public class ProvinceRepositoryImpl extends Repository {
     public static ProvinceRepositoryImpl getInstance() {
         return (instance = instance == null ? new ProvinceRepositoryImpl() : instance);
     }
-    
-    public List<Province> getAllProvince(){
+
+    public List<Province> getAllProvince() {
         return connector.withHandle(handle ->
-                handle.createQuery("SELECT pr.code, pr.fullName " +
-                                "FROM `dia_chi`.provinces AS pr;")
+                handle.createQuery("""
+                                SELECT pr.code, pr.fullName FROM provinces AS pr;
+                                """)
                         .mapToBean(Province.class)
                         .list()
         );

@@ -17,7 +17,7 @@ public class AddressRepositoryImpl extends Repository {
 
     public Province getProvince(int code) {
         return connector.withHandle(handle ->
-                handle.createQuery("SELECT p.code, p.fullName FROM `dia_chi`.provinces p WHERE p.code = ?")
+                handle.createQuery("SELECT p.code, p.fullName FROM provinces p WHERE p.code = ?")
                         .bind(0, code)
                         .mapToBean(Province.class).findFirst().orElse(null)
         );
@@ -25,7 +25,7 @@ public class AddressRepositoryImpl extends Repository {
 
     public District getDistrict(int code, int provinceCode) {
         return connector.withHandle(handle ->
-                handle.createQuery("SELECT d.code, d.fullName, d.provinceCode FROM `dia_chi`.districts d WHERE d.code = ? AND d.provinceCode = ?")
+                handle.createQuery("SELECT d.code, d.fullName, d.provinceCode FROM districts d WHERE d.code = ? AND d.provinceCode = ?")
                         .bind(0, code)
                         .bind(1, provinceCode)
                         .mapToBean(District.class).findFirst().orElse(null)
@@ -34,7 +34,7 @@ public class AddressRepositoryImpl extends Repository {
 
     public Ward getWard(int code, int districtCode) {
         return connector.withHandle(handle ->
-                handle.createQuery("SELECT w.code, w.fullName, w.districtCode FROM `dia_chi`.wards w WHERE w.code = ? AND w.districtCode = ?")
+                handle.createQuery("SELECT w.code, w.fullName, w.districtCode FROM wards w WHERE w.code = ? AND w.districtCode = ?")
                         .bind(0, code)
                         .bind(1, districtCode)
                         .mapToBean(Ward.class).findFirst().orElse(null)

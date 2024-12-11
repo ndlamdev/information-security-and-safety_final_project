@@ -1,5 +1,4 @@
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.User" %>
-<%@ page import="com.lamnguyen.mat_kinh_kimi.service.CartService" %>
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.ProductCart" %>
 <%@ page import="java.util.Locale" %>

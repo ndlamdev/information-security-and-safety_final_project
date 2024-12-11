@@ -24,24 +24,15 @@ public class BuyNowController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String actionStr = request.getParameter("action");
-        Action action = null;
-        switch (actionStr) {
-            case "buy-now" -> {
-                action = new ChangePageBuyNowAction();
-            }
-            case "increase" -> {
-                action = new IncreaseProductBuyNowAction();
-            }
-            case "reduce" -> {
-                action = new ReduceProductBuyNowAction();
-            }
-            case "pay" -> {
-                action = new PayBuyNowAction();
-            }
-        }
+        Action action = switch (actionStr) {
+            case "buy-now" -> new ChangePageBuyNowAction();
+            case "increase" -> new IncreaseProductBuyNowAction();
+            case "reduce" -> new ReduceProductBuyNowAction();
+            case "pay" -> new PayBuyNowAction();
+            default -> throw new NullPointerException();
+        };
 
-        if (action != null) {
-            action.action(request, response);
-        } else throw new IOException("");
+
+        action.action(request, response);
     }
 }

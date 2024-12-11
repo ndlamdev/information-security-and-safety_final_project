@@ -193,7 +193,7 @@
                                 if (models.size() == 1) {%>
                             <li class="product-sw-select-item">
                                 <button type="button"
-                                        class="<%=models.get(0).available() ? "active button-com.lamnguyen.mat_kinh_kimi.model" : ""%>"
+                                        class="<%=models.get(0).available() ? "active model button-model" : ""%>"
                                         model-id="<%=models.get(0).getId()%>">
                                     <img src="<%=models.get(0).getUrlImage()%>"
                                          alt="<%=models.get(0).getName()%>.png">
@@ -210,7 +210,7 @@
                                 <button type="button" data-bs-target="#carouselExampleAutoplaying"
                                         data-bs-slide-to="<%=index%>"
                                         class="<%if(models.get(i).available()) {%>
-                                            <%="button-com.lamnguyen.mat_kinh_kimi.model"%>
+                                            <%="model button-model"%>
                                             <%if(!haveActive) {
                                             haveActive = true;
                                             %>
@@ -247,8 +247,7 @@
                         </div>
                         <div class="productAction">
                             <button type="button" product-id="<%=product.getId()%>" id="add-product-cart">Thêm vào
-                                giỏ
-                                hàng
+                                giỏ hàng
                             </button>
                             <button type="button" product-id="<%=product.getId()%>" id="buy-product-now">Mua ngay
                             </button>
