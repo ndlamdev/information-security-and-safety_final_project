@@ -48,7 +48,7 @@ CKEDITOR.replace( 'editor', {
 
 ### Other Installation Methods
 
-You can also use the [CKEditor 4 Add-ons repository](https://ckeditor.com/cke4/addons/plugins/all) to obtain the plugin via:
+You can also use the [CKEditor 4 Add-ons com.lamnguyen.mat_kinh_kimi.repository](https://ckeditor.com/cke4/addons/plugins/all) to obtain the plugin via:
 
 * [Custom build with online builder](https://ckeditor.com/cke4/builder)
 * [Manual download](https://ckeditor.com/cke4/addon/exportpdf)

@@ -49,9 +49,9 @@ const handlePage = (page)=>{
     search_account()
 
 }
-const handleLockAcoount = (e, id) =>{
+const handleLockAccount = (e, id) =>{
     $.ajax({
-        url: '/maven_war/admin/account',
+        url: '/mat_kinh_kimi/admin/account',
         method: 'GET',
         data: {
             action: 'lock',
@@ -73,7 +73,7 @@ const handleLockAcoount = (e, id) =>{
 }
 const handleRoleAccount = (e, id) =>{
     $.ajax({
-        url: '/maven_war/admin/account',
+        url: '/mat_kinh_kimi/admin/account',
         method: 'GET',
         data: {
             action: 'role',
@@ -92,7 +92,7 @@ const search_account = ()=>{
     const lock = $("#input-lock-account").val();
     const role = $("#input-account-role").val();
     $.ajax({
-        url: '/maven_war/admin/account',
+        url: '/mat_kinh_kimi/admin/account',
         method: 'GET',
         data: {
             page: pageActive,
@@ -149,7 +149,7 @@ const search_account = ()=>{
                         </select>
                     </div>
                     <div class="col-1 text-center" style="cursor: pointer">
-                        <span onclick="handleLockAcoount(this, ${tmp.id})" class="material-symbols-outlined d-inline-block lock">${tmp.lock ? "lock" : "lock_open"}</span>
+                        <span onclick="handleLockAccount(this, ${tmp.id})" class="material-symbols-outlined d-inline-block lock">${tmp.lock ? "lock" : "lock_open"}</span>
                     </div>
                 </div>
             `

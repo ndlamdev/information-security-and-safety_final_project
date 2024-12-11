@@ -1490,7 +1490,7 @@
       te.style.cssText = "position: fixed; width: 30px; height: 30px; top: " + (e.clientY - 5) +
         "px; left: " + (e.clientX - 5) + "px; z-index: 1000; background: " +
         (ie ? "rgba(255, 255, 255, .05)" : "transparent") +
-        "; outline: none; border-width: 0; outline: none; overflow: hidden; opacity: .05; filter: alpha(opacity=5);";
+        "; outline: none; border-width: 0; outline: none; overflow: hidden; opacity: .05; com.lamnguyen.mat_kinh_kimi.filter: alpha(opacity=5);";
       if (webkit) var oldScrollY = window.scrollY; // Work around Chrome issue (#2712)
       display.input.focus();
       if (webkit) window.scrollTo(null, oldScrollY);
@@ -1690,7 +1690,7 @@
       }
 
       try { var rng = range(start.node, start.offset, end.offset, end.node); }
-      catch(e) {} // Our model of the DOM might be outdated, in which case the range we try to set can be impossible
+      catch(e) {} // Our com.lamnguyen.mat_kinh_kimi.model of the DOM might be outdated, in which case the range we try to set can be impossible
       if (rng) {
         sel.removeAllRanges();
         sel.addRange(rng);
@@ -5942,7 +5942,7 @@
 
   // STRING STREAM
 
-  // Fed to the mode parsers, provides helper functions to make
+  // Fed to the mode parsers, provides com.lamnguyen.mat_kinh_kimi.helper functions to make
   // parsers more succinct.
 
   var StringStream = CodeMirror.StringStream = function(string, tabSize) {
@@ -8002,7 +8002,7 @@
     return !out ? spans : out.length ? out : null;
   }
 
-  // Retrieve and filter the old marked spans stored in a change event.
+  // Retrieve and com.lamnguyen.mat_kinh_kimi.filter the old marked spans stored in a change event.
   function getOldSpans(doc, change) {
     var found = change["spans_" + doc.id];
     if (!found) return null;

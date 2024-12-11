@@ -1,0 +1,46 @@
+package com.lamnguyen.mat_kinh_kimi.controller.review.action;
+
+import com.lamnguyen.mat_kinh_kimi.controller.Action;
+import com.lamnguyen.mat_kinh_kimi.model.ProductReview;
+import com.lamnguyen.mat_kinh_kimi.service.ProductService;
+import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+public class GetProductReviewAction implements Action {
+    @Override
+    public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String userIdString = request.getParameter("user-id");
+        String pageString = request.getParameter("page");
+        String haveEvaluated = request.getParameter("have-evaluated");
+
+        int page, userId = 0;
+        try{
+            userId = Integer.parseInt(userIdString);
+            page = Integer.parseInt(pageString);
+        }catch (NumberFormatException e) {
+            response.setStatus(404);
+            response.getWriter().println(new JSONObject());
+            return;
+        }
+
+        int offset = (page - 1) * 8;
+        List<ProductReview> productReviews = null;
+        JSONObject json = new JSONObject();
+        if(haveEvaluated.toLowerCase().equals("true")) {
+            productReviews = ProductService.getInstance().getProductReviewsHaveEvaluated(userId, offset);
+            json.put("action", "edit-review");
+        }
+        else {
+            productReviews = ProductService.getInstance().getProductReviewsNotYetRated(userId, offset);
+            json.put("action", "write-review");
+        }
+        json.put("productReviews", productReviews);
+        json.put("user-id", userId);
+        response.getWriter().println(json.toString());
+    }
+}

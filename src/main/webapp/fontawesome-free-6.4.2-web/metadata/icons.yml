@@ -1037,7 +1037,7 @@ arrow-down-1-9:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-asc
@@ -1063,7 +1063,7 @@ arrow-down-9-1:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-asc
@@ -1092,7 +1092,7 @@ arrow-down-a-z:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-asc
   styles:
@@ -1140,7 +1140,7 @@ arrow-down-short-wide:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-amount-asc
   styles:
@@ -1202,7 +1202,7 @@ arrow-down-wide-short:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - number
       - order
       - sort-amount-asc
@@ -1229,7 +1229,7 @@ arrow-down-z-a:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-asc
   styles:
@@ -1656,7 +1656,7 @@ arrow-up-1-9:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-desc
@@ -1681,7 +1681,7 @@ arrow-up-9-1:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-desc
@@ -1709,7 +1709,7 @@ arrow-up-a-z:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-desc
   styles:
@@ -1852,7 +1852,7 @@ arrow-up-short-wide:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-amount-desc
   styles:
@@ -1878,7 +1878,7 @@ arrow-up-wide-short:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-amount-desc
   styles:
@@ -1903,7 +1903,7 @@ arrow-up-z-a:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-desc
   styles:
@@ -15739,7 +15739,7 @@ filter-circle-dollar:
   label: Filter Circle Dollar
   search:
     terms:
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - money
       - options
       - separate
@@ -16846,7 +16846,7 @@ gamepad:
   search:
     terms:
       - arcade
-      - controller
+      - com.lamnguyen.mat_kinh_kimi.controller
       - d-pad
       - joystick
       - video
@@ -19248,7 +19248,7 @@ head-side-mask:
       - breath
       - coronavirus
       - covid-19
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - flu
       - infection
       - pandemic
@@ -23916,7 +23916,7 @@ mask-face:
       - breath
       - coronavirus
       - covid-19
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - flu
       - infection
       - pandemic
@@ -32767,7 +32767,7 @@ sort:
   label: Sort
   search:
     terms:
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
   styles:
     - solid
@@ -32794,7 +32794,7 @@ sort-down:
     terms:
       - arrow
       - descending
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-desc
   styles:
@@ -32822,7 +32822,7 @@ sort-up:
     terms:
       - arrow
       - ascending
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-asc
   styles:

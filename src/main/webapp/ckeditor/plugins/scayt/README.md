@@ -26,7 +26,7 @@ There are also additional languages and specialized dictionaries available for a
 Get started
 ------------
 
-1. Clone/copy this repository contents in a new "plugins/scayt" folder in your CKEditor installation.
+1. Clone/copy this com.lamnguyen.mat_kinh_kimi.repository contents in a new "plugins/scayt" folder in your CKEditor installation.
 2. Enable the "scayt" plugin in the CKEditor configuration file (config.js):
 
         config.extraPlugins = 'scayt';

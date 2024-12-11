@@ -1,4 +1,4 @@
-<%@ page import="model.bean.BannerImage" %><%--
+<%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %><%--
   Created by IntelliJ IDEA.
   User: Tu
   Date: 12/14/2023

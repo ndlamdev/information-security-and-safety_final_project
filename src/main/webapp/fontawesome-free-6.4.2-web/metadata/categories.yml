@@ -583,7 +583,7 @@ coding:
     - file
     - file-code
     - file-lines
-    - filter
+    - com.lamnguyen.mat_kinh_kimi.filter
     - fire-extinguisher
     - folder
     - folder-open
@@ -1886,7 +1886,7 @@ marketing:
     - comments-dollar
     - envelope-open-text
     - envelopes-bulk
-    - filter-circle-dollar
+    - com.lamnguyen.mat_kinh_kimi.filter-circle-dollar
     - group-arrows-rotate
     - lightbulb
     - magnifying-glass-arrow-right
@@ -2361,7 +2361,7 @@ science:
     - disease
     - dna
     - eye-dropper
-    - filter
+    - com.lamnguyen.mat_kinh_kimi.filter
     - fire
     - fire-flame-curved
     - fire-flame-simple
@@ -2666,7 +2666,7 @@ text-formatting:
     - check
     - check-double
     - circle-check
-    - filter-circle-xmark
+    - com.lamnguyen.mat_kinh_kimi.filter-circle-xmark
     - font
     - heading
     - highlighter

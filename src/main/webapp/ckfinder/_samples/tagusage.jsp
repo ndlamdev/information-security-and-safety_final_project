@@ -25,8 +25,8 @@
 		CKFinder - Java Sample - Standalone
 	</h1>
 	<div class="description">
-		CKFinder may be used in standalone mode inside any page, to create a repository
-		manager with ease.</div>
+        CKFinder may be used in standalone mode inside any page, to create a com.lamnguyen.mat_kinh_kimi.repository
+        manager with ease.</div>
 	<p style="padding-left: 30px; padding-right: 30px;">
 	<!-- CKFinder tag on your JSP -->
 	<ckfinder:ckfinder basePath="../" width="100%" height="500" />

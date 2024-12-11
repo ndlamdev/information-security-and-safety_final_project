@@ -2093,7 +2093,7 @@
     clickCallback: null,
     isAnimated: false,
     isVisible: true,
-    // if false, we use the backdrop helper without adding any element to the dom
+    // if false, we use the backdrop com.lamnguyen.mat_kinh_kimi.helper without adding any element to the dom
     rootElement: 'body' // give the choice to place backdrop under different elements
   };
 
@@ -3635,7 +3635,7 @@
       config.trigger = 'manual';
 
       // In the future can be replaced with:
-      // const keysWithDifferentValues = Object.entries(this._config).filter(entry => this.constructor.Default[entry[0]] !== this._config[entry[0]])
+      // const keysWithDifferentValues = Object.entries(this._config).com.lamnguyen.mat_kinh_kimi.filter(entry => this.constructor.Default[entry[0]] !== this._config[entry[0]])
       // `Object.fromEntries(keysWithDifferentValues)`
       return config;
     }

@@ -1330,7 +1330,7 @@ arrow-down-1-9:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-asc
@@ -1361,7 +1361,7 @@ arrow-down-9-1:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-asc
@@ -1395,7 +1395,7 @@ arrow-down-a-z:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-asc
   unicode: f15d
@@ -1453,7 +1453,7 @@ arrow-down-short-wide:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-amount-asc
   unicode: f884
@@ -1530,7 +1530,7 @@ arrow-down-wide-short:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - number
       - order
       - sort-amount-asc
@@ -1562,7 +1562,7 @@ arrow-down-z-a:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-asc
   unicode: f881
@@ -2074,7 +2074,7 @@ arrow-up-1-9:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-desc
@@ -2104,7 +2104,7 @@ arrow-up-9-1:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - numbers
       - order
       - sort-numeric-desc
@@ -2137,7 +2137,7 @@ arrow-up-a-z:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-desc
   unicode: f15e
@@ -2315,7 +2315,7 @@ arrow-up-short-wide:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-amount-desc
   unicode: f885
@@ -2346,7 +2346,7 @@ arrow-up-wide-short:
   search:
     terms:
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-amount-desc
   unicode: f161
@@ -2376,7 +2376,7 @@ arrow-up-z-a:
     terms:
       - alphabetical
       - arrange
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-alpha-desc
   unicode: f882
@@ -19403,7 +19403,7 @@ filter-circle-dollar:
   label: Filter Circle Dollar
   search:
     terms:
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - money
       - options
       - separate
@@ -20794,7 +20794,7 @@ gamepad:
   search:
     terms:
       - arcade
-      - controller
+      - com.lamnguyen.mat_kinh_kimi.controller
       - d-pad
       - joystick
       - video
@@ -23788,7 +23788,7 @@ head-side-mask:
       - breath
       - coronavirus
       - covid-19
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - flu
       - infection
       - pandemic
@@ -29550,7 +29550,7 @@ mask-face:
       - breath
       - coronavirus
       - covid-19
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - flu
       - infection
       - pandemic
@@ -40511,7 +40511,7 @@ sort:
   label: Sort
   search:
     terms:
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
   unicode: f0dc
   voted: false
@@ -40543,7 +40543,7 @@ sort-down:
     terms:
       - arrow
       - descending
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-desc
   unicode: f0dd
@@ -40576,7 +40576,7 @@ sort-up:
     terms:
       - arrow
       - ascending
-      - filter
+      - com.lamnguyen.mat_kinh_kimi.filter
       - order
       - sort-asc
   unicode: f0de

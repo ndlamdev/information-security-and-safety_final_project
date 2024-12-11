@@ -2,7 +2,7 @@
         "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
         "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="3.0">
     <display-name>Web Application</display-name>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
@@ -11,7 +11,7 @@
     <!-- Chỉ áp dụng Filter cho các URL trong thư mục admin_pages-->
     <filter>
         <filter-name>AdminAccessFilter</filter-name>
-        <filter-class>filter.AdminAccessFilter</filter-class>
+        <filter-class>com.lamnguyen.mat_kinh_kimi.filter.AdminAccessFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>AdminAccessFilter</filter-name>
@@ -20,7 +20,7 @@
     <!-- Phần filler trang chủ-->
     <filter>
         <filter-name>index_filter</filter-name>
-        <filter-class>filter.IndexFilter</filter-class>
+        <filter-class>com.lamnguyen.mat_kinh_kimi.filter.IndexFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>index_filter</filter-name>
@@ -33,7 +33,7 @@
     <!--Phần filler trang quản lý sản phẩm-->
     <filter>
         <filter-name>product_manager</filter-name>
-        <filter-class>filter.ProductManagerFilter</filter-class>
+        <filter-class>com.lamnguyen.mat_kinh_kimi.filter.ProductManagerFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>product_manager</filter-name>
@@ -43,7 +43,7 @@
     <!--Phần filler trang gian hàng-->
     <filter>
         <filter-name>product_booth</filter-name>
-        <filter-class>filter.ProductBoothFilter</filter-class>
+        <filter-class>com.lamnguyen.mat_kinh_kimi.filter.ProductBoothFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>product_booth</filter-name>
@@ -52,25 +52,25 @@
     <!--Phần filler trang quan lý banner-->
     <filter>
         <filter-name>banner_manager</filter-name>
-        <filter-class>filter.BannerManagerFilter</filter-class>
+        <filter-class>com.lamnguyen.mat_kinh_kimi.filter.BannerManagerFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>banner_manager</filter-name>
         <url-pattern>/admin_pages/quan_ly_banner.jsp</url-pattern>
     </filter-mapping>
     <!--Phần filler trang reivew
-    <filter>
-      <filter-name>review</filter-name>
-      <filter-class>filter.ReviewFilter</filter-class>
-    </filter>
-    <filter-mapping>
-      <filter-name>review</filter-name>
+    <com.lamnguyen.mat_kinh_kimi.filter>
+      <com.lamnguyen.mat_kinh_kimi.filter-name>review</com.lamnguyen.mat_kinh_kimi.filter-name>
+      <com.lamnguyen.mat_kinh_kimi.filter-class>com.lamnguyen.mat_kinh_kimi.filter.ReviewFilter</com.lamnguyen.mat_kinh_kimi.filter-class>
+    </com.lamnguyen.mat_kinh_kimi.filter>
+    <com.lamnguyen.mat_kinh_kimi.filter-mapping>
+      <com.lamnguyen.mat_kinh_kimi.filter-name>review</com.lamnguyen.mat_kinh_kimi.filter-name>
       <url-pattern>/danh_gia.jsp</url-pattern>
-    </filter-mapping>-->
+    </com.lamnguyen.mat_kinh_kimi.filter-mapping>-->
     <!--Phần filler trang thanh toán thành công-->
     <filter>
         <filter-name>finishedPlaying</filter-name>
-        <filter-class>filter.FinishedPayingFilter</filter-class>
+        <filter-class>com.lamnguyen.mat_kinh_kimi.filter.FinishedPayingFilter</filter-class>
     </filter>
     <filter-mapping>
         <filter-name>finishedPlaying</filter-name>
@@ -83,9 +83,6 @@
         <servlet-name>ConnectorServlet</servlet-name>
         <servlet-class>com.ckfinder.connector.ConnectorServlet</servlet-class>
         <init-param>
-            <description>Path to configuration file can be relative path inside application, absolute path on local file
-                system or UNC path.
-            </description>
             <param-name>XMLConfig</param-name>
             <param-value>/WEB-INF/config.xml</param-value>
         </init-param>

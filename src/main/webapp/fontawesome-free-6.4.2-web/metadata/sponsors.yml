@@ -150,7 +150,7 @@ clicdata:
     - cloud-word
     - diagram-sankey
     - diagram-venn
-    - filter-list
+    - com.lamnguyen.mat_kinh_kimi.filter-list
     - filters
     - input-numeric
     - input-pipe
@@ -985,7 +985,7 @@ supple:
     - envelope-open-dollar
     - envelope-open-text
     - envelopes-bulk
-    - filter-circle-dollar
+    - com.lamnguyen.mat_kinh_kimi.filter-circle-dollar
     - gift-card
     - lightbulb-dollar
     - lightbulb-exclamation

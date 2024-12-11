@@ -22,7 +22,7 @@ function displayButtonSignOut() {
     `);
 
     $("#signout").click(function () {
-        $.get("/maven_war/logout", function (){
+        $.get("/mat_kinh_kimi/logout", function (){
             window.location.replace("../index.jsp");
         });
     });

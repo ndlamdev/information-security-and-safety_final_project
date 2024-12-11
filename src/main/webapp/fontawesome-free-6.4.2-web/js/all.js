@@ -3581,7 +3581,7 @@
   }
 
   /**
-   * Internal helper to bind a function known to have 4 arguments
+   * Internal com.lamnguyen.mat_kinh_kimi.helper to bind a function known to have 4 arguments
    * to a given context.
    */
 

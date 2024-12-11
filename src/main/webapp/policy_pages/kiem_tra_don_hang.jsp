@@ -1,5 +1,5 @@
-<%@ page import="model.bean.User" %>
-<%@ page import="model.service.CartService" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.model.User" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.service.CartService" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">

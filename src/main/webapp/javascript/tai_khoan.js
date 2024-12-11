@@ -297,7 +297,7 @@ function changePassword({email}) {
                 password: password,
                 rePassword: rePassword
             })
-            const url = `/maven_war/user/changePassword`;
+            const url = `/mat_kinh_kimi/user/changePassword`;
 
             try {
                 const response = await fetch(url, {
