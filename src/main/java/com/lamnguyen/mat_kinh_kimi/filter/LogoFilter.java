@@ -12,7 +12,9 @@ import java.io.IOException;
 public class LogoFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        BannerImage logo = (BannerImage) ((HttpServletRequest)request).getSession().getAttribute("logo");
+        System.out.println("LogoFilter");
+
+        BannerImage logo = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("logo");
         if (logo == null) {
             logo = BannerService.getInstance().getBannerByDescription("%banner%logo%");
             ((HttpServletRequest) request).getSession().setAttribute("logo", logo);
@@ -24,7 +26,7 @@ public class LogoFilter implements Filter {
             ((HttpServletRequest) request).getSession().setAttribute("signupBanner", signupBanner);
         }
 
-        BannerImage loginBanner = (BannerImage)  ((HttpServletRequest) request).getSession().getAttribute("loginBanner");
+        BannerImage loginBanner = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("loginBanner");
         if (loginBanner == null) {
             loginBanner = BannerService.getInstance().getBannerByDescription("%banner%login%");
             ((HttpServletRequest) request).getSession().setAttribute("loginBanner", loginBanner);
@@ -36,13 +38,13 @@ public class LogoFilter implements Filter {
             ((HttpServletRequest) request).getSession().setAttribute("contact", contact);
         }
 
-        BannerImage urlBannerPRImages = (BannerImage) ((HttpServletRequest)request).getSession().getAttribute("bannerPRImages");
-        ((HttpServletRequest)request).getSession().setAttribute("bannerPRImages", urlBannerPRImages); // banner pr
+        BannerImage urlBannerPRImages = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("bannerPRImages");
+        ((HttpServletRequest) request).getSession().setAttribute("bannerPRImages", urlBannerPRImages); // banner pr
 
-        BannerImage auth = (BannerImage) ((HttpServletRequest)request).getSession().getAttribute("authBanner");
+        BannerImage auth = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("authBanner");
         if (auth == null) {
             auth = BannerService.getInstance().getBannerByDescription("%banner%auth%");
-            ((HttpServletRequest)request).getSession().setAttribute("authBanner", auth);
+            ((HttpServletRequest) request).getSession().setAttribute("authBanner", auth);
         }
 
         chain.doFilter(request, response);

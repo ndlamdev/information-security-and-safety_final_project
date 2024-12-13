@@ -6,11 +6,12 @@ import com.lamnguyen.mat_kinh_kimi.service.BannerService;
 import com.lamnguyen.mat_kinh_kimi.service.ProductService;
 
 import javax.servlet.*;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.List;
 
-//@WebFilter(filterName = "IndexFilter", value = "/*")
+@WebFilter(filterName = "IndexFilter", value = "/**")
 public class IndexFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -19,13 +20,14 @@ public class IndexFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        List<BannerImage> urlBannerImages = (List<BannerImage>) request.getAttribute("banner-images");
+        System.out.println("IndexFilter");
+        var urlBannerImages = request.getAttribute("banner-images");
         BannerImage logo = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("logo");
         BannerImage urlBannerPRImages = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("bannerPRImages");
-        List<Product> productDiscount = (List<Product>) request.getAttribute("list-product-discount"),
-                productProminent = (List<Product>) request.getAttribute("list-product-prominent");
+        var productDiscount = request.getAttribute("list-product-discount");
+        var productProminent = request.getAttribute("list-product-prominent");
         if (urlBannerImages != null && urlBannerPRImages != null &&
-                productDiscount != null && productProminent != null) {
+            productDiscount != null && productProminent != null) {
             chain.doFilter(request, response);
             return;
         }

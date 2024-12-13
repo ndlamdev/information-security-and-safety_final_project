@@ -64,7 +64,9 @@ public class BillDetailRepositoryImpl extends Repository {
 
     public List<BillDetail> getBillDetails(Integer billId) {
         return connector.withHandle(handle ->
-                handle.createQuery("SELECT productId, modelId, quantity, price FROM bill_details WHERE billId = :billId")
+                handle.createQuery("""
+                                SELECT billId, productId, modelId, quantity, price FROM bill_details WHERE billId = :billId
+                                """)
                         .bind("billId", billId)
                         .mapToBean(BillDetail.class)
                         .list()

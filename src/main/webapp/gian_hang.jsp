@@ -5,9 +5,6 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.util.Map" %>
-<%@ page import="com.lamnguyen.mat_kinh_kimi.model.Cart" %>
-<%@ page import="com.lamnguyen.mat_kinh_kimi.model.Model" %>
-<%@ page import="com.lamnguyen.mat_kinh_kimi.service.CartService" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%--
@@ -78,7 +75,7 @@
                         <!--Nút hủy bộ lọc-->
                         <div class="col mt-2">
                             <button id="removeCheckedFilterAll" class="button border-0" type="button"
-                                    data-action="close-com.lamnguyen.mat_kinh_kimi.filter">
+                                    data-action="close-filter">
                                 <a href="product-booth?<%=request.getAttribute("request")%>&none=none">
                                     <svg class="Icon Icon--close" role="presentation" viewBox="0 0 16 14" width="15"
                                          height="15">
@@ -94,8 +91,8 @@
                 </div>
 
                 <!--Phần hiển thị danh sách bộ lọc-->
-                <!--Các com.lamnguyen.mat_kinh_kimi.filter>ul>li có thể bị ẩn phải có class là hidden-->
-                <!--Các com.lamnguyen.mat_kinh_kimi.filter-list nào không có phần hiddent thì xóa luôn cái thể xem com.lamnguyen.mat_kinh_kimi.filter-more luôn nha-->
+                <!--Các filter>ul>li có thể bị ẩn phải có class là hidden-->
+                <!--Các filter-list nào không có phần hiddent thì xóa luôn cái thể xem filter-more luôn nha-->
                 <div class="filter-body">
                     <!--Các trường lọc-->
                     <div class="filter">
@@ -149,49 +146,49 @@
                         <ul class="filter-list">
                             <li>
                                 <button class="border-0" value="0-220000">
-                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&com.lamnguyen.mat_kinh_kimi.filter-price=0-220000&page=1")%>">
+                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&filter-price=0-220000&page=1")%>">
                                         0 - 220,000
                                     </a>
                                 </button>
                             </li>
                             <li>
                                 <button class="border-0" value="220000-500000">
-                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&com.lamnguyen.mat_kinh_kimi.filter-price=220000-500000&page=1")%>">
+                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&filter-price=220000-500000&page=1")%>">
                                         220,000 - 500,000
                                     </a>
                                 </button>
                             </li>
                             <li>
                                 <button class="border-0" value="500000-1000000">
-                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&com.lamnguyen.mat_kinh_kimi.filter-price=500000-1000000&page=1")%>">
+                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&filter-price=500000-1000000&page=1")%>">
                                         500,000 - 1,000,000
                                     </a>
                                 </button>
                             </li>
                             <li>
                                 <button class="border-0" value="1000000-2000000">
-                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&com.lamnguyen.mat_kinh_kimi.filter-price=1000000-2000000&page=1")%>">
+                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&filter-price=1000000-2000000&page=1")%>">
                                         1,000,000 - 2,000,000
                                     </a>
                                 </button>
                             </li>
                             <li class="d-none hidden">
                                 <button class="border-0" value="2000000-3000000">
-                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&com.lamnguyen.mat_kinh_kimi.filter-price=2000000-3000000&page=1")%>">
+                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&filter-price=2000000-3000000&page=1")%>">
                                         2,000,000 - 3,000,000
                                     </a>
                                 </button>
                             </li>
                             <li class="d-none hidden">
                                 <button class="border-0" value="3000000-5000000">
-                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&com.lamnguyen.mat_kinh_kimi.filter-price=3000000-5000000&page=1")%>">
+                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&filter-price=3000000-5000000&page=1")%>">
                                         3,000,000 - 5,000,000
                                     </a>
                                 </button>
                             </li>
                             <li class="d-none hidden">
                                 <button class="border-0" value="5000000-10000000">
-                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&com.lamnguyen.mat_kinh_kimi.filter-price=5000000-10000000&page=1")%>">
+                                    <a href="<%=response.encodeURL("product-booth?" + request.getAttribute("request") + "&filter-price=5000000-10000000&page=1")%>">
                                         5,000,000 - 10,000,000
                                     </a>
                                 </button>
@@ -227,7 +224,7 @@
                     </div>
                 </div>
             </section>
-            <!--end com.lamnguyen.mat_kinh_kimi.filter-->
+            <!--end filter-->
 
             <!--phần sort-->
             <section class="collection-wrap-sort">
@@ -579,7 +576,7 @@
         hiddenMenuAccount();
         <%}%>
 
-        $(".com.lamnguyen.mat_kinh_kimi.filter-list").find("button").removeClass("checked");
+        $(".filter-list").find("button").removeClass("checked");
         $(".sort-list").find("button").removeClass("checked");
         <%Map<String, List<String>> mapInfRoot = (Map<String, List<String>>)request.getAttribute("mapInfRoot");
         Map<String, List<String>> mapFilter = (Map<String, List<String>>)request.getAttribute("mapFilter");

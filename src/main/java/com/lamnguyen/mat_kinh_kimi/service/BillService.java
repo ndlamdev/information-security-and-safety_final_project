@@ -70,8 +70,8 @@ public class BillService {
     @Override
     public String toString() {
         return "BillService{" +
-                "products=" + PRODUCT_CART_MAP +
-                '}';
+               "products=" + PRODUCT_CART_MAP +
+               '}';
     }
 
     public Bill getBill() {
@@ -120,12 +120,10 @@ public class BillService {
     public Bill getBill(int billId) {
         Bill bill = BILL_REPOSITORY.getBill(billId);
         if (bill == null) return null;
-        BillStatusService billStatusService = BillStatusService.getInstance();
-        BillDetailService billDetailService = BillDetailService.getInstance();
         String addressDetails = AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) +
-                "</br>" + bill.getAddress();
-        List<BillStatus> billStatuses = billStatusService.getBillStatus(bill.getId());
-        List<BillDetail> billDetails = billDetailService.getBillDetails(bill.getId());
+                                "</br>" + bill.getAddress();
+        List<BillStatus> billStatuses = BILL_STATUS_SERVICE.getBillStatus(billId);
+        List<BillDetail> billDetails = BILL_DETAIL_SERVICE.getBillDetails(billId);
         bill.setAddressDetail(addressDetails);
         bill.setStatuses(billStatuses);
         bill.setDetails(billDetails);
@@ -133,21 +131,18 @@ public class BillService {
     }
 
     public List<ProductCart> getProductInBill(int billId) {
-        Bill bill = BILL_REPOSITORY.getBill(billId);
-        if (bill == null) return null;
+        if (!BILL_REPOSITORY.exists(billId)) throw new NullPointerException();
         List<ProductCart> products = new ArrayList<>();
-        int productId, modelId, quantity;
-        Model model;
 
-        for (BillDetail billDetail : bill.getDetails()) {
-            productId = billDetail.getProductId();
-            modelId = billDetail.getModelId();
-            quantity = billDetail.getQuantity();
+        for (BillDetail billDetail : BILL_DETAIL_SERVICE.getBillDetails(billId)) {
+            var productId = billDetail.getProductId();
+            var modelId = billDetail.getModelId();
+            var quantity = billDetail.getQuantity();
             var productCart = PRODUCT_SERVICE.getProductBill(productId);
             if (productCart == null) {
                 continue;
             }
-            model = MODEL_SERVICE.getModelForCart(modelId);
+            var model = MODEL_SERVICE.getModelForCart(modelId);
             if (model == null) {
                 continue;
             }
@@ -161,12 +156,12 @@ public class BillService {
     }
 
     public boolean updateContact(Bill bill) {
-        return BillRepositoryImpl.getInstance().updateContact(bill);
+        return BILL_REPOSITORY.updateContact(bill);
     }
 
     public List<BillManage> getBillManages(String id, String name, String status, int limit, int offset) {
-        List<BillManage> billManages = BillRepositoryImpl.getInstance().getBillManage(id, name, status, limit, offset);
-        BillStatusService billStatusService = BillStatusService.getInstance();
+        List<BillManage> billManages = BILL_REPOSITORY.getBillManage(id, name, status, limit, offset);
+        BillStatusService billStatusService = BILL_STATUS_SERVICE;
         for (BillManage billManager : billManages) {
             int billId = billManager.getBillId();
             billManager.setDate(billStatusService.getDateOrderBill(billId));
@@ -176,6 +171,6 @@ public class BillService {
     }
 
     public int totalBillManage(String id, String name, String status) {
-        return BillRepositoryImpl.getInstance().totalBillManage(id, name, status);
+        return BILL_REPOSITORY.totalBillManage(id, name, status);
     }
 }

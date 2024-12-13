@@ -40,7 +40,7 @@ function actionFastSee() {
                 const models = data.models;
                 showModalModels(product, models);
             },
-            error: function (xhr, status, error) {
+            error: function () {
                 window.location.replace("error.jsp");
             }
         });
@@ -51,11 +51,11 @@ function actionFastSee() {
 function showModalModels(product, models) {
     let htmlModelImage = ``;
     let htmlOptionModel = ``;
-    for (var i = 0; i < models.length; i++) {
+    for (let i = 0; i < models.length; i++) {
         const model = models[i];
         /*Tạo HTML image*/
         htmlModelImage += `<div class="carousel-item`
-        if (i == 0) {
+        if (i === 0) {
             htmlModelImage += ` active`
         }
         htmlModelImage += `"><img src="${model.urlImage}" class="d-block w-100" alt="${model.name}.png">
@@ -65,7 +65,7 @@ function showModalModels(product, models) {
         htmlOptionModel += `<div class="product-sw-select-item">
                                 <button model-id="${model.id}" type="button" 
                                        class="`
-        if (i == 0) {
+        if (i === 0) {
             htmlOptionModel += `active `
         }
         if (model.quantity > model.totalQuantitySold) {
@@ -89,14 +89,14 @@ function showModalModels(product, models) {
 
 function changeAmount() {
     $("button.minus-quantity").click(function () {
-        var input = $(this).next();
+        let input = $(this).next();
         if (Number(input.val()) > 1) {
             input.val(Number(input.val()) - 1);
         }
     });
 
     $("button.plus-quantity").click(function () {
-        var input = $(this).prev();
+        let input = $(this).prev();
         input.val(Number(input.val()) + 1);
     });
 }
@@ -127,7 +127,7 @@ function addProductCart() {
                 $("#quantity").val(1);
                 $.notify("Thêm sản phẩm thành công!", "success");
             },
-            error: function (){
+            error: function () {
                 $.notify("Sản phẩm đã hết!", "error");
             }
         });
@@ -137,7 +137,7 @@ function addProductCart() {
 function buyNow() {
     $("#buy-now").click(function () {
         const productId = $(this).attr("product-id");
-        const modelId =$("button.model.active").attr("model-id");
+        const modelId = $("button.model.active").attr("model-id");
         const quantity = $("#quantity").val();
         const formBuyNow =
             `<form id="form-buy-now" hidden="" method="POST" action="buy_now">
@@ -162,26 +162,26 @@ function loadBanner() {
         dataType: "json",
         method: "GET",
         success: function (data) {
-            var bannerInner = $("#banner-inner");
-            var bannerIndicators = $("#banner-indicators");
-            for (var i = 0; i < data.banners.length; i++) {
+            let bannerInner = $("#banner-inner");
+            let bannerIndicators = $("#banner-indicators");
+            for (let i = 0; i < data.banners.length; i++) {
                 const url = data.banners[i].urlImage;
-                var aBanner = bannerInner.html() + `<div class="carousel-item w-100">
+                let aBanner = bannerInner.html() + `<div class="carousel-item w-100">
                     <img class="w-100" src="${url}" alt="banner${i}.png">
                 </div>`;
-                var aBannerIndicators = bannerIndicators.html() + `<button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="${i}"
+                let aBannerIndicators = bannerIndicators.html() + `<button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="${i}"
                         aria-current="false" aria-label="Slide ${i + 1}"></button>`;
                 bannerInner.html(aBanner);
                 bannerIndicators.html(aBannerIndicators);
             }
-            var banners = bannerInner.find(".carousel-item");
+            let banners = bannerInner.find(".carousel-item");
             if (banners.length) {
                 banners.first().addClass("active");
                 bannerIndicators.find("button").first().addClass("active");
                 bannerIndicators.find("button").first().attr("aria-current", true);
             }
         },
-        error: function (jqXHR, textStatus, errorThrown) {
+        error: function (jqXHR) {
             console.log(jqXHR.responseText);
         }
     });

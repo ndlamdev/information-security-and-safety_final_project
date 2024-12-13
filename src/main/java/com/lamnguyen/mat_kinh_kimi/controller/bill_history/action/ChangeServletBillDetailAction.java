@@ -1,4 +1,4 @@
-package com.lamnguyen.mat_kinh_kimi.controller.bill_history;
+package com.lamnguyen.mat_kinh_kimi.controller.bill_history.action;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 

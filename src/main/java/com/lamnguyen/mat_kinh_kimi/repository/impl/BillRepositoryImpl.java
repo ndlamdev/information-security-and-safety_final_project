@@ -22,7 +22,7 @@ public class BillRepositoryImpl extends Repository {
         int billId = getNextId();
         connector.withHandle(handle ->
                 handle.createUpdate("INSERT INTO bills(id, userId, userName, email, phoneNumber, codeProvince, codeDistrict, codeWard, address, transportFee, transfer) " +
-                                "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+                                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
                         .bind(0, billId)
                         .bind(1, bill.getUserId())
                         .bind(2, bill.getUserName())
@@ -41,24 +41,27 @@ public class BillRepositoryImpl extends Repository {
     }
 
     public int getNextId() {
-        return connector.withHandle(handle -> handle.createQuery("SELECT MAX(b.id) " +
-                        "FROM bills as b;")
-                .mapTo(Integer.class)
-                .findFirst().orElse(1)
+        return connector.withHandle(handle ->
+                handle.createQuery("SELECT MAX(b.id) FROM bills as b;")
+                        .mapTo(Integer.class)
+                        .findFirst().orElse(1)
         ) + 1;
     }
 
     public boolean bought(int userId, int productId, int modelId) {
-        int count = connector.withHandle(handle -> handle.createQuery("SELECT COUNT(bd.id) " +
-                        "FROM bills AS b " +
-                        "JOIN bill_details AS bd ON bd.billId = b.id " +
-                        "WHERE " +
-                        "b.userId = ? AND bd.productId = ? AND bd.modelId = ?")
-                .bind(0, userId)
-                .bind(1, productId)
-                .bind(2, modelId)
-                .mapTo(Integer.class)
-                .findFirst().orElse(0)
+        int count = connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT COUNT(bd.id)
+                                FROM bills AS b
+                                JOIN bill_details AS bd ON bd.billId = b.id
+                                WHERE
+                                b.userId = ? AND bd.productId = ? AND bd.modelId = ?
+                                """)
+                        .bind(0, userId)
+                        .bind(1, productId)
+                        .bind(2, modelId)
+                        .mapTo(Integer.class)
+                        .findFirst().orElse(0)
         );
 
         return count != 0;
@@ -66,14 +69,16 @@ public class BillRepositoryImpl extends Repository {
 
     public List<Bill> getBillsByUserId(int userId, String status, int offset) {
         return connector.withHandle(handle ->
-                handle.createQuery("SELECT b.id, b.userId, b.userName, b.email, b.transfer " +
-                                "FROM bills AS b " +
-                                "JOIN bill_statuses AS bs ON bs.billId = b.id " +
-                                "WHERE bs.id in (SELECT MAX(bs2.id) FROM bill_statuses AS bs2 WHERE bs2.billId = b.id) " +
-                                "AND bs.`status` LIKE :status " +
-                                "AND b.userId = :userId " +
-                                "ORDER BY b.id ASC " +
-                                "LIMIT 8 OFFSET :offset;")
+                handle.createQuery("""
+                                SELECT b.id, b.userId, b.userName, b.email, b.transfer
+                                FROM bills AS b
+                                JOIN bill_statuses AS bs ON bs.billId = b.id
+                                WHERE bs.id in (SELECT MAX(bs2.id) FROM bill_statuses AS bs2 WHERE bs2.billId = b.id)
+                                AND bs.`status` LIKE :status
+                                AND b.userId = :userId
+                                ORDER BY b.id ASC
+                                LIMIT 8 OFFSET :offset;
+                                """)
                         .bind("status", "%" + status + "%")
                         .bind("userId", userId)
                         .bind("offset", offset)
@@ -83,9 +88,11 @@ public class BillRepositoryImpl extends Repository {
 
     public Bill getBill(int billId) {
         return connector.withHandle(handle ->
-                handle.createQuery("SELECT b.id, b.userId, b.userName, b.email, b.address, b.phoneNumber, b.transfer, b.transportFee, b.codeProvince, b.codeDistrict, b.codeWard " +
-                                "FROM bills AS b " +
-                                "WHERE b.id = :id;")
+                handle.createQuery("""
+                                SELECT b.id, b.userId, b.userName, b.email, b.address, b.phoneNumber, b.transfer, b.transportFee, b.codeProvince, b.codeDistrict, b.codeWard 
+                                FROM bills AS b 
+                                WHERE b.id = :id;
+                                """)
                         .bind("id", billId)
                         .mapToBean(Bill.class)
                         .findFirst().orElse(null));
@@ -93,15 +100,17 @@ public class BillRepositoryImpl extends Repository {
 
     public boolean updateContact(Bill bill) {
         return connector.withHandle(handle ->
-                handle.createUpdate("UPDATE bills SET "
-                                + "userName = :userName, "
-                                + "email = :email, "
-                                + "phoneNumber = :phoneNumber, "
-                                + "address = :address, "
-                                + "codeProvince = :codeProvince, "
-                                + "codeDistrict = :codeDistrict, "
-                                + "codeWard = :codeWard "
-                                + "WHERE id = :billId;"
+                handle.createUpdate("""
+                                UPDATE bills SET
+                                userName = :userName,
+                                email = :email,
+                                phoneNumber = :phoneNumber,
+                                address = :address,
+                                codeProvince = :codeProvince,
+                                codeDistrict = :codeDistrict,
+                                codeWard = :codeWard
+                                WHERE id = :billId;
+                                """
                         )
                         .bind("userName", bill.getUserName())
                         .bind("email", bill.getEmail())
@@ -111,7 +120,7 @@ public class BillRepositoryImpl extends Repository {
                         .bind("codeDistrict", bill.getCodeDistrict())
                         .bind("codeWard", bill.getCodeWard())
                         .bind("billId", bill.getId())
-                        .execute()) == 1 ? true : false;
+                        .execute()) == 1;
     }
 
     private void insertSampleData() {
@@ -190,5 +199,18 @@ public class BillRepositoryImpl extends Repository {
     public static void main(String[] args) {
         BillRepositoryImpl billDAO = new BillRepositoryImpl();
         billDAO.insertSampleData();
+    }
+
+    public boolean exists(int billId) {
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                select b.id
+                                from bills b
+                                where b.id = ?;
+                                """)
+                        .bind(0, billId)
+                        .mapTo(Integer.class)
+                        .findFirst().orElse(-9999)
+        ) != -9999;
     }
 }

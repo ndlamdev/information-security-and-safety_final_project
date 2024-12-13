@@ -15,8 +15,8 @@ public class ProductManagerFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        List<Product> products = (List<Product>) request.getAttribute("products");
-        if(products != null){
+        var products = request.getAttribute("products");
+        if (products != null) {
             chain.doFilter(request, response);
             return;
         }

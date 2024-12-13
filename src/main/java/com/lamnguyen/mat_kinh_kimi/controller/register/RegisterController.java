@@ -17,12 +17,10 @@ public class RegisterController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         String actionStr = request.getParameter("action");
-        Action action = null;
-        switch (actionStr) {
-            case "verify" -> {
-                action = new RegisterVerifyAction();
-            }
-        }
+        Action action = switch (actionStr) {
+            case "verify" -> new RegisterVerifyAction();
+            default -> null;
+        };
         if (action == null) Action.error(request, response);
         else action.action(request, response);
     }
@@ -33,12 +31,10 @@ public class RegisterController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
         String actionStr = request.getParameter("action");
-        Action action = null;
-        switch (actionStr) {
-            case "register" -> {
-                action = new RegisterAction();
-            }
-        }
+        Action action = switch (actionStr) {
+            case "register" -> new RegisterAction();
+            default -> null;
+        };
         if (action == null) Action.error(request, response);
         else action.action(request, response);
     }

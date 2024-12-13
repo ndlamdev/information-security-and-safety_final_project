@@ -11,8 +11,9 @@ public class MoreInfoProductFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         Product product = (Product) request.getAttribute("product");
-        if(product != null){
+        if (product != null) {
             chain.doFilter(request, response);
+            return;
         }
 
         request.getRequestDispatcher("product-booth").forward(request, response);

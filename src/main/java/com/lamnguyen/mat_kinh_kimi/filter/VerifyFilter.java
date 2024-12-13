@@ -20,11 +20,6 @@ public class VerifyFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession session = ((HttpServletRequest) request).getSession();
-        BannerImage logo = (BannerImage) session.getAttribute("logo");
-        if (logo == null) {
-            logo = BannerService.getInstance().getBannerByDescription("%banner%logo%");
-            session.setAttribute("logo", logo);
-        }
 
         BannerImage auth = (BannerImage) ((HttpServletRequest)request).getSession().getAttribute("authBanner");
         if (auth == null) {

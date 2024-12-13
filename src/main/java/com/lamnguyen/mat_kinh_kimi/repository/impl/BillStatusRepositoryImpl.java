@@ -50,35 +50,36 @@ public class BillStatusRepositoryImpl extends Repository {
     }
 
     public List<BillStatus> getBillStatus(int billId) {
-        List<BillStatus> result = connector.withHandle(handle ->
-                handle.createQuery("SELECT bs.status, bs.date, bs.describe, bs.canEdit " +
-                                "FROM bill_statuses bs " +
-                                "WHERE bs.billId = :billId " +
-                                "ORDER BY bs.id;")
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT bs.billId, bs.status, bs.date, bs.describe, bs.canEdit
+                                FROM bill_statuses bs
+                                WHERE bs.billId = :billId
+                                ORDER BY bs.id;
+                                """)
                         .bind("billId", billId)
                         .mapToBean(BillStatus.class).list()
         );
-        return result;
     }
 
     public List<BillStatus> getLastBillStatus(int billId) {
-        List<BillStatus> result = connector.withHandle(handle ->
-                handle.createQuery("SELECT bs.status, bs.date, bs.describe, bs.canEdit " +
-                                "FROM bill_statuses bs " +
-                                "WHERE bs.billId = :billId " +
-                                "AND bs.id = (SELECT MAX(bs2.id) FROM bill_statuses bs2 WHERE bs2.billId = bs.billId);")
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT bs.status, bs.date, bs.describe, bs.canEdit
+                                FROM bill_statuses bs
+                                WHERE bs.billId = :billId
+                                AND bs.id = (SELECT MAX(bs2.id) FROM bill_statuses bs2 WHERE bs2.billId = bs.billId);
+                                """)
                         .bind("billId", billId)
                         .mapToBean(BillStatus.class)
                         .list()
         );
-
-        return result;
     }
 
     public LocalDateTime getDateOrderBill(int billId) {
         String sql = "SELECT bs.date\n" +
-                "FROM bill_statuses AS bs\n" +
-                "WHERE bs.id = (SELECT MIN(id) FROM bill_statuses WHERE bill_statuses.billId = :bsBillId)";
+                     "FROM bill_statuses AS bs\n" +
+                     "WHERE bs.id = (SELECT MIN(id) FROM bill_statuses WHERE bill_statuses.billId = :bsBillId)";
 
         return connector.withHandle(handle ->
                 handle.createQuery(sql)

@@ -58,7 +58,8 @@
                                     aria-label="Slide <%=i%>"
                                     style="height: 120px; width: 120px">
                                 <img src="<%=productImages.get(i).getUrlImage()%>"
-                                     class="d-block w-100" alt="<%=product.getName()%>.png">
+                                     class="d-block" alt="<%=product.getName()%>.png"
+                                     style="height: 120px; width: 120px">
                             </button>
                         </li>
                         <%}%>
@@ -70,7 +71,7 @@
                     <%for (int i = 0; i < productImages.size(); i++) {%>
                     <div class="carousel-item <%=i==0 ? "active" : ""%>">
                         <img src="<%=productImages.get(i).getUrlImage()%>"
-                             class="d-block w-100" alt="<%=product.getName()%>.png">
+                             class="d-block w-100 h-100" alt="<%=product.getName()%>.png">
                     </div>
                     <%}%>
                 </div>

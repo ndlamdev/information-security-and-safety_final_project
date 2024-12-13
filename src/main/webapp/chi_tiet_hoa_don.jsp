@@ -3,7 +3,6 @@
 <%@ page import="java.text.NumberFormat" %>
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
-<%@ page import="com.lamnguyen.mat_kinh_kimi.model.bean.*" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
@@ -82,9 +81,9 @@
 
                     <div class="list-item">
                         <%
-                            Model model = null;
-                            ProductCart product = null;
-                            BillDetail billDetail = null;
+                            Model model;
+                            ProductCart product;
+                            BillDetail billDetail;
                             for (int i = 0; i < products.size(); i++) {
                                 product = products.get(i);
                                 billDetail = billDetails.get(i);
