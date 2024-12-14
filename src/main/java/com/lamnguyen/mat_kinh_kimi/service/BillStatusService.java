@@ -37,4 +37,10 @@ public class BillStatusService {
     public LocalDateTime getDateOrderBill(Integer id) {
         return BILL_STATUS_REPOSITORY.getDateOrderBill(id);
     }
+
+    public void revert(int billId) {
+        var id = BILL_STATUS_REPOSITORY.isCancel(billId);
+        if (id == -999) throw new NullPointerException();
+        BILL_STATUS_REPOSITORY.remove(id);
+    }
 }

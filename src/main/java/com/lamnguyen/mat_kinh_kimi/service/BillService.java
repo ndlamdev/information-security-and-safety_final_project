@@ -3,6 +3,7 @@ package com.lamnguyen.mat_kinh_kimi.service;
 import com.lamnguyen.mat_kinh_kimi.model.*;
 import com.lamnguyen.mat_kinh_kimi.repository.impl.BillRepositoryImpl;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillManage;
+import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 import org.json.JSONObject;
 
 import java.text.NumberFormat;
@@ -92,7 +93,7 @@ public class BillService {
             id = BILL_REPOSITORY.insert(bill);
             BILL_DETAIL_SERVICE.insert(id, bill.getDetails());
             bill.setId(id);
-            BillStatus status = new BillStatus(id, "Chờ xác nhận", "Đã xác nhận đơn hàng của bạn", true);
+            BillStatus status = new BillStatus(id, BillStatusEnum.WAIL_CONFiRM.getStatus(), "Đã xác nhận đơn hàng của bạn", true);
             bill.addStatus(status);
             BILL_STATUS_SERVICE.insert(status);
         }

@@ -1,5 +1,7 @@
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.User" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
+<%@ page import="java.util.List" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <% BannerImage logo = (BannerImage) session.getAttribute("logo");%>
 <!DOCTYPE html>
@@ -54,16 +56,17 @@
                     <label for="status"></label>
                     <select name="status" id="status" class="ps-1 py-2 rounded w-50 select-search">
                         <option value="">Tất cả</option>
-                        <option value="Chờ xác nhận">Chờ xác nhận</option>
-                        <option value="Vận chuyển">Vận chuyển</option>
-                        <option value="Thành công">Thành công</option>
-                        <option value="Đã hủy">Đã hủy</option>
+                        <%for (BillStatusEnum.BillStatusJson status : (List<BillStatusEnum.BillStatusJson>) request.getAttribute("statuses")) {%>
+                        <option value="<%=status.getStatus()%>">
+                            <%=status.getStatus()%>
+                        </option>
+                        <%}%>
                     </select>
                 </div>
             </div>
         </div>
         <div class="show-list-bill p-0">
-            <!--            tên cột-->
+            <!-- tên cột -->
             <div class="name-col row  align-items-center ps-4">
                 <div class="col-2">Mã hóa đơn</div>
                 <div class="col-2">Thời gian đặt</div>
@@ -72,7 +75,7 @@
                 <div class="col-2">Hình thức thanh toán</div>
                 <div class="col-1 emty"></div>
             </div>
-            <!--            hiện thị danh sách sản phẩm-->
+            <!-- hiện thị danh sách sản phẩm-->
             <div class="list-bill" id="display-bills">
                 <!-- bắt đầu một hàng hiện thị sản phẩm-->
                 <div class="item-bill row  align-items-center py-md-3 ps-4" value="Nguyễn Đình A">

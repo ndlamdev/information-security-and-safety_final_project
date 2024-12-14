@@ -65,9 +65,9 @@ function cancelBill() {
             data: dataSend,
             dataType: "json",
             method: "POST",
-            success: function (data) {
+            success: function () {
                 $.notify("Hủy đơn hàng thành công!", "success");
-                $("#button-show-dialog-cancel-bill").remove();
+                $(".button-show-dialog-cancel-bill").remove();
                 $("#edit").remove();
             },
             error: function (e, x, h){

@@ -327,11 +327,10 @@ function linkMenuDisplayProduct() {
 }
 
 function formatData(dateString) {
-
-// Chuyển đổi thành đối tượng Date
+    // Chuyển đổi thành đối tượng Date
     const date = new Date(dateString);
 
-// Lấy thông tin ngày, tháng, năm, giờ, phút, giây
+    // Lấy thông tin ngày, tháng, năm, giờ, phút, giây
     const day = date.getDate();
     const month = date.getMonth() + 1; // Tháng bắt đầu từ 0, nên cộng thêm 1
     const year = date.getFullYear();
@@ -411,7 +410,5 @@ function search() {
             }
         });
     }, 300));
-
-
 }
 
