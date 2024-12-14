@@ -5,11 +5,13 @@ import com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action.CancelBillActio
 import com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action.SaveEditBillAction;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.GetBillAction;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.GetBillDetailAction;
+import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.RevertBillAction;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.net.NoRouteToHostException;
 
 @WebServlet(name = "BillManager", value = "/admin_pages/bill_manager")
 public class BillManagerController extends HttpServlet {
@@ -18,11 +20,12 @@ public class BillManagerController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String actionStr = request.getParameter("action");
-        Action action = null;
-        switch (actionStr) {
-            case "get" -> action = new GetBillAction();
-            case "see-detail" -> action = new GetBillDetailAction();
-        }
+        Action action = switch (actionStr) {
+            case "get" -> new GetBillAction();
+            case "see-detail" -> new GetBillDetailAction();
+            default -> throw new NoRouteToHostException();
+        };
+
 
         action.action(request, response);
     }
@@ -32,15 +35,12 @@ public class BillManagerController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
         String actionString = request.getParameter("action");
-        Action action = null;
-        switch (actionString){
-            case "save" -> {
-                action = new SaveEditBillAction();
-            }
-            case "cancel-bill" -> {
-                action = new CancelBillAction();
-            }
-        }
+        Action action = switch (actionString) {
+            case "save" -> new SaveEditBillAction();
+            case "cancel-bill" -> new CancelBillAction();
+            case "revert-bill" -> new RevertBillAction();
+            default -> throw new NoRouteToHostException();
+        };
 
         action.action(request, response);
     }

@@ -77,9 +77,11 @@ public class BillStatusRepositoryImpl extends Repository {
     }
 
     public LocalDateTime getDateOrderBill(int billId) {
-        String sql = "SELECT bs.date\n" +
-                     "FROM bill_statuses AS bs\n" +
-                     "WHERE bs.id = (SELECT MIN(id) FROM bill_statuses WHERE bill_statuses.billId = :bsBillId)";
+        String sql = """
+                SELECT bs.date
+                FROM bill_statuses AS bs
+                WHERE bs.id = (SELECT MIN(id) FROM bill_statuses WHERE bill_statuses.billId = :bsBillId);
+                """;
 
         return connector.withHandle(handle ->
                 handle.createQuery(sql)
@@ -111,5 +113,30 @@ public class BillStatusRepositoryImpl extends Repository {
                             .bind(5, 1)
                             .execute());
         }
+    }
+
+    public int isCancel(int billId) {
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                    SELECT bs.id
+                                    FROM bill_statuses bs
+                                    WHERE bs.billId = :billId
+                                    AND bs.status = 'Đã hủy'
+                                """)
+                        .bind("billId", billId)
+                        .mapTo(Integer.class)
+                        .findFirst().orElse(-999)
+        );
+    }
+
+    public void remove(int id) {
+        connector.withHandle(handle ->
+                handle.createUpdate("""
+                                    DELETE FROM bill_statuses bs
+                                    WHERE bs.id = :id;
+                                """)
+                        .bind("id", id)
+                        .execute()
+        );
     }
 }

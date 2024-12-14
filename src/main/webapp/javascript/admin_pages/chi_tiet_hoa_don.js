@@ -8,11 +8,15 @@ $(document).ready(function () {
 
     cancelBill();
 
+    revertBill();
+
     $(".user-back").click(function () {
         window.history.back();
     });
 
     loadProvinces();
+
+    updateStatus();
 });
 
 function saveEdit() {
@@ -45,7 +49,7 @@ function saveEdit() {
                 $("#address").attr("ward-code", dataSend["ward-code"]);
                 $.notify("Thay đổi địa chỉ giao hàng thành công!", "success");
             },
-            error: function (e, x, h){
+            error: function (e, x, h) {
                 console.error(e.responseText);
                 console.error(x);
                 console.error(h);
@@ -68,10 +72,22 @@ function cancelBill() {
             dataType: "json",
             method: "POST",
             success: function (data) {
+                $("#current-status").text(data.status)
                 $.notify("Hủy đơn hàng thành công!", "success");
-                $("#button-show-dialog-cancel-bill").remove();
+                $("#bill-action").html(`
+                 <div class="in4-right revert-bill">
+                    <button type="button" data-bs-toggle="modal"
+                            class="bg-success"
+                            data-bs-target="#confirm-revert-bill">
+                        <i class="fa-solid fa-clock-rotate-left button-show-dialog-cancel-bill"></i>
+                        <span> Khôi phục đơn hàng</span>
+                    </button>
+                </div>
+                `)
+                renderStatus(data)
+                $("#update-status").addClass("d-none")
             },
-            error: function (e, x, h){
+            error: function (e, x, h) {
                 console.error(e.responseText);
                 console.error(x);
                 console.error(h);
@@ -79,6 +95,68 @@ function cancelBill() {
             }
         });
     });
+}
+
+function revertBill() {
+    $("#revert-bill").click(function () {
+        const dataSend = {
+            "action": "revert-bill",
+            "bill-id": $(this).attr("bill-id"),
+        };
+        $.ajax({
+            url: "bill_manager",
+            data: dataSend,
+            dataType: "json",
+            method: "POST",
+            success: function (data) {
+                $.notify("Khôi phục đơn hàng thành công!", "success");
+                $(".show-list-trip .trip").last().remove()
+                $("#bill-action").html(`
+                 <div class="in4-right cancel-bill">
+                    <button type="button" data-bs-toggle="modal"
+                            data-bs-target="#confirm-cancel-bill">
+                        <i class="fa-solid fa-trash button-show-dialog-cancel-bill"></i> 
+                        <span> Hủy đơn hàng</span>
+                    </button>
+                </div>
+                `)
+                $("#current-status").text(data['current-status'])
+                $("#update-status").removeClass("d-none")
+                console.log(data.status)
+            },
+            error: function (e, x, h) {
+                console.error(e.responseText);
+                console.error(x);
+                console.error(h);
+                $.notify("Khôi phục đơn hàng không thành công!", "error");
+            }
+        });
+    });
+}
+
+function renderStatus(status) {
+    $(".show-list-trip").append(`
+                        <div class="trip d-flex justify-content-between">
+                            <div class="in4-trip">
+                                <div class="icon-trip d-flex justify-content-between">
+                                    <span><i class="fa-solid fa-circle"></i></span>
+                                    <div class="has-one-line px-2">
+                                        <p>
+                                            ${status.status}
+                                        </p>
+                                        <p>
+                                            ${status.describe}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="time-trip">
+                                <span>
+                                    ${formatData(status.date)}
+                                </span>
+                            </div>
+                        </div>
+    `)
 }
 
 function displayFormEditContactCustomer() {
@@ -91,7 +169,7 @@ function displayFormEditContactCustomer() {
     $("#input-address").val($("#address").attr("address"));
 }
 
-function loadProvinces(){
+function loadProvinces() {
     $.ajax({
         url: "../address",
         method: "GET",
@@ -134,7 +212,7 @@ function displayDistricts() {
                     htmlOption += `selected="selected"`;
                 }
                 htmlOption += `value="${data.districts[i].code}">${data.districts[i].fullName}</option>`;
-                $("#districts").html( $("#districts").html() + htmlOption);
+                $("#districts").html($("#districts").html() + htmlOption);
             }
         },
     });
@@ -163,6 +241,13 @@ function displayWards() {
             }
         }
     });
+}
+
+function updateStatus() {
+    $("#update-status").click(function (e) {
+        const status = $(this).data("status")
+        console.log(status)
+    })
 }
 
 

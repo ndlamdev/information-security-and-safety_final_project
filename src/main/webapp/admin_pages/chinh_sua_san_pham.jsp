@@ -312,6 +312,7 @@
     });
 </script>
 <%}%>
+<script src="../javascript/admin_pages/admin_page.js"></script>
 <script src="../javascript/admin_pages/chinh_sua_san_pham.js"></script>
 <script type="text/javascript">
     <%User user = (User) session.getAttribute("user");

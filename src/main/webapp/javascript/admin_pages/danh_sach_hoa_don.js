@@ -3,7 +3,6 @@ $(document).ready(function () {
     loadBill(1);
 
     $(".input-search").click(function () {
-        console.log("running");
         loadBill(1);
     });
     $(".select-search").change(function () {

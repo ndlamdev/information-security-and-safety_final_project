@@ -89,8 +89,20 @@ public class BillRepositoryImpl extends Repository {
     public Bill getBill(int billId) {
         return connector.withHandle(handle ->
                 handle.createQuery("""
-                                SELECT b.id, b.userId, b.userName, b.email, b.address, b.phoneNumber, b.transfer, b.transportFee, b.codeProvince, b.codeDistrict, b.codeWard 
-                                FROM bills AS b 
+                                SELECT b.id,
+                                       b.userId,
+                                       b.userName,
+                                       b.email,
+                                       b.address,
+                                       b.phoneNumber,
+                                       b.transfer,
+                                       b.transportFee,
+                                       b.codeProvince,
+                                       b.codeDistrict,
+                                       b.codeWard,
+                                       b.signature,
+                                       b.dateTimeSign
+                                FROM bills AS b
                                 WHERE b.id = :id;
                                 """)
                         .bind("id", billId)

@@ -4,6 +4,7 @@
 <%@ page import="java.util.Locale" %>
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.*" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -47,23 +48,37 @@
 %>
 <main id="main" class="mt-5 pb-5">
     <div class="container p-2">
-        <!--        top-->
+        <!--top-->
         <div class="in4-bill-top d-flex justify-content-between">
             <div class="in4-left">
                 <div class="id-bill-and-in4-ship d-flex align-items-center justify-content-around">
                     <div class="id-bill"><p>
-                        <h3 class="fw-bold">Hóa đơn: <span class="bill-id">#<%=bill.getId()%></span></h3></div>
-                    <div class="in4-ship px-3 mx-5"><span><%=lastStatus.getStatus()%></span></div>
+                        <h3 class="fw-bold">
+                            <span>Hóa đơn: </span>
+                            <span class="bill-id">#<%=bill.getId()%></span>
+                        </h3></div>
+                    <div class="in4-ship px-3 mx-5"><span id="current-status"><%=lastStatus.getStatus()%></span></div>
                 </div>
                 <div class="time-order py-2"><p><span><%=dateFormat.format(lastStatus.getDate())%></span></p></div>
             </div>
-            <%if (!lastStatus.getStatus().equals("Đã hủy")) {%>
-            <div class="in4-right ">
-                <button type="button" id="button-show-dialog-cancel-bill" data-bs-toggle="modal"
-                        data-bs-target="#accept-cancel"><i class="fa-solid fa-trash"></i> Hủy đơn hàng
-                </button>
+            <div id="bill-action">
+                <%if (!lastStatus.getStatus().equals("Đã hủy")) {%>
+                <div class="in4-right cancel-bill">
+                    <button type="button" data-bs-toggle="modal"
+                            data-bs-target="#confirm-cancel-bill">
+                        <i class="fa-solid fa-trash button-show-dialog-cancel-bill"></i> Hủy đơn hàng
+                    </button>
+                </div>
+                <%} else if (lastStatus.getStatus().equals("Đã hủy")) {%>
+                <div class="in4-right revert-bill">
+                    <button type="button" data-bs-toggle="modal"
+                            class="bg-success"
+                            data-bs-target="#confirm-revert-bill">
+                        <i class="fa-solid fa-clock-rotate-left button-show-dialog-cancel-bill"></i> Khôi phục đơn hàng
+                    </button>
+                </div>
+                <%}%>
             </div>
-            <%}%>
         </div>
 
         <!--sản phẩm và thông tin khác hàng-->
@@ -81,9 +96,9 @@
 
                     <div class="list-item">
                         <%
-                            Model model = null;
-                            ProductCart product = null;
-                            BillDetail billDetail = null;
+                            Model model;
+                            ProductCart product;
+                            BillDetail billDetail;
                             for (int i = 0; i < products.size(); i++) {
                                 product = products.get(i);
                                 billDetail = billDetails.get(i);
@@ -137,9 +152,20 @@
 
                 <!--lộ trình vận chuyển-->
                 <div class="trip-ship mt-4">
-                    <div class="row mx-0 header-trip-ship">
-                        <div class="col-12 ps-4 py-3">
+                    <div class="row mx-0 header-trip-ship py-3 px-4">
+                        <div class="col-8 d-flex align-items-center">
                             <h4>Lộ trình vận chuyển hàng</h4>
+                        </div>
+                        <div class="col-4 d-flex justify-content-end">
+                            <button class="py-1 px-2 border-0 rounded-2 text-white bg-success <%=lastStatus.getStatus().equals("Đã hủy") ? "d-none" : ""%>"
+                            <%-- id="update-status"--%>
+                            <%-- data-status="<%=((BillStatusEnum.BillStatusJson)request.getAttribute("status")).getName()%>"--%>
+                                    data-bs-target="#model-verify-bill"
+                                    data-bs-toggle="modal"
+                            >
+                                <i class="fa-solid fa-pen"></i>
+                                <span>Cập nhật trạng thái</span>
+                            </button>
                         </div>
                     </div>
                     <div class="show-list-trip body-trip-ship p-3">
@@ -228,7 +254,7 @@
 
     <section>
         <!-- Modal edit contact-->
-        <div class="modal fade" id="editAddressModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="editAddressModal" tabindex="-1"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -298,9 +324,8 @@
             </div>
         </div>
 
-
-        <!-- Modal accept-->
-        <div class="modal fade" id="accept-cancel" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <!-- Modal confirm cancel bill-->
+        <div class="modal fade" id="confirm-cancel-bill" tabindex="-1"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -311,14 +336,71 @@
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Bạn có chắc chắn hủy đơn hàng này không!</p>
+                        <p>Bạn có chắc chắn muốn hủy đơn hàng này không!</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Hủy
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Hủy
                         </button>
                         <button id="cancel-bill" bill-id="<%=bill.getId()%>" type="button" class="btn"
                                 data-bs-dismiss="modal"
-                                style="background-color: var(--color-blue-origin); color: #FFFFFF">OK
+                                style="background-color: var(--color-blue-origin); color: #FFFFFF">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal confirm revert bill-->
+        <div class="modal fade" id="confirm-revert-bill" tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <img src="../images/icon/warning.png" class="me-1" style="width: 25px">
+                        <h1 class="modal-title fs-5">Thông báo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Bạn có chắc chắn muốn khôi phục đơn hàng này không!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Hủy
+                        </button>
+                        <button id="revert-bill" bill-id="<%=bill.getId()%>" type="button" class="btn"
+                                data-bs-dismiss="modal"
+                                style="background-color: var(--color-blue-origin); color: #FFFFFF">
+                            OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal confirm revert bill-->
+        <div class="modal fade" id="model-verify-bill" tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i class="fa-solid fa-circle-exclamation me-1 text-warning fs-3"></i>
+                        <h1 class="modal-title fs-5">Thông báo</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Xác thực chữ ký đơn hàng!</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Hủy
+                        </button>
+                        <button id="verify-bill" bill-id="<%=bill.getId()%>" type="button" class="btn"
+                                style="background-color: var(--color-blue-origin); color: #FFFFFF">
+                            Xác nhận
                         </button>
                     </div>
                 </div>
@@ -330,12 +412,13 @@
 <jsp:include page="footer.jsp"/>
 
 <script src="../javascript/menu_footer.js"></script>
+<script src="../javascript/admin_pages/admin_page.js"></script>
 <script src="../javascript/admin_pages/chi_tiet_hoa_don.js"></script>
 <script type="text/javascript">
     <%if(user != null){%>
     const user = new User();
     user.setId(<%=user.getId()%>);
-    user.setAvatar("<%=user.getAvatar()%>");
+    user.setAvatar("../<%=user.getAvatar()%>");
     user.setFullName("<%=user.getFullName()%>");
     displayMenuAccount(user);
     <%} else{%>

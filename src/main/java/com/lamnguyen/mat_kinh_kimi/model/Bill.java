@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,11 +15,12 @@ import java.util.List;
 @EqualsAndHashCode
 public class Bill {
     private Integer id, userId, codeProvince, codeDistrict, codeWard;
-    private String userName, phoneNumber, address, email;
+    private String userName, phoneNumber, address, email, signature;
     private Boolean transfer;
     private Double transportFee;
     private List<BillStatus> statuses;
     private List<BillDetail> details;
+    private LocalDateTime dateTimeSign;
 
     private String addressDetail;
 

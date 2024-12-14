@@ -4,6 +4,7 @@ import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.model.*;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.UserService;
+import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +13,7 @@ import java.io.IOException;
 
 public class GetBillDetailAction implements Action {
     BillService billService = BillService.getInstance();
-    
+
     @Override
     public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int billId = 0;
@@ -35,6 +36,7 @@ public class GetBillDetailAction implements Action {
         request.setAttribute("customer", customer);
         request.setAttribute("bill", bill);
         request.setAttribute("products", products);
+        request.setAttribute("status", BillStatusEnum.findEnumByStatus(bill.getStatuses().getLast().getStatus()).nextStep());
         request.getRequestDispatcher("chi_tiet_hoa_don.jsp").forward(request, response);
     }
 }

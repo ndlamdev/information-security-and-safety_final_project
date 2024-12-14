@@ -10,6 +10,6 @@ import java.io.IOException;
 public class UpdateBillAction implements Action {
     @Override
     public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        
     }
 }

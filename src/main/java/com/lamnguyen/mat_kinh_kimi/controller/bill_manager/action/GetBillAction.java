@@ -3,12 +3,14 @@ package com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action;
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillManage;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
+import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class GetBillAction implements Action {
@@ -34,7 +36,7 @@ public class GetBillAction implements Action {
         json.put("bills", billManages);
         json.put("pages", totalPages);
         json.put("total", totalBill);
-        response.getWriter().println(json.toString());
+        response.getWriter().println(json);
     }
 
     public String getLastParameterValue(HttpServletRequest request, String name) {

@@ -1,7 +1,6 @@
-package com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action;
+package com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
-import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 import org.json.JSONObject;
@@ -10,9 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
-public class CancelBillAction implements Action {
+public class RevertBillAction implements Action {
     @Override
     public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         BillStatusService billStatusService = BillStatusService.getInstance();
@@ -26,14 +24,11 @@ public class CancelBillAction implements Action {
             return;
         }
 
-        BillStatus billStatus = new BillStatus();
-        billStatus.setBillId(billId);
-        billStatus.setDate(LocalDateTime.now());
-        billStatus.setStatus(BillStatusEnum.CANCEL.getStatus());
-        billStatus.setDescribe("Hủy bỏ đơn hàng");
-        billStatus.setCanEdit(false);
-        billStatusService.insert(billStatus);
-
-        response.getWriter().println(new JSONObject(billStatus));
+        billStatusService.revert(billId);
+        var lastStatus = billStatusService.getLastStatus(billId).getFirst().getStatus();
+        var result = new JSONObject();
+        result.put("status", BillStatusEnum.findEnumByStatus(lastStatus).listAfterThisStep());
+        result.put("current-status", lastStatus);
+        response.getWriter().println(result);
     }
 }
