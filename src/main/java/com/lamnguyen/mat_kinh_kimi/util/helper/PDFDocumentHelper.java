@@ -5,9 +5,12 @@ import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.pdf.PdfAnnotationBorder;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
+import com.itextpdf.layout.borders.Border;
+import com.itextpdf.layout.borders.Border3D;
 import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
@@ -21,23 +24,25 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.NumberFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 public class PDFDocumentHelper {
-    public static void createBillFile(BillDTO billDTO, HttpServletResponse resp) throws IOException {
+    public static void createBillFile(BillDTO billDTO, HttpServletResponse resp, String desFile) throws IOException {
         System.out.println("Creating PDF");
         Document document = null;
         try {
             // Create PDF writer and document
-            String path = "/home/lamhongphong/Downloads/file.pdf";
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             URL resource = classLoader.getResource("DejaVuSans.ttf");
-            String fontPath = "path/to/DejaVuSans.ttf"; // Replace with your font path
             if (resource == null) resp.sendRedirect("error.jsp");
             PdfFont font = null;
             if (resource != null) {
                 font = PdfFontFactory.createFont(new File(resource.getFile()).getAbsolutePath(), "Identity-H");
             }
-            PdfWriter writer = new PdfWriter(path);
+            PdfWriter writer = new PdfWriter(desFile);
             PdfDocument pdfDoc = new PdfDocument(writer);
             document = new Document(pdfDoc, PageSize.A4, true);
             document.setFont(font);
@@ -48,15 +53,12 @@ public class PDFDocumentHelper {
                     .setMinWidth(PageSize.A5.getWidth())
                     .setTextAlignment(TextAlignment.CENTER);
             document.add(title);
-            System.out.println(title.getHeight() + " " + title.getWidth());
-            System.out.println("width A4" + PageSize.A4.getWidth());
-            System.out.println("width A5" + PageSize.A5.getWidth());
 
             // Add Date and Order Number fields
             Table dateTable = new Table(new float[]{1, 1});
             dateTable.setWidth(PageSize.A5.getWidth());
             dateTable.addCell(createValueCell("Ngày"));
-            dateTable.addCell(createValueCell(billDTO.getDate().toString()).setBorder(null));
+            dateTable.addCell(createValueCell(dateTimeVietnamese(billDTO.getDate())));
             dateTable.addCell(createValueCell("Mã Đơn Hàng"));
             dateTable.addCell(createValueCell("____________________"));
             document.add(dateTable);
@@ -74,6 +76,8 @@ public class PDFDocumentHelper {
             customerTable.addCell(createValueCell(billDTO.getPhone()));
             customerTable.addCell(createLabelCell("E-MAIL"));
             customerTable.addCell(createValueCell(billDTO.getEmail()));
+            customerTable.addCell(createLabelCell("THANH TOÁN"));
+            customerTable.addCell(createValueCell(billDTO.getPayment()));
             document.add(customerTable);
 
             document.add(new Paragraph("\n")); // Spacer
@@ -92,22 +96,22 @@ public class PDFDocumentHelper {
             int freeShip = 20000;
             // Add empty rows
             for (int i = 0; i < billDTO.getProducts().size(); i++) {
+                var product = billDTO.getProducts().get(i);
                 itemsTable.addCell(createValueCell(String.valueOf(i + 1)));
-                itemsTable.addCell(createValueCell(billDTO.getProducts().get(i).getName()));
-                itemsTable.addCell(createValueCell(billDTO.getProducts().get(i).getModel().getName()));
-                itemsTable.addCell(createValueCell(String.valueOf(billDTO.getProducts().get(i).getPrice())));
-                itemsTable.addCell(createValueCell(String.valueOf(billDTO.getProducts().get(i).getQuantity())));
-                itemsTable.addCell(createValueCell(String.valueOf(billDTO.getProducts().get(i).getPrice() * billDTO.getProducts().get(i).getQuantity())));
-                total += billDTO.getProducts().get(i).totalPrice();
-                System.out.println(i);
+                itemsTable.addCell(createValueCell(product.getName()));
+                itemsTable.addCell(createValueCell(product.getModel().getName()));
+                itemsTable.addCell(createValueCell(currentVietnamese(product.hasDiscount()? product.getDiscount() : product.getPrice())));
+                itemsTable.addCell(createValueCell(String.valueOf(product.getQuantity())));
+                itemsTable.addCell(createValueCell(currentVietnamese(product.totalPrice())));
+                total += product.totalPrice();
             }
 
             // Add FeeShip row
-            itemsTable.addCell(new Cell(8, 2).add(new Paragraph("Phí Ship").setBold()).setTextAlignment(TextAlignment.RIGHT));
-            itemsTable.addCell(new Cell().add(new Paragraph(freeShip + " VND")));
+            itemsTable.addCell(new Cell(8, 2).add(new Paragraph("Phí Ship").setBold()).setTextAlignment(TextAlignment.CENTER));
+            itemsTable.addCell(new Cell().add(new Paragraph(currentVietnamese(freeShip))));
             // Add Total row
-            itemsTable.addCell(new Cell(8, 2).add(new Paragraph("Tổng").setBold()).setTextAlignment(TextAlignment.RIGHT));
-            itemsTable.addCell(new Cell().add(new Paragraph((total + freeShip) + " VND")));
+            itemsTable.addCell(new Cell(8, 2).add(new Paragraph("Tổng").setBold()).setTextAlignment(TextAlignment.CENTER));
+            itemsTable.addCell(new Cell().add(new Paragraph(currentVietnamese(total + freeShip))));
 
             document.add(itemsTable);
 
@@ -137,16 +141,29 @@ public class PDFDocumentHelper {
 
     // Helper method to create label cells
     private static Cell createLabelCell(String text) {
-        return new Cell().add(new Paragraph(text).setBold()).setBorder(null).setPadding(5);
+//        return new Cell().add(new Paragraph(text).setBold()).setBorder(null).setPadding(5);
+        return new Cell().add(new Paragraph(text).setBold()).setPadding(5);
     }
 
     // Helper method to create value cells
     private static Cell createValueCell(String text) {
-        return new Cell().add(new Paragraph(text)).setBorder(null).setPadding(5);
+//        return new Cell().add(new Paragraph(text)).setBorder(null).setPadding(5);
+        return new Cell().add(new Paragraph(text)).setPadding(5);
     }
 
     // Helper method to create empty cells for the items table
     private static Cell createEmptyCell() {
         return new Cell().add(new Paragraph("")).setHeight(20).setPadding(5);
+    }
+    public static String currentVietnamese(double amount) {
+        Locale localeVN = Locale.of("vi", "VN");
+        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
+        return currencyVN.format(amount);
+    }
+
+    public static String dateTimeVietnamese(LocalDateTime dateTime){
+        Locale vietnameseLocale = Locale.forLanguageTag("vi");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", vietnameseLocale);
+        return dateTime.format(formatter);
     }
 }

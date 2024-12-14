@@ -125,7 +125,6 @@ public class BillController extends HttpServlet implements Action {
             response.sendRedirect("gio_hang.jsp");
             return;
         }
-        System.out.println("run");
         Bill bill = billService.getBill();
         bill.setUserId(user.getId());
         bill.setUserName(userName);
@@ -139,12 +138,15 @@ public class BillController extends HttpServlet implements Action {
         bill.setTransfer(transfer);
         if (billService.saveBill(bill)) {
             CartService cart = (CartService) session.getAttribute("cart");
+            BillDTO billDTO = new BillDTO(userName, email, phoneNumber,
+                    fullAddress,
+                    transfer ? "Chuyển khoản" : "Tiền mặt", "", LocalDateTime.now(), cart.getAllProductCart());
+            String desFile = "/home/lamhongphong/Downloads/file.pdf";
+            PDFDocumentHelper.createBillFile(billDTO, response, desFile);
             cart.bought(bill);
             session.setAttribute("bill", new BillService());
             session.setAttribute("cart", cart);
             session.setAttribute("billPayed", bill);
-            BillDTO billDTO = new BillDTO(userName, email, phoneNumber, fullAddress,"", LocalDateTime.now(), cart.getAllProductCart());
-            PDFDocumentHelper.createBillFile(billDTO, response);
             response.sendRedirect("thanh_toan_thanh_cong.jsp");
         } else {
             title = "Thanh toán không thành công";

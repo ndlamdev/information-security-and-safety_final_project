@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class BillDTO  implements Serializable {
-    private String name, email, phone, address, note;
+    private String name, email, phone, address, payment, note;
     private LocalDateTime date;
     private List<ProductCart> products;
 }
