@@ -1,15 +1,18 @@
 package com.lamnguyen.mat_kinh_kimi.controller.bill;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
+import com.lamnguyen.mat_kinh_kimi.domain.dto.BillDTO;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.CartService;
+import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 @WebServlet(name = "BillController", value = "/bill")
 public class BillController extends HttpServlet implements Action {
@@ -26,6 +29,11 @@ public class BillController extends HttpServlet implements Action {
     public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
+
+        // Set response content type
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment;");
+
         HttpSession session = request.getSession();
         int codeProvince = 0,
                 codeDistrict,
@@ -117,7 +125,7 @@ public class BillController extends HttpServlet implements Action {
             response.sendRedirect("gio_hang.jsp");
             return;
         }
-
+        System.out.println("run");
         Bill bill = billService.getBill();
         bill.setUserId(user.getId());
         bill.setUserName(userName);
@@ -135,6 +143,8 @@ public class BillController extends HttpServlet implements Action {
             session.setAttribute("bill", new BillService());
             session.setAttribute("cart", cart);
             session.setAttribute("billPayed", bill);
+            BillDTO billDTO = new BillDTO(userName, email, phoneNumber, fullAddress,"", LocalDateTime.now(), cart.getAllProductCart());
+            PDFDocumentHelper.createBillFile(billDTO, response);
             response.sendRedirect("thanh_toan_thanh_cong.jsp");
         } else {
             title = "Thanh toán không thành công";
