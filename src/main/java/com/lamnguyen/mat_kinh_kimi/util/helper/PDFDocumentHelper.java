@@ -31,7 +31,6 @@ import java.util.Locale;
 
 public class PDFDocumentHelper {
     public static void createBillFile(BillDTO billDTO, HttpServletResponse resp, String desFile) throws IOException {
-        System.out.println("Creating PDF");
         Document document = null;
         try {
             // Create PDF writer and document
@@ -123,7 +122,6 @@ public class PDFDocumentHelper {
             document.add(new Paragraph("____________________________________________________________"));
             document.add(new Paragraph("____________________________________________________________"));
 
-            System.out.println("PDF generated successfully");
         } catch (Exception e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating PDF");
@@ -141,13 +139,11 @@ public class PDFDocumentHelper {
 
     // Helper method to create label cells
     private static Cell createLabelCell(String text) {
-//        return new Cell().add(new Paragraph(text).setBold()).setBorder(null).setPadding(5);
         return new Cell().add(new Paragraph(text).setBold()).setPadding(5);
     }
 
     // Helper method to create value cells
     private static Cell createValueCell(String text) {
-//        return new Cell().add(new Paragraph(text)).setBorder(null).setPadding(5);
         return new Cell().add(new Paragraph(text)).setPadding(5);
     }
 
