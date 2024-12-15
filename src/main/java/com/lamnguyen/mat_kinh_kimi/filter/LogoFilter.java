@@ -2,6 +2,7 @@ package com.lamnguyen.mat_kinh_kimi.filter;
 
 import com.lamnguyen.mat_kinh_kimi.model.BannerImage;
 import com.lamnguyen.mat_kinh_kimi.service.BannerService;
+import com.lamnguyen.mat_kinh_kimi.service.CartService;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -12,9 +13,12 @@ import java.io.IOException;
 public class LogoFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("LogoFilter");
-
         BannerImage logo = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("logo");
+
+        if (((HttpServletRequest) request).getSession().getAttribute("cart") == null) {
+            ((HttpServletRequest) request).getSession().setAttribute("cart", new CartService());
+        }
+
         if (logo == null) {
             logo = BannerService.getInstance().getBannerByDescription("%banner%logo%");
             ((HttpServletRequest) request).getSession().setAttribute("logo", logo);

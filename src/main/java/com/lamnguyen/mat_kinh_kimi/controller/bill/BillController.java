@@ -57,14 +57,14 @@ public class BillController extends HttpServlet implements Action {
             title = "Tên người nhận rỗng";
             message = "Vui lòng điền tên người nhận";
         }
-
-        if (email.equals("")) {
-            title = "Email người nhận rỗng";
-            message = "Vui lòng điền email người nhận";
-        }
-
         if (phoneNumber.equals("")) {
             title = "Số điện thoại người nhận rỗng";
+
+            if (email.equals("")) {
+                title = "Email người nhận rỗng";
+                message = "Vui lòng điền email người nhận";
+            }
+
             message = "Vui lòng điền số điện thoại người nhận";
         }
 
@@ -131,11 +131,12 @@ public class BillController extends HttpServlet implements Action {
         bill.setTransfer(transfer);
         if (billService.saveBill(bill)) {
             CartService cart = (CartService) session.getAttribute("cart");
-            cart.bought(bill);
+            session.setAttribute("tempBill", bill);
+//            cart.bought(bill)
             session.setAttribute("bill", new BillService());
             session.setAttribute("cart", cart);
             session.setAttribute("billPayed", bill);
-            response.sendRedirect("thanh_toan_thanh_cong.jsp");
+            response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             title = "Thanh toán không thành công";
             message = "1 trong sản phẩm trong danh sách sản phẩm vừa hết hàng.";

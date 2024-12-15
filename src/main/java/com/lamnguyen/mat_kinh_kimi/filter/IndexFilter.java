@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.util.List;
 
-@WebFilter(filterName = "IndexFilter", value = "/**")
+@WebFilter(filterName = "IndexFilter", value = "/*")
 public class IndexFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -20,7 +20,7 @@ public class IndexFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("IndexFilter");
+//        System.out.println("IndexFilter");
         var urlBannerImages = request.getAttribute("banner-images");
         BannerImage logo = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("logo");
         BannerImage urlBannerPRImages = (BannerImage) ((HttpServletRequest) request).getSession().getAttribute("bannerPRImages");
@@ -45,7 +45,7 @@ public class IndexFilter implements Filter {
         ((HttpServletRequest) request).getSession().setAttribute("bannerPRImages", urlBannerPRImages); // banner pr
         request.setAttribute("list-product-prominent", productProminent);
         request.setAttribute("list-product-discount", productDiscount);
-        request.getRequestDispatcher("index.jsp").forward(request, response);
+        chain.doFilter(request, response);
     }
 
     @Override

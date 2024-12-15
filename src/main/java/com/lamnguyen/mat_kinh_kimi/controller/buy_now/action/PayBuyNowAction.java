@@ -122,7 +122,7 @@ public class PayBuyNowAction implements Action {
         if (billService.saveBill(bill)) {
             session.setAttribute("bill-buy-now", new BillService());
             session.setAttribute("billPayed", bill);
-            response.sendRedirect("thanh_toan_thanh_cong.jsp");
+            response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             title = "Thanh toán không thành công";
             message = "1 trong sản phẩm trong danh sách sản phẩm vừa hết hàng.";
