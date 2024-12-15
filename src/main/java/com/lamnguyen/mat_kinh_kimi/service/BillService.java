@@ -174,4 +174,15 @@ public class BillService {
     public int totalBillManage(String id, String name, String status) {
         return BILL_REPOSITORY.totalBillManage(id, name, status);
     }
+
+    public Bill findByUserIdAndId(int userId, int id) {
+        Bill bill = BILL_REPOSITORY.findByUserIdAndId(userId, id);
+        if (bill == null) return null;
+        String addressDetails = AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) +
+                                "</br>" + bill.getAddress();
+        List<BillDetail> billDetails = BILL_DETAIL_SERVICE.getBillDetails(id);
+        bill.setAddressDetail(addressDetails);
+        bill.setDetails(billDetails);
+        return bill;
+    }
 }

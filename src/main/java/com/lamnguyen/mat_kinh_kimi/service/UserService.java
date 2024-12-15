@@ -99,4 +99,8 @@ public class UserService {
     public User getUser(Integer userId) {
         return USER_REPOSITORY.getUser(userId);
     }
+
+    public String getPublicKey(int userId) {
+        return USER_REPOSITORY.getPublicKey(userId);
+    }
 }

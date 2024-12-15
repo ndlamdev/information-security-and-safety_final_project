@@ -6,6 +6,7 @@ import com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action.SaveEditBillAct
 import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.GetBillAction;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.GetBillDetailAction;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.RevertBillAction;
+import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.VerifyBillAction;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -39,6 +40,7 @@ public class BillManagerController extends HttpServlet {
             case "save" -> new SaveEditBillAction();
             case "cancel-bill" -> new CancelBillAction();
             case "revert-bill" -> new RevertBillAction();
+            case "verify-bill" -> new VerifyBillAction();
             default -> throw new NoRouteToHostException();
         };
 

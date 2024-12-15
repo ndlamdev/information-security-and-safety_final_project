@@ -83,7 +83,7 @@ public class ProfileController extends HttpServlet {
                 String pathAvatar = path + "/" + fileName;
                 user.setAvatar(pathAvatar);
             }
-            UserRepositoryImpl.getInstance().updateProdile(user);
+            UserRepositoryImpl.getInstance().updateProfile(user);
             request.getSession().setAttribute("user", user);
             response.setStatus(200);
             return;

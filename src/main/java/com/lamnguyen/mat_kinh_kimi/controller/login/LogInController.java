@@ -14,20 +14,13 @@ import java.io.IOException;
 public class LogInController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        BannerImage logo = BannerService.getInstance().getBannerByDescription("%banner%logo%");
-        BannerImage loginBanner = BannerService.getInstance().getBannerByDescription("%banner%login%");
-
-        session.setAttribute("logo", logo);
-        session.setAttribute("loginBanner", loginBanner);
-
         request.getRequestDispatcher("dang_nhap.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if (request.getMethod().toLowerCase().equals("get")) {
+        if (request.getMethod().equalsIgnoreCase("get")) {
             response.sendRedirect("dang_nhap.jsp");
             return;
         }

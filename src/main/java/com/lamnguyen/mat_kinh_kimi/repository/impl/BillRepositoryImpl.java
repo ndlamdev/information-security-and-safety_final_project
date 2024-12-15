@@ -208,11 +208,6 @@ public class BillRepositoryImpl extends Repository {
         );
     }
 
-    public static void main(String[] args) {
-        BillRepositoryImpl billDAO = new BillRepositoryImpl();
-        billDAO.insertSampleData();
-    }
-
     public boolean exists(int billId) {
         return connector.withHandle(handle ->
                 handle.createQuery("""
@@ -224,5 +219,31 @@ public class BillRepositoryImpl extends Repository {
                         .mapTo(Integer.class)
                         .findFirst().orElse(-9999)
         ) != -9999;
+    }
+
+    public Bill findByUserIdAndId(int userId, int billId) {
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT b.id,
+                                       b.userId,
+                                       b.userName,
+                                       b.email,
+                                       b.address,
+                                       b.phoneNumber,
+                                       b.transfer,
+                                       b.transportFee,
+                                       b.codeProvince,
+                                       b.codeDistrict,
+                                       b.codeWard,
+                                       b.signature,
+                                       b.dateTimeSign
+                                FROM bills AS b
+                                WHERE b.id = :id
+                                AND b.userId = :userId;
+                                """)
+                        .bind("id", billId)
+                        .bind("userId", userId)
+                        .mapToBean(Bill.class)
+                        .findFirst().orElse(null));
     }
 }

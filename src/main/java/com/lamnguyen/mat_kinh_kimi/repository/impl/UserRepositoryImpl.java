@@ -149,7 +149,7 @@ public class UserRepositoryImpl extends Repository {
         );
     }
 
-    public int updateProdile(User user) {
+    public int updateProfile(User user) {
         connector = JDBIConnector.get();
         return connector.withHandle(handle ->
                 handle.createUpdate("Update users set fullName = ?, sex = ?, birthday =?, avatar = ? where email = ?")
@@ -309,6 +309,17 @@ public class UserRepositoryImpl extends Repository {
                         .mapToBean(User.class)
                         .findFirst().orElse(null)
         );
+    }
+
+    public String getPublicKey(int userId) {
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT u.publicKey
+                                FROM users AS u
+                                WHERE u.id = ?;
+                                """)
+                        .bind(0, userId)
+                        .mapToBean(String.class).findFirst().orElse(null));
     }
 }
 
