@@ -1,5 +1,6 @@
 package com.lamnguyen.mat_kinh_kimi.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,6 +9,7 @@ import java.util.Comparator;
 
 @Setter
 @Getter
+@Builder
 public class BillStatus implements Comparator<BillStatus> {
     private Integer billId;
     private String status;

@@ -246,4 +246,19 @@ public class BillRepositoryImpl extends Repository {
                         .mapToBean(Bill.class)
                         .findFirst().orElse(null));
     }
+
+    public int updateSignature(Integer id, String algorithm, String signature) {
+        return connector.withHandle(handle ->
+                handle.createUpdate("""
+                                UPDATE bills b
+                                set b.algorithm = :algorithm
+                                AND b.signature = :signature
+                                WHERE b.id = :id;
+                                """)
+                        .bind("id", id)
+                        .bind("algorithm", algorithm)
+                        .bind("signature", signature)
+                        .execute()
+        );
+    }
 }

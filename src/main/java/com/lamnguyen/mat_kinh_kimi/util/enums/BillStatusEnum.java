@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Getter
 public enum BillStatusEnum {
-    WAIL_CONFiRM(0, "Chờ xác nhận"), CONFIRM_SUCCESS(1, "Xác nhận thành công"), TRANSFORM(2, "Vận chuyển"), SUCCESS(3, "Thành công"), CANCEL(-1, "Đã hủy");
+    WAIL_CONFiRM(0, "Chờ xác nhận"), CONFIRM_SUCCESS(1, "Xác nhận thành công"), TRANSFORM(2, "Vận chuyển"), SUCCESS(3, "Thành công"), CANCEL(-1, "Đã hủy"), NOT_SIGN(-2, "Chưa ký");
 
     final String status;
     final int step;

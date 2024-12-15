@@ -33,7 +33,6 @@
 
     <%--notify--%>
     <script src="notify/notify.js"></script>
-
     <title>Giỏ hàng</title>
 </head>
 <body>

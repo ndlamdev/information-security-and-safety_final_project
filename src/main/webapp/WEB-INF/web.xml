@@ -84,7 +84,7 @@
     </filter>
     <filter-mapping>
         <filter-name>finishedPlaying</filter-name>
-        <url-pattern>/thanh_toan_thanh_cong.jsp</url-pattern>
+        <url-pattern>/xac_nhan_thanh_toan.jsp</url-pattern>
     </filter-mapping>
 
     <!--Phần servlet-->

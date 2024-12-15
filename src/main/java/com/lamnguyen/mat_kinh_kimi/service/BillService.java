@@ -90,7 +90,7 @@ public class BillService {
         id = BILL_REPOSITORY.insert(bill);
         BILL_DETAIL_SERVICE.insert(id, bill.getDetails());
         bill.setId(id);
-        BillStatus status = new BillStatus(id, BillStatusEnum.WAIL_CONFiRM.getStatus(), "Đã xác nhận đơn hàng của bạn", true);
+        BillStatus status = new BillStatus(id, BillStatusEnum.NOT_SIGN.getStatus(), "Đơn hàng chưa được ký", true);
         bill.addStatus(status);
         BILL_STATUS_SERVICE.insert(status);
         return id;
@@ -117,8 +117,7 @@ public class BillService {
     public Bill getBill(int billId) {
         Bill bill = BILL_REPOSITORY.getBill(billId);
         if (bill == null) return null;
-        String addressDetails = AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) +
-                                "</br>" + bill.getAddress();
+        String addressDetails = AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) + "</br>" + bill.getAddress();
         List<BillStatus> billStatuses = BILL_STATUS_SERVICE.getBillStatus(billId);
         List<BillDetail> billDetails = BILL_DETAIL_SERVICE.getBillDetails(billId);
         bill.setAddressDetail(addressDetails);
@@ -180,5 +179,9 @@ public class BillService {
         bill.setAddressDetail(addressDetails);
         bill.setDetails(billDetails);
         return bill;
+    }
+
+    public int updateSignature(Integer id, String algorithm, String signature) {
+        return BILL_REPOSITORY.updateSignature(id, algorithm, signature);
     }
 }
