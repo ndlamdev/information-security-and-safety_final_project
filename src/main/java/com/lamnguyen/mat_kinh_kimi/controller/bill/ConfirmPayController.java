@@ -8,9 +8,11 @@
 
 package com.lamnguyen.mat_kinh_kimi.controller.bill;
 
+import com.lamnguyen.mat_kinh_kimi.config.mail.SendMail;
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
+import com.lamnguyen.mat_kinh_kimi.service.AddressService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 
 @WebServlet(name = "ConfirmPayController", value = "/confirm_pay")
@@ -52,6 +55,7 @@ public class ConfirmPayController extends HttpServlet implements Action {
         billStatusService.insert(BillStatus.builder()
                 .canEdit(true)
                 .billId(billObj.getId())
+                .date(LocalDateTime.now())
                 .status(BillStatusEnum.WAIL_CONFiRM.getStatus())
                 .describe("Đơn hàng của bạn đang chờ xác nhận!")
                 .build());
@@ -64,7 +68,11 @@ public class ConfirmPayController extends HttpServlet implements Action {
         session.removeAttribute("products");
         session.removeAttribute("file");
         session.removeAttribute("back");
-        session.removeAttribute("billPayed");
+        String addressDetails = AddressService.getInstance().getAddress(billObj.getCodeProvince(), billObj.getCodeDistrict(), billObj.getCodeWard()) +
+                                "<br>" + billObj.getAddress();
+        request.setAttribute("addressDetails", addressDetails);
+        String url = request.getRequestURL().toString().replace("xac_nhan_thanh_toan.jsp", "policy_pages/kiem_tra_don_hang.jsp");
+        SendMail.SendMailWithImage(billObj.getEmail(), "Thanh toán thành công", SendMail.getFormBill(url, billObj, addressDetails));
         request.getRequestDispatcher("thanh_toan_thanh_cong.jsp").forward(request, response);
     }
 }

@@ -65,13 +65,13 @@ public class BannerManagerController extends HttpServlet {
     }
 
     public static void removeAttribute(HttpServletRequest req) {
-        req.getSession().removeAttribute("banners");
-        req.getSession().removeAttribute("loginBanner");
-        req.getSession().removeAttribute("signupBanner");
-        req.getSession().removeAttribute("bannerPRImages");
-        req.getSession().removeAttribute("logo");
-        req.getSession().removeAttribute("contact");
-        req.getSession().removeAttribute("authBanner");
+        req.getServletContext().removeAttribute("banners");
+        req.getServletContext().removeAttribute("loginBanner");
+        req.getServletContext().removeAttribute("signupBanner");
+        req.getServletContext().removeAttribute("bannerPRImages");
+        req.getServletContext().removeAttribute("logo");
+        req.getServletContext().removeAttribute("contact");
+        req.getServletContext().removeAttribute("authBanner");
     }
 
     

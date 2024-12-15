@@ -2,8 +2,8 @@
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-    BannerImage logo = (BannerImage) session.getAttribute("logo");
-    BannerImage auth = (BannerImage) session.getAttribute("authBanner");
+    BannerImage logo = (BannerImage) application.getAttribute("logo");
+    BannerImage auth = (BannerImage) application.getAttribute("authBanner");
 %>
 <!DOCTYPE html>
 <html lang="vi">

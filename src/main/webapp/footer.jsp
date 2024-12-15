@@ -6,7 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
-<%BannerImage logo = (BannerImage) session.getAttribute("logo");%>
+<%BannerImage logo = (BannerImage) application.getAttribute("logo");%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <hr>
 <footer id="footer" class="footer">

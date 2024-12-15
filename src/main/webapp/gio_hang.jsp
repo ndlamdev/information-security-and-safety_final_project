@@ -9,7 +9,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
     session.setAttribute("bill", new BillService());
-    BannerImage logo = (BannerImage) session.getAttribute("logo");
+    BannerImage logo = (BannerImage) application.getAttribute("logo");
     CartService cart = (CartService) session.getAttribute("cart");
     if (cart == null) cart = new CartService();
 %>

@@ -6,6 +6,7 @@ import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.ProductCart;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
+import com.lamnguyen.mat_kinh_kimi.util.enums.HashAlgorithms;
 import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
 import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
 
@@ -125,7 +126,6 @@ public class PayBuyNowAction implements Action {
         bill.setAddress(fullAddress);
         bill.setTransportFee(20000.0);
         bill.setTransfer(transfer);
-        bill.setDate(LocalDateTime.now());
         var billId = billService.saveBill(bill);
         if (billId != -1) {
             bill.setId(billId);
@@ -136,6 +136,7 @@ public class PayBuyNowAction implements Action {
             session.setAttribute("billPayed", bill);
             session.setAttribute("file", file);
             session.setAttribute("back", "index.jsp");
+            request.getServletContext().setAttribute("algorithms", HashAlgorithms.ALGORITHMS);
             response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             title = "Thanh toán không thành công";

@@ -23,7 +23,7 @@ public class BillMapper {
                 .phone(bill.getPhoneNumber())
                 .address(bill.getAddress())
                 .payment(bill.getTransfer() ? "Chuyển khoản" : "Tiền mặt")
-                .date(bill.getDate())
+                .date(bill.getStatuses().getFirst().getDate())
                 .note("")
                 .products(products)
                 .build();

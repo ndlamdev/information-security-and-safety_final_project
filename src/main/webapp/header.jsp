@@ -7,7 +7,7 @@
 --%>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.service.CartService" %>
-<%BannerImage logo = (BannerImage) session.getAttribute("logo");%>
+<%BannerImage logo = (BannerImage) application.getAttribute("logo");%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <header id="menu">
     <nav class="navbar navbar-expand-lg pb-0">

@@ -87,9 +87,10 @@ public class BillService {
 
     public int saveBill(Bill bill) {
         int id;
+        bill.setVerify(false);
         id = BILL_REPOSITORY.insert(bill);
-        BILL_DETAIL_SERVICE.insert(id, bill.getDetails());
         bill.setId(id);
+        BILL_DETAIL_SERVICE.insert(id, bill.getDetails());
         BillStatus status = new BillStatus(id, BillStatusEnum.NOT_SIGN.getStatus(), "Đơn hàng chưa được ký", true);
         bill.addStatus(status);
         BILL_STATUS_SERVICE.insert(status);
@@ -117,12 +118,9 @@ public class BillService {
     public Bill getBill(int billId) {
         Bill bill = BILL_REPOSITORY.getBill(billId);
         if (bill == null) return null;
-        String addressDetails = AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) + "</br>" + bill.getAddress();
-        List<BillStatus> billStatuses = BILL_STATUS_SERVICE.getBillStatus(billId);
-        List<BillDetail> billDetails = BILL_DETAIL_SERVICE.getBillDetails(billId);
-        bill.setAddressDetail(addressDetails);
-        bill.setStatuses(billStatuses);
-        bill.setDetails(billDetails);
+        bill.setAddressDetail(AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) + "</br>" + bill.getAddress());
+        bill.setStatuses(BILL_STATUS_SERVICE.getBillStatus(billId));
+        bill.setDetails(BILL_DETAIL_SERVICE.getBillDetails(billId));
         return bill;
     }
 
@@ -173,11 +171,9 @@ public class BillService {
     public Bill findByUserIdAndId(int userId, int id) {
         Bill bill = BILL_REPOSITORY.findByUserIdAndId(userId, id);
         if (bill == null) return null;
-        String addressDetails = AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) +
-                                "</br>" + bill.getAddress();
-        List<BillDetail> billDetails = BILL_DETAIL_SERVICE.getBillDetails(id);
-        bill.setAddressDetail(addressDetails);
-        bill.setDetails(billDetails);
+        bill.setAddressDetail(AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) + "</br>" + bill.getAddress());
+        bill.setStatuses(BILL_STATUS_SERVICE.getBillStatus(id));
+        bill.setDetails(BILL_DETAIL_SERVICE.getBillDetails(id));
         return bill;
     }
 

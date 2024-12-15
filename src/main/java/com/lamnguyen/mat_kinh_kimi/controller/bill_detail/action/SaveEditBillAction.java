@@ -10,6 +10,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class SaveEditBillAction implements Action {
     private final AddressService ADDRESS_SERVICE;
@@ -27,7 +28,8 @@ public class SaveEditBillAction implements Action {
                 address = request.getParameter("address"),
                 provinceCodeString = request.getParameter("province-code"),
                 districtCodeString = request.getParameter("district-code"),
-                wardCodeString = request.getParameter("ward-code");
+                wardCodeString = request.getParameter("ward-code"),
+                signature = request.getParameter("signature");
         int billId;
         int provinceCode;
         int districtCode;
@@ -46,6 +48,8 @@ public class SaveEditBillAction implements Action {
         BillService billService = BillService.getInstance();
         Bill bill = new Bill();
         bill.setId(billId);
+        bill.setSignature(signature);
+        bill.setDateTimeSign(LocalDateTime.now());
         bill.setUserName(name);
         bill.setPhoneNumber(phoneNumber);
         bill.setEmail(email);
@@ -56,7 +60,7 @@ public class SaveEditBillAction implements Action {
         billService.updateContact(bill);
 
         String addressDetails = ADDRESS_SERVICE.getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) +
-                "<br>" + bill.getAddress();
+                                "<br>" + bill.getAddress();
         JSONObject json = new JSONObject();
         json.put("addressDetail", addressDetails);
         response.getWriter().println(json);

@@ -1,9 +1,8 @@
-<%@ page import="com.lamnguyen.mat_kinh_kimi.service.CartService" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-    BannerImage logo = (BannerImage) session.getAttribute("logo");
-    BannerImage loginBanner = (BannerImage) session.getAttribute("loginBanner");
+    BannerImage logo = (BannerImage) application.getAttribute("logo");
+    BannerImage loginBanner = (BannerImage) application.getAttribute("loginBanner");
 %>
 <!DOCTYPE html>
 <html lang="vi">

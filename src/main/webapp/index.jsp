@@ -7,7 +7,7 @@
 <%@ page import="java.util.Locale" %>
 <%User user = (User) session.getAttribute("user");%>
 
-<%BannerImage logo = (BannerImage) session.getAttribute("logo");%>
+<%BannerImage logo = (BannerImage) application.getAttribute("logo");%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

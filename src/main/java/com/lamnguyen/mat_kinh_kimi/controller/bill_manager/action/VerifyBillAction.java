@@ -12,6 +12,8 @@ import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.VerifyService;
+import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
+import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -35,13 +37,13 @@ public class VerifyBillAction implements Action {
         try {
             var id = Integer.parseInt(request.getAttribute("id").toString());
             var bill = service.findByUserIdAndId(((User) user).getId(), id);
-//          var pathFile = PDFDocumentHelper.createBillTempFile(BillMapper.billDTO(bill, service.getProductInBill(id)), request, response);
-//            if (verifyService.verifyBill(((User) user).getId(), bill.getSignature(), pathFile)) {
-//                response.getWriter().println(new JSONObject() {{
-//                    put("message", "success");
-//                }});
-//                return;
-//            }
+            var pathFile = PDFDocumentHelper.createBillTempFile(BillMapper.billDTO(bill, service.getProductInBill(id)), request);
+            if (verifyService.verifyBill(((User) user).getId(), bill.getSignature(), pathFile)) {
+                response.getWriter().println(new JSONObject() {{
+                    put("message", "success");
+                }});
+                return;
+            }
             Action.errorAPI(request, response);
         } catch (Exception e) {
             Action.errorAPI(request, response);

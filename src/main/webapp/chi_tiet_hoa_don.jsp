@@ -8,7 +8,6 @@
 <%
     Bill bill = (Bill) request.getAttribute("bill");
     BillStatus lastStatus = bill.getLastStatus();
-    List<BillStatus> statusList = bill.getStatuses();
     List<BillDetail> billDetails = bill.getDetails();
     NumberFormat nfCurrency = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
     NumberFormat nfNumber = NumberFormat.getNumberInstance(Locale.of("vi", ""));
@@ -20,7 +19,7 @@
 <html lang="vi">
 <%
     User user = (User) session.getAttribute("user");
-    BannerImage logo = (BannerImage) session.getAttribute("logo");
+    BannerImage logo = (BannerImage) application.getAttribute("logo");
 %>
 <head>
     <meta charset="UTF-8">

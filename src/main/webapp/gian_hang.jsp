@@ -14,7 +14,7 @@
   Time: 4:28 PM
   To change this template use File | Settings | File Templates.
 --%>
-<% BannerImage logo = (BannerImage) session.getAttribute("logo"); %>
+<% BannerImage logo = (BannerImage) application.getAttribute("logo"); %>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

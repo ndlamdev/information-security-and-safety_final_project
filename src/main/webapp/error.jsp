@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    BannerImage logo = (BannerImage) session.getAttribute("logo");
+    BannerImage logo = (BannerImage) application.getAttribute("logo");
 %>
 <html lang="vn">
     <meta charset="UTF-8">

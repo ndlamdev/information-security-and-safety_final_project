@@ -1,8 +1,6 @@
-<%@ page import="com.lamnguyen.mat_kinh_kimi.service.CartService" %>
-<%@ page import="com.lamnguyen.mat_kinh_kimi.model.bean.*" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<% BannerImage logo = (BannerImage) session.getAttribute("logo");%>
+<% BannerImage logo = (BannerImage) application.getAttribute("logo");%>
 <!DOCTYPE html>
 <html lang="vi">
 <head>

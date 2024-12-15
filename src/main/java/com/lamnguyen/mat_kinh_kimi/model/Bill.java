@@ -20,7 +20,7 @@ public class Bill {
     private Double transportFee;
     private List<BillStatus> statuses;
     private List<BillDetail> details;
-    private LocalDateTime dateTimeSign, date;
+    private LocalDateTime dateTimeSign;
 
     private String addressDetail;
 

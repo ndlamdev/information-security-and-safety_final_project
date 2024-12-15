@@ -44,7 +44,7 @@ public class BillRepositoryImpl extends Repository {
         return connector.withHandle(handle ->
                 handle.createQuery("SELECT MAX(b.id) FROM bills as b;")
                         .mapTo(Integer.class)
-                        .findFirst().orElse(1)
+                        .findFirst().orElse(0)
         ) + 1;
     }
 
@@ -251,13 +251,16 @@ public class BillRepositoryImpl extends Repository {
         return connector.withHandle(handle ->
                 handle.createUpdate("""
                                 UPDATE bills b
-                                set b.algorithm = :algorithm
-                                AND b.signature = :signature
+                                set b.algorithm = :algorithm,
+                                b.signature = :signature,
+                                b.dateTimeSign = NOW(),
+                                b.verify = :verify
                                 WHERE b.id = :id;
                                 """)
                         .bind("id", id)
                         .bind("algorithm", algorithm)
                         .bind("signature", signature)
+                        .bind("verify", signature != null)
                         .execute()
         );
     }

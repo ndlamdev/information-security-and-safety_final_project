@@ -7,10 +7,11 @@
 <%@ page import="java.time.LocalDateTime" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.User" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.util.enums.HashAlgorithms" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<% BannerImage logo = (BannerImage) session.getAttribute("logo");%>
+<% BannerImage logo = (BannerImage) application.getAttribute("logo");%>
 <%
     Bill bill = (Bill) session.getAttribute("billPayed");
     CartService cart = (CartService) session.getAttribute("cart");
@@ -119,10 +120,9 @@
            download="bill_<%=bill.getId()%>_<%=LocalDateTime.now().toString()%>.pdf">
             Tải hóa đơn
         </a>
+        <!-- Modal nhập chữ ký điện tử -->
+        <button class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#signatureModal">Ký điện tử</button>
     </div>
-
-    <!-- Modal nhập chữ ký điện tử -->
-    <button class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#signatureModal">Ký điện tử</button>
 
     <div class="modal fade" id="signatureModal" tabindex="-1" aria-labelledby="signatureModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -136,19 +136,21 @@
                         <div class="mb-3">
                             <label for="signature" class="form-label">Chữ ký điện tử</label>
                             <input type="text" required class="form-control" id="signature"
+                                   name="signature"
                                    placeholder="Nhập chữ ký điện tử">
                         </div>
                         <div class="mb-3">
                             <label for="hashAlgorithm" class="form-label">Thuật toán hash</label>
-                            <select class="form-select" id="hashAlgorithm">
-                                <option value="SHA-256">SHA-256</option>
-                                <option value="SHA-512">SHA-512</option>
-                                <option value="MD5">MD5</option>
+                            <select class="form-select" id="hashAlgorithm" name="algorithm">
+                                <%for (String alg : (List<String>) application.getAttribute("algorithms")) {%>
+                                <option value="<%=alg%>"><%=alg%>
+                                </option>
+                                <%}%>
                             </select>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-success" typeof="submit">
+                        <button type="submit" class="btn btn-success">
                             Xác nhận ký
                         </button>
                     </div>
