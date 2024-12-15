@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Setter
@@ -12,8 +13,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class BillDTO  implements Serializable {
+@Builder
+public class BillDTO implements Serializable {
+    int id;
     private String name, email, phone, address, payment, note;
     private LocalDateTime date;
-    private List<ProductCart> products;
+    @Builder.Default
+    private List<ProductCart> products = new ArrayList<>();
 }
