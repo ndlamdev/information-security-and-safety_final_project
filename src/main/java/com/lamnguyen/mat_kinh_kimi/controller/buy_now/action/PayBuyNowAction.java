@@ -125,14 +125,17 @@ public class PayBuyNowAction implements Action {
         bill.setAddress(fullAddress);
         bill.setTransportFee(20000.0);
         bill.setTransfer(transfer);
-        bill.setDateTimeSign(LocalDateTime.now());
+        bill.setDate(LocalDateTime.now());
         var billId = billService.saveBill(bill);
         if (billId != -1) {
             bill.setId(billId);
-            BillDTO billDTO = BillMapper.billDTO(bill, List.of((ProductCart) request.getSession().getAttribute("product")));
-            PDFDocumentHelper.createBillFile(billDTO, request, response);
-            session.setAttribute("bill-buy-now", new BillService());
+            var products = List.of((ProductCart) request.getSession().getAttribute("product"));
+            BillDTO billDTO = BillMapper.billDTO(bill, products);
+            var file = PDFDocumentHelper.createBillFile(billDTO, request);
+            session.setAttribute("products", products);
             session.setAttribute("billPayed", bill);
+            session.setAttribute("file", file);
+            session.setAttribute("back", "index.jsp");
             response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             title = "Thanh toán không thành công";

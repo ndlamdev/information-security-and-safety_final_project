@@ -4,9 +4,13 @@
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.ProductCart" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Locale" %>
+<%@ page import="java.time.LocalDateTime" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.model.User" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<% BannerImage logo = (BannerImage) session.getAttribute("logo");%>
 <%
     Bill bill = (Bill) session.getAttribute("billPayed");
     CartService cart = (CartService) session.getAttribute("cart");
@@ -15,12 +19,22 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="bootstrap-5.3.2-dist/css/bootstrap.min.css">
+    <script src="bootstrap-5.3.2-dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="fontawesome-free-6.4.2-web/css/all.css">
+    <link rel="stylesheet" href="css/menu_footer.css">
+    <link rel="stylesheet" href="css/thanh_toan_thanh_cong.css">
+    <link rel="icon" href="<%=logo.getUrlImage()%>">
+
+    <script src="jquery/jquery-3.7.1.slim.min.js"></script>
+    <script src="jquery/jquery-3.7.1.min.js"></script>
     <title>Xác nhận đơn hàng</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<div class="container mt-5">
+<jsp:include page="header.jsp"/>
+
+<main id="main" class="mt-5 pb-5 container w-75">
     <h2 class="text-center mb-4">Xác nhận đơn hàng</h2>
 
     <div class="card mb-4">
@@ -55,7 +69,7 @@
                 <tbody>
                 <%
                     NumberFormat nf = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
-                    List<ProductCart> productCartList = cart.getAllProductCart();
+                    List<ProductCart> productCartList = (List<ProductCart>) session.getAttribute("products");
                     if (productCartList == null || productCartList.isEmpty()) {
                         System.out.println("Danh sách sản phẩm trong giỏ hàng trống!");
                     }
@@ -64,7 +78,8 @@
                     for (ProductCart productCart : productCartList) {
                 %>
                 <tr>
-                    <td><%=count += 1%></td>
+                    <td><%=count += 1%>
+                    </td>
                     <td><%=productCart.getName()%>
                     </td>
                     <td><%=productCart.getQuantity()%>
@@ -93,8 +108,17 @@
 
     <!-- Các nút hành động -->
     <div class="text-center mb-3">
-        <button class="btn btn-primary">Tải phần mềm</button>
-        <button class="btn btn-secondary">Tải hóa đơn</button>
+        <a class="btn btn-primary text-decoration-none"
+           href="<%=System.getProperty("os.name").contains("Windows") ? "./tool/Kimi Sign Tool-1.0.exe" : "./tool/kimi-sign-tool_1.0_amd64.deb"%>"
+           download="<%=System.getProperty("os.name").contains("Windows") ? "Kimi Sign Tool-1.0.exe" : "kimi-sign-tool_1.0_amd64.deb"%>"
+        >
+            Tải phần mềm
+        </a>
+        <a class="btn btn-secondary text-decoration-none"
+           href="./doc/bills/<%=session.getAttribute("file")%>"
+           download="bill_<%=bill.getId()%>_<%=LocalDateTime.now().toString()%>.pdf">
+            Tải hóa đơn
+        </a>
     </div>
 
     <!-- Modal nhập chữ ký điện tử -->
@@ -102,16 +126,17 @@
 
     <div class="modal fade" id="signatureModal" tabindex="-1" aria-labelledby="signatureModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="signatureModalLabel">Nhập chữ ký điện tử</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
+            <form method="post" action="confirm_pay">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="signatureModalLabel">Nhập chữ ký điện tử</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
                         <div class="mb-3">
                             <label for="signature" class="form-label">Chữ ký điện tử</label>
-                            <input type="text" class="form-control" id="signature" placeholder="Nhập chữ ký điện tử">
+                            <input type="text" required class="form-control" id="signature"
+                                   placeholder="Nhập chữ ký điện tử">
                         </div>
                         <div class="mb-3">
                             <label for="hashAlgorithm" class="form-label">Thuật toán hash</label>
@@ -121,21 +146,37 @@
                                 <option value="MD5">MD5</option>
                             </select>
                         </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" typeof="submit">
+                            Xác nhận ký
+                        </button>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-bs-dismiss="modal">Xác nhận ký</button>
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Để sau</button>
-                </div>
-            </div>
+            </form>
         </div>
     </div>
 
     <div class="text-center">
-        <a href="gio_hang.jsp" class="btn btn-danger">Hủy đơn hàng</a>
+        <a href="<%=session.getAttribute("back")%>" class="btn btn-danger">Hủy đơn hàng</a>
     </div>
-</div>
+</main>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<jsp:include page="footer.jsp"/>
+
+<script src="javascript/menu_footer.js"></script>
+<script src="javascript/xac_nhan_chu_ky.js"></script>
+<script type="text/javascript">
+    <%User user = (User) session.getAttribute("user");
+        if(user != null){%>
+    const user = new User();
+    user.setId(<%=user.getId()%>);
+    user.setAvatar("<%=user.getAvatar()%>");
+    user.setFullName("<%=user.getFullName()%>");
+    displayMenuAccount(user);
+    <%} else{%>
+    hiddenMenuAccount();
+    <%}%>
+</script>
 </body>
 </html>

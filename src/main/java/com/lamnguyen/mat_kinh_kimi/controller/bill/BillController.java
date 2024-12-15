@@ -139,15 +139,16 @@ public class BillController extends HttpServlet implements Action {
         bill.setAddress(fullAddress);
         bill.setTransportFee(20000.0);
         bill.setTransfer(transfer);
-        bill.setDateTimeSign(LocalDateTime.now());
+        bill.setDate(LocalDateTime.now());
         var billId = billService.saveBill(bill);
         if (billId != -1) {
             bill.setId(billId);
-            CartService cart = (CartService) session.getAttribute("cart");
-            PDFDocumentHelper.createBillFile(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request, response);
-            session.setAttribute("bill", new BillService());
-            session.setAttribute("cart", cart);
+            var products = billService.getProductInBill(billId);
+            var file = PDFDocumentHelper.createBillFile(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request);
+            session.setAttribute("products", products);
             session.setAttribute("billPayed", bill);
+            session.setAttribute("file", file);
+            session.setAttribute("back", "gio_hang.jsp");
             response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             title = "Thanh toán không thành công";
