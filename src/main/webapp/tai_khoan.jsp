@@ -176,7 +176,7 @@
                             <div class="input-group mb-3">
                                 <span class="input-group-text bg-body" id="basic-addon1"><i class="fa-solid fa-key"
                                                                                             style="color: #FFD43B;"></i></span>
-                                <input type="text" id="public-key" class="form-control" placeholder="Khóa công cộng"
+                                <input type="text" id="public-key" name="public-key" class="form-control" placeholder="Khóa công cộng"
                                        aria-label="PublicKey" aria-describedby="basic-addon1">
                             </div>
                             <div class="action-btn row justify-content-end">
@@ -190,7 +190,13 @@
                                         data-bs-target="#confirmModal">Hủy khóa
                                 </button>
                                 <button type="button" id="download-app"
-                                        class="btn download-app btn-outline-success mx-3 col-3">Tải phần mềm
+                                        class="btn download-app btn-outline-success mx-3 col-3">
+                                    <a class=""
+                                       href="<%=System.getProperty("os.name").contains("Windows") ? "./tool/Kimi Sign Tool-1.0.exe" : "./tool/kimi-sign-tool_1.0_amd64.deb"%>"
+                                       download="<%=System.getProperty("os.name").contains("Windows") ? "Kimi Sign Tool-1.0.exe" : "kimi-sign-tool_1.0_amd64.deb"%>"
+                                    >
+                                        Tải phần mềm
+                                    </a>
                                 </button>
                             </div>
                             <!-- Modal -->
@@ -210,7 +216,7 @@
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                                                 Hủy
                                             </button>
-                                            <button type="submit" class="btn btn-primary">Xác nhận</button>
+                                            <button type="button" class="btn btn-primary">Xác nhận</button>
                                         </div>
                                     </div>
                                 </div>

@@ -1,0 +1,30 @@
+package com.lamnguyen.mat_kinh_kimi.controller.public_key.action;
+
+import com.lamnguyen.mat_kinh_kimi.controller.Action;
+import com.lamnguyen.mat_kinh_kimi.model.User;
+import com.lamnguyen.mat_kinh_kimi.service.PublicKeyService;
+import org.json.JSONObject;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+public class UploadKeyAction implements Action {
+    @Override
+    public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
+        response.setContentType("application/json");
+
+        var user = (User) request.getSession().getAttribute("user");
+        String publicKey = request.getParameter("public-Key");
+
+        PublicKeyService publicKeyService = PublicKeyService.getInstance();
+        boolean result = publicKeyService.uploadPublicKey(publicKey, user.getId());
+
+        JSONObject json = new JSONObject();
+        json.put("upload-key", result);
+        response.getWriter().println(json);
+    }
+}
