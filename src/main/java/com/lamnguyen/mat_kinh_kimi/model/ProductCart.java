@@ -2,10 +2,12 @@ package com.lamnguyen.mat_kinh_kimi.model;
 
 import lombok.*;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Builder
-public class ProductCart {
+public class ProductCart  implements Serializable {
     private Integer productId;
     private String name, brandName, describe, categoryName;
     private Double price, discount;

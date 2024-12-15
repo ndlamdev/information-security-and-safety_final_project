@@ -49,6 +49,33 @@ $(document).ready(function () {
         $(".main-content .display-bills").html(``);
         showBillHistory(true, objectIndex);
     });
+
+    $(`#update-key`).click(function () {
+        $('.body-page-content>form').attr('action', 'update-key')
+        customModal('Cập nhật khóa',
+          `<p>Bạn muốn cập nhật khóa không?</p>`)
+    })
+
+    $(`#delete-key`).click(function () {
+        $('.body-page-content').attr('action', 'delete-key')
+        console.log( $('.body-page-content>form').attr('action'))
+        customModal('Hủy khóa',
+            `
+                <p>Vui lòng nhập thời gian lộ khóa.</p><br>
+                    <div class="row d-flex">
+                      <input type="date" class="mx-1 col-4 border-1 rounded-1 border-primary" id="dateInput">
+                      <input type="number" placeholder="HH" aria-label="hour" class="mx-1 col-2"   min="0" max="24" step="1">
+                      <input type="number" placeholder="mm" aria-label="second" class="mx-1 col-2 "   min="0" max="60" step="1">
+                      <input type="number" placeholder="ss" aria-label="milli" class="mx-1 col-2 rounded-0 " value="00" min="0" max="60" step="1">
+                    </div>
+            `)
+    })
+
+    $('#public-key').on('input', (() => {
+        let str = $('#public-key').val()
+        if(!str.trim().length) $('#update-key').attr('disabled', true)
+        else $('#update-key').attr('disabled', false)
+    }))
 });
 
 function lazyLoadBillHistory(objectIndex) {
@@ -341,4 +368,9 @@ function changePassword({email}) {
 
         }
     });
+}
+
+function customModal(title, content) {
+    $('.modal-header>.modal-title').text(title)
+    $('.modal-content>.modal-body').html(content)
 }
