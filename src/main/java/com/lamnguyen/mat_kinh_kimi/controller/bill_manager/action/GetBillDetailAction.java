@@ -33,6 +33,10 @@ public class GetBillDetailAction implements Action {
         var products = billService.getProductInBill(billId);
 
         User customer = UserService.getInstance().getUser(bill.getUserId());
+        var signature = billService.findSignature(billId);
+        var publicKey = UserService.getInstance().getPublicKey(customer.getId());
+        request.setAttribute("signature", signature);
+        request.setAttribute("publicKey", publicKey);
         request.setAttribute("customer", customer);
         request.setAttribute("bill", bill);
         request.setAttribute("products", products);

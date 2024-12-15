@@ -103,8 +103,8 @@ public class UserRepositoryImpl extends Repository {
 
         User u = connector.withHandle(handle ->
                 handle.createQuery("SELECT u.lock" +
-                                " FROM users AS u " +
-                                "WHERE u.id = ? ")
+                                   " FROM users AS u " +
+                                   "WHERE u.id = ? ")
                         .bind(0, id)
                         .mapToBean(User.class).findFirst().orElse(null));
 
@@ -124,8 +124,8 @@ public class UserRepositoryImpl extends Repository {
 
         User u = connector.withHandle(handle ->
                 handle.createQuery("SELECT u.lock" +
-                                " FROM users AS u " +
-                                "WHERE u.id = ? ")
+                                   " FROM users AS u " +
+                                   "WHERE u.id = ? ")
                         .bind(0, id)
                         .mapToBean(User.class).findFirst().orElse(null));
 
@@ -186,9 +186,9 @@ public class UserRepositoryImpl extends Repository {
         connector = JDBIConnector.get();
         return connector.withHandle(handle ->
                 handle.createQuery("SELECT u.email " +
-                                "FROM users AS u " +
-                                "WHERE u.email = ? " +
-                                "ORDER BY id DESC")
+                                   "FROM users AS u " +
+                                   "WHERE u.email = ? " +
+                                   "ORDER BY id DESC")
                         .bind(0, email)
                         .mapTo(String.class).findFirst().orElse(null)
         ) != null;
@@ -201,8 +201,8 @@ public class UserRepositoryImpl extends Repository {
             int userId = review.getUserId();
             user = connector.withHandle(handle ->
                     handle.createQuery("SELECT u.fullName, u.avatar " +
-                                    "FROM users AS u " +
-                                    "WHERE u.id = ?")
+                                       "FROM users AS u " +
+                                       "WHERE u.id = ?")
                             .bind(0, userId)
                             .mapToBean(User.class)
                             .findFirst().orElse(null)
@@ -217,9 +217,9 @@ public class UserRepositoryImpl extends Repository {
     private User getUserForVerify(String email) {
         return connector.withHandle(handle ->
                 handle.createQuery("SELECT u.id, u.verify, u.registrationTime " +
-                                "FROM users AS u " +
-                                "WHERE u.email = ? " +
-                                "ORDER BY id DESC")
+                                   "FROM users AS u " +
+                                   "WHERE u.email = ? " +
+                                   "ORDER BY id DESC")
                         .bind(0, email)
                         .mapToBean(User.class).findFirst().orElse(null)
         );
@@ -234,7 +234,7 @@ public class UserRepositoryImpl extends Repository {
             case 1 -> {
                 connector.withHandle(handle ->
                         handle.createUpdate("UPDATE users SET verify = NULL " +
-                                        "WHERE id = ?;")
+                                            "WHERE id = ?;")
                                 .bind(0, user.getId())
                                 .execute()
                 );
@@ -247,9 +247,9 @@ public class UserRepositoryImpl extends Repository {
     public void updateCodeVerify(String email, String code, LocalDateTime time) {
         connector.withHandle(handle ->
                 handle.createUpdate("UPDATE users SET " +
-                                "verify = ? " +
-                                ", registrationTime = ? " +
-                                "WHERE email = ?;")
+                                    "verify = ? " +
+                                    ", registrationTime = ? " +
+                                    "WHERE email = ?;")
                         .bind(0, code)
                         .bind(1, time)
                         .bind(2, email)
@@ -260,8 +260,8 @@ public class UserRepositoryImpl extends Repository {
     public int resetPassword(String email, String password) {
         return connector.withHandle(handle ->
                 handle.createUpdate("UPDATE users SET " +
-                                "`password` = ? " +
-                                "WHERE email = ?;")
+                                    "`password` = ? " +
+                                    "WHERE email = ?;")
                         .bind(0, password)
                         .bind(1, email)
                         .execute()
@@ -319,7 +319,7 @@ public class UserRepositoryImpl extends Repository {
                                 WHERE u.id = ?;
                                 """)
                         .bind(0, userId)
-                        .mapToBean(String.class).findFirst().orElse(null));
+                        .mapTo(String.class).findFirst().orElse(null));
     }
 }
 

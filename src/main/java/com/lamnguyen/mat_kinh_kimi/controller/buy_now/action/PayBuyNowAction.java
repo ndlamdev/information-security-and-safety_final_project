@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class PayBuyNowAction implements Action {
@@ -131,7 +130,7 @@ public class PayBuyNowAction implements Action {
             bill.setId(billId);
             var products = List.of((ProductCart) request.getSession().getAttribute("product"));
             BillDTO billDTO = BillMapper.billDTO(bill, products);
-            var file = PDFDocumentHelper.createBillFile(billDTO, request);
+            var file = PDFDocumentHelper.createBillFileText(billDTO, request);
             session.setAttribute("products", products);
             session.setAttribute("billPayed", bill);
             session.setAttribute("file", file);

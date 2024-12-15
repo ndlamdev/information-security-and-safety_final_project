@@ -194,7 +194,11 @@
             <version>7.2.4</version>
             <type>pom</type>
         </dependency>
-
+        <dependency>
+            <groupId>org.bouncycastle</groupId>
+            <artifactId>bcpkix-jdk18on</artifactId>
+            <version>1.79</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>ban_mat_kinh_kimi</finalName>

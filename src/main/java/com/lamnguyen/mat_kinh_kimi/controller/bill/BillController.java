@@ -4,7 +4,6 @@ import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
-import com.lamnguyen.mat_kinh_kimi.service.CartService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.HashAlgorithms;
 import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
 import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @WebServlet(name = "BillController", value = "/bill")
 public class BillController extends HttpServlet implements Action {
@@ -144,7 +142,7 @@ public class BillController extends HttpServlet implements Action {
         if (billId != -1) {
             bill.setId(billId);
             var products = billService.getProductInBill(billId);
-            var file = PDFDocumentHelper.createBillFile(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request);
+            var file = PDFDocumentHelper.createBillFileText(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request);
             session.setAttribute("products", products);
             session.setAttribute("billPayed", bill);
             session.setAttribute("file", file);

@@ -117,7 +117,7 @@
         </a>
         <a class="btn btn-secondary text-decoration-none"
            href="./doc/bills/<%=session.getAttribute("file")%>"
-           download="bill_<%=bill.getId()%>_<%=LocalDateTime.now().toString()%>.pdf">
+           download="<%=session.getAttribute("file")%>">
             Tải hóa đơn
         </a>
         <!-- Modal nhập chữ ký điện tử -->

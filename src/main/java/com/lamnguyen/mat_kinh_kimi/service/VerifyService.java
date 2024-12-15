@@ -8,6 +8,8 @@
 
 package com.lamnguyen.mat_kinh_kimi.service;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -35,8 +37,9 @@ public class VerifyService {
         return KeyFactory.getInstance("DSA").generatePublic(x509EncodedKeySpec);
     }
 
-    public boolean verifyBill(int userId, String signature, String pathFile) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
-        var signatureObj = Signature.getInstance("DSA");
+    public boolean verifyBill(int userId, String algorithm, String signature, String pathFile) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException, NoSuchProviderException {
+        Security.addProvider(new BouncyCastleProvider());
+        var signatureObj = Signature.getInstance(algorithm + "withDSA");
         signatureObj.initVerify(loadPublicKey(userId));
         signVerifyHelper(signatureObj, pathFile);
         return signatureObj.verify(Base64.getDecoder().decode(signature));

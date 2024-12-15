@@ -1,5 +1,6 @@
 package com.lamnguyen.mat_kinh_kimi.repository.impl;
 
+import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillManage;
 import com.lamnguyen.mat_kinh_kimi.repository.Repository;
@@ -99,9 +100,7 @@ public class BillRepositoryImpl extends Repository {
                                        b.transportFee,
                                        b.codeProvince,
                                        b.codeDistrict,
-                                       b.codeWard,
-                                       b.signature,
-                                       b.dateTimeSign
+                                       b.codeWard
                                 FROM bills AS b
                                 WHERE b.id = :id;
                                 """)
@@ -235,7 +234,6 @@ public class BillRepositoryImpl extends Repository {
                                        b.codeProvince,
                                        b.codeDistrict,
                                        b.codeWard,
-                                       b.signature,
                                        b.dateTimeSign
                                 FROM bills AS b
                                 WHERE b.id = :id
@@ -253,15 +251,27 @@ public class BillRepositoryImpl extends Repository {
                                 UPDATE bills b
                                 set b.algorithm = :algorithm,
                                 b.signature = :signature,
-                                b.dateTimeSign = NOW(),
-                                b.verify = :verify
+                                b.dateTimeSign = NOW()
                                 WHERE b.id = :id;
                                 """)
                         .bind("id", id)
                         .bind("algorithm", algorithm)
                         .bind("signature", signature)
-                        .bind("verify", signature != null)
                         .execute()
         );
+    }
+
+    public Signature findSignature(Integer id) {
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT
+                                b.algorithm as algorithm,
+                                b.signature as signature
+                                FROM bills AS b
+                                WHERE b.id = :id;
+                                """)
+                        .bind("id", id)
+                        .mapToBean(Signature.class)
+                        .findFirst().orElse(null));
     }
 }

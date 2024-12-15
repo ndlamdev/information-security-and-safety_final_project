@@ -15,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class Bill {
     private Integer id, userId, codeProvince, codeDistrict, codeWard;
-    private String userName, phoneNumber, address, email, signature;
+    private String userName, phoneNumber, address, email, signature, algorithm;
     private Boolean transfer, verify;
     private Double transportFee;
     private List<BillStatus> statuses;

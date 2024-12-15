@@ -1,5 +1,6 @@
 package com.lamnguyen.mat_kinh_kimi.service;
 
+import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.*;
 import com.lamnguyen.mat_kinh_kimi.repository.impl.BillRepositoryImpl;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillManage;
@@ -179,5 +180,9 @@ public class BillService {
 
     public int updateSignature(Integer id, String algorithm, String signature) {
         return BILL_REPOSITORY.updateSignature(id, algorithm, signature);
+    }
+
+    public Signature findSignature(Integer id) {
+        return BILL_REPOSITORY.findSignature(id);
     }
 }

@@ -17,6 +17,8 @@ $(document).ready(function () {
     loadProvinces();
 
     updateStatus();
+
+    verifyBill();
 });
 
 function saveEdit() {
@@ -72,7 +74,6 @@ function cancelBill() {
             dataType: "json",
             method: "POST",
             success: function (data) {
-                $("#current-status").text(data.status)
                 $.notify("Hủy đơn hàng thành công!", "success");
                 $("#bill-action").html(`
                  <div class="in4-right revert-bill">
@@ -135,6 +136,7 @@ function revertBill() {
 }
 
 function renderStatus(status) {
+    $("#current-status").text(status.status)
     $(".show-list-trip").append(`
                         <div class="trip d-flex justify-content-between">
                             <div class="in4-trip">
@@ -157,6 +159,28 @@ function renderStatus(status) {
                             </div>
                         </div>
     `)
+}
+
+function verifyBill() {
+    $("#verify-bill").click(function () {
+        const dataSend = {
+            "action": "verify-bill",
+            "bill-id": $(this).attr("bill-id"),
+        };
+        $.ajax({
+            url: "bill_manager",
+            data: dataSend,
+            dataType: "json",
+            method: "POST",
+            success: function (data) {
+                renderStatus(data.status)
+                $.notify("Xác nhận hóa đơn thành công!", "success");
+            },
+            error: function (e, x, h) {
+                $.notify("Xác nhận hóa đơn thất bại!", "error");
+            }
+        });
+    });
 }
 
 function displayFormEditContactCustomer() {

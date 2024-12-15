@@ -5,12 +5,15 @@
 <%@ page import="java.time.format.DateTimeFormatter" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.*" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum" %>
+<%@ page import="com.lamnguyen.mat_kinh_kimi.domain.dto.Signature" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
 <%
     User user = (User) session.getAttribute("user");
-    BannerImage logo = (BannerImage) session.getAttribute("logo");
+    BannerImage logo = (BannerImage) application.getAttribute("logo");
+    Signature signature = (Signature) request.getAttribute("signature");
+    String publicKey = (String) request.getAttribute("publicKey");
 %>
 <head>
     <meta charset="UTF-8">
@@ -38,7 +41,6 @@
 <%
     Bill bill = (Bill) request.getAttribute("bill");
     BillStatus lastStatus = bill.getLastStatus();
-    List<BillStatus> statusList = bill.getStatuses();
     List<BillDetail> billDetails = bill.getDetails();
     NumberFormat nfCurrency = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));
     NumberFormat nfNumber = NumberFormat.getNumberInstance(Locale.of("vi", ""));
@@ -157,10 +159,10 @@
                             <h4>Lộ trình vận chuyển hàng</h4>
                         </div>
                         <div class="col-4 d-flex justify-content-end">
-                            <button class="py-1 px-2 border-0 rounded-2 text-white bg-success <%=lastStatus.getStatus().equals("Đã hủy") ? "d-none" : ""%>"
-                            <%-- id="update-status"--%>
-                            <%-- data-status="<%=((BillStatusEnum.BillStatusJson)request.getAttribute("status")).getName()%>"--%>
-                                    data-bs-target="#model-verify-bill"
+                            <button class="py-1 px-2 border-0 rounded-2 text-white bg-success <%=lastStatus.getStatus().equals("Đã hủy") || lastStatus.getStatus().equals("Chưa ký") ? "d-none" : ""%>"
+                                    id="update-status"
+                                    data-status="<%=((BillStatusEnum.BillStatusJson)request.getAttribute("status")).getName()%>"
+                                    data-bs-target="<%=lastStatus.getStatus().equals("Chờ xác nhận") ?"#model-verify-bill" : "" %>"
                                     data-bs-toggle="modal"
                             >
                                 <i class="fa-solid fa-pen"></i>
@@ -383,16 +385,42 @@
         <!-- Modal confirm revert bill-->
         <div class="modal fade" id="model-verify-bill" tabindex="-1"
              aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                     <div class="modal-header">
                         <i class="fa-solid fa-circle-exclamation me-1 text-warning fs-3"></i>
-                        <h1 class="modal-title fs-5">Thông báo</h1>
+                        <h1 class="modal-title fs-5">Xác thực chữ ký đơn hàng!</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                 aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Xác thực chữ ký đơn hàng!</p>
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="text-primary fs-6 px-3 py-2 rounded-2 me-3 text-nowrap"
+                                  style="background-color: #F5F5F5">
+                               Thuật toán
+                            </span>
+                            <p class="text-nowrap fs-5 overflow-hidden m-0">
+                                <%=signature.getAlgorithm()%>
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="text-primary fs-6 px-3 py-2 rounded-2 me-3 text-nowrap"
+                                  style="background-color: #F5F5F5">
+                                Chữ Ký
+                            </span>
+                            <p class="text-nowrap fs-5 overflow-hidden m-0">
+                                <%=signature.getSignature()%>
+                            </p>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="text-primary fs-6 px-3 py-2 rounded-2 me-3 text-nowrap"
+                                  style="background-color: #F5F5F5">
+                                Khóa Công Cộng
+                            </span>
+                            <p class="text-nowrap fs-5 overflow-hidden m-0">
+                                <%=publicKey%>
+                            </p>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">

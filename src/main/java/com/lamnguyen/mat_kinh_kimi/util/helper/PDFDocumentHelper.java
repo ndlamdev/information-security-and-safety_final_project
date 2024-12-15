@@ -14,9 +14,7 @@ import com.itextpdf.layout.properties.TextAlignment;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillDTO;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +25,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class PDFDocumentHelper {
-    public static String createBillFile(BillDTO billDTO, HttpServletRequest request, boolean copy) throws IOException {
+    public static String createBillFilePDF(BillDTO billDTO, HttpServletRequest request, boolean copy) throws IOException {
         String uploadDir = request.getServletContext().getRealPath("doc/bills/");
         Path uploadPath = Path.of(uploadDir);
         if (!Files.exists(uploadPath))
@@ -43,7 +41,7 @@ public class PDFDocumentHelper {
                 return null;
             }
             PdfFont font = PdfFontFactory.createFont(new File(resource.getFile()).getAbsolutePath(), "Identity-H");
-            PdfWriter writer = new PdfWriter(desFile);
+            PdfWriter writer = new PdfWriter(copy ? uploadPath.resolve(desFile).toString() : desFile);
             PdfDocument pdfDoc = new PdfDocument(writer);
             document = new Document(pdfDoc, PageSize.A4, true);
             document.setFont(font);
@@ -129,19 +127,119 @@ public class PDFDocumentHelper {
         } finally {
             document.close();
         }
-        if (copy) {
-            Files.copy(Path.of(desFile), uploadPath.resolve(desFile), StandardCopyOption.REPLACE_EXISTING);
-            new File(desFile).delete();
-        }
         return desFile;
     }
 
-    public static String createBillFile(BillDTO billDTO, HttpServletRequest request) throws IOException {
-        return createBillFile(billDTO, request, true);
+    public static String createBillFilePDF(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFilePDF(billDTO, request, true);
     }
 
-    public static String createBillTempFile(BillDTO billDTO, HttpServletRequest request) throws IOException {
-        return createBillFile(billDTO, request, false);
+    public static String createBillTempFilePDF(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFilePDF(billDTO, request, false);
+    }
+
+    public static String createBillFileBinary(BillDTO billDTO, HttpServletRequest request, boolean copy) throws IOException {
+        String uploadDir = request.getServletContext().getRealPath("doc/bills/");
+        Path uploadPath = Path.of(uploadDir);
+        if (!Files.exists(uploadPath))
+            Files.createDirectories(uploadPath);
+        String desFile = "bill_" + billDTO.getId() + ".bills";
+
+        RandomAccessFile writer = new RandomAccessFile(copy ? uploadPath.resolve(desFile).toString() : desFile, "rw");
+
+        writer.writeUTF(dateTimeVietnamese(billDTO.getDate()));
+        writer.writeInt(billDTO.getId());
+        writer.writeUTF(billDTO.getName());
+        writer.writeUTF(billDTO.getAddress());
+        writer.writeUTF(billDTO.getPhone());
+        writer.writeUTF(billDTO.getEmail());
+        writer.writeUTF(billDTO.getPayment());
+        double total = 0;
+        writer.writeInt(billDTO.getProducts().size());
+        for (var product : billDTO.getProducts()) {
+            writer.writeInt(product.getProductId());
+            writer.writeUTF(product.getName());
+            writer.writeUTF(product.getModel().getName());
+            writer.writeUTF(currentVietnamese(product.getPrice()));
+            writer.writeInt(product.getQuantity());
+            writer.writeUTF(currentVietnamese(product.totalPrice()));
+            total += product.totalPrice();
+        }
+        writer.writeInt(20000);
+        writer.writeUTF(currentVietnamese(total));
+        writer.close();
+
+        return desFile;
+    }
+
+    public static String createBillFileBinary(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFileBinary(billDTO, request, true);
+    }
+
+    public static String createBillTempFileBinary(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFileBinary(billDTO, request, false);
+    }
+
+    public static String createBillFileText(BillDTO billDTO, HttpServletRequest request, boolean copy) throws IOException {
+        String uploadDir = request.getServletContext().getRealPath("doc/bills/");
+        Path uploadPath = Path.of(uploadDir);
+        if (!Files.exists(uploadPath))
+            Files.createDirectories(uploadPath);
+        String desFile = "bill_" + billDTO.getId() + ".txt";
+
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(copy ? uploadPath.resolve(desFile).toString() : desFile))), true);
+
+        writer.print("Ngày: ");
+        writer.println(dateTimeVietnamese(billDTO.getDate()));
+        writer.print("Mã Đơn Hàng: ");
+        writer.println(billDTO.getId());
+        writer.println("----------------------------------------------------------------");
+        writer.print("Tên: ");
+        writer.println(billDTO.getName());
+        writer.print("Địa Chỉ: ");
+        writer.println(billDTO.getAddress());
+        writer.print("Số Điện Thoại: ");
+        writer.println(billDTO.getPhone());
+        writer.print("E-mail: ");
+        writer.println(billDTO.getEmail());
+        writer.print("Thanh Toán: ");
+        writer.println(billDTO.getPayment());
+        writer.println("----------------------------------------------------------------");
+        double total = 0;
+        writer.print("Tổng số đơn sản phẩm: ");
+        writer.println(billDTO.getProducts().size());
+        for (var product : billDTO.getProducts()) {
+            writer.print("|");
+            writer.print(product.getProductId());
+            writer.print("|");
+            writer.print(product.getName());
+            writer.print("|");
+            writer.print(product.getModel().getName());
+            writer.print("|");
+            writer.print(currentVietnamese(product.getPrice()));
+            writer.print("|");
+            writer.print(product.getQuantity());
+            writer.print("|");
+            writer.print(currentVietnamese(product.totalPrice()));
+            writer.print("|");
+            total += product.totalPrice();
+        }
+        writer.println("\n----------------------------------------------------------------");
+        writer.print("Phí Ship: ");
+        writer.println(20000);
+        writer.print("Tổng: ");
+        writer.println(currentVietnamese(total));
+        writer.close();
+
+        return desFile;
+    }
+
+    public static String createBillFileText(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFileText(billDTO, request, true);
+    }
+
+    public static String createBillTempFileText(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFileText(billDTO, request, false);
     }
 
     // Helper method to create header cells

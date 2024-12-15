@@ -7,7 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.BannerImage" %>
-<% BannerImage logo = (BannerImage) session.getAttribute("logo"); %>
+<% BannerImage logo = (BannerImage) application.getAttribute("logo"); %>
 <footer id="footer" class="footer">
     <div class="container ">
         <div class="footer-top row">
