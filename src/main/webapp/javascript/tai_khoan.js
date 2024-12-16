@@ -17,7 +17,6 @@ $(document).ready(function () {
         $("#avatar").attr("src", imageUrl);
     });
 
-
     $(`.product-reviews`).click(function () {
         objectIndex.review = 1;
         $('#display-product-reviews').off('scroll');
@@ -51,28 +50,77 @@ $(document).ready(function () {
     });
 
     $(`#update-key`).click(function () {
-        $('.body-page-content>form').attr('action', 'update-key')
-        customModal('Cập nhật khóa',
-          `<p>Bạn muốn cập nhật khóa không?</p>`)
+        Swal.fire({
+            title: "Cập nhật khóa",
+            text: "Bạn có chắc chắn muốn cập nhật khóa không?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: 'Ok',
+        }).then((result) => {
+            // Create FormData and append the selected file
+            let formData = new FormData();
+            let fileInput = $('#public-key')[0].files[0];
+            formData.append("action", "upload-key");
+            formData.append("publicKeyFile", fileInput);
+            $.ajax({
+                url: "public-key",
+                data:  formData,
+                contentType: false,
+                processData: false,
+                method: "POST",
+                success: (data) => {
+                    if(data){
+                        Swal.fire("Saved!", "", "success");
+                        $('#status-key').after().html(`<i class="has-key fa-solid fa-check text-success"></i>`)
+                    }
+                    else {
+                        Swal.fire("Error!", "", "error");
+                        $('#status-key').after().html(`<i class="non-key fa-solid fa-x text-danger">`)
+                    }
+
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            })
+        })
     })
 
     $(`#delete-key`).click(function () {
-        $('.body-page-content>form').attr('action', 'lock-key')
-        customModal('Hủy khóa',
-            `
-                <p>Vui lòng nhập thời gian lộ khóa.</p><br>
-                    <div class="row d-flex">
-                      <input type="date" name="date" class="mx-1 col-4 border-1 rounded-1 border-primary" id="dateInput" required>
-                      <input type="number" name="hour" placeholder="HH" aria-label="hour" class="mx-1 col-2"   min="0" max="24" step="1" required>
-                      <input type="number" name="second" placeholder="mm" aria-label="second" class="mx-1 col-2 "   min="0" max="60" step="1" required>
-                      <input type="number" name="milli" placeholder="ss" aria-label="milli" class="mx-1 col-2 rounded-0 " value="00" min="0" max="60" step="1" required>
-                    </div>
-            `)
+        Swal.fire({
+            title: "Hủy khóa",
+            text: "vui lòng nhập thời gian lộ khóa.",
+            html: `<form action="lock-key">
+                        <div class="row d-flex">
+                          <input type="date" name="date" class="mx-1 col-4 border-1 rounded-1 border-primary" id="dateInput" required>
+                          <input type="number" name="hour" placeholder="HH" aria-label="hour" class="mx-1 col-2"   min="0" max="24" step="1" required>
+                          <input type="number" name="second" placeholder="mm" aria-label="second" class="mx-1 col-2 "   min="0" max="60" step="1" required>
+                          <input type="number" name="milli" placeholder="ss" aria-label="milli" class="mx-1 col-2 rounded-0 " value="00" min="0" max="60" step="1" required>
+                        </div>
+                    </form>`,
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonText: 'Hủy khóa',
+        }).then((result) => {
+            const data = {
+                "action": "lock-key",
+                "hashKey": $('#public-key').val(),
+            }
+            $.ajax({
+                url: "",
+                data: data,
+                dataType: "JSON",
+                method: "POST",
+            })
+        })
     })
 
     $('#public-key').on('input', (() => {
         let str = $('#public-key').val()
-        if(!str.trim().length) $('#update-key').attr('disabled', true)
+        console.log( str)
+        if (!str.trim().length) $('#update-key').attr('disabled', true)
         else $('#update-key').attr('disabled', false)
     }))
 });
@@ -367,18 +415,4 @@ function changePassword({email}) {
 
         }
     });
-}
-
-function customModal(title, content) {
-    $('.modal-header>.modal-title').text(title)
-    $('.modal-content>.modal-body').html(content)
-}
-function showNotify(title, content, status) {
-    Swal.fire({
-        title: title,
-        text: content,
-        icon: status,
-        confirmButtonText: 'Ok',
-        timer: 1500
-    })
 }

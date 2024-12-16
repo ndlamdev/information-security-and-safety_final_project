@@ -8,7 +8,11 @@ import org.json.JSONObject;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
 
 public class UploadKeyAction implements Action {
     @Override
@@ -18,13 +22,21 @@ public class UploadKeyAction implements Action {
         response.setContentType("application/json");
 
         var user = (User) request.getSession().getAttribute("user");
-        String publicKey = request.getParameter("public-Key");
+        var filePart = (Part) request.getAttribute("publicKey");
+        StringBuilder publicKey = new StringBuilder();
+        try (InputStream inputStream = filePart.getInputStream();
+             Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8)) { // Specify encoding
+            scanner.useDelimiter("\\A"); // Match the entire input
+            while (scanner.hasNextLine()) {
+                publicKey.append(scanner.nextLine());
+            }
+        }
 
         PublicKeyService publicKeyService = PublicKeyService.getInstance();
-        boolean result = publicKeyService.uploadPublicKey(publicKey, user.getId());
+        boolean result = publicKeyService.uploadPublicKey(publicKey.toString(), user.getId());
 
         JSONObject json = new JSONObject();
-        json.put("upload-key", result);
+        json.put("uploadKey", result);
         response.getWriter().println(json);
     }
 }

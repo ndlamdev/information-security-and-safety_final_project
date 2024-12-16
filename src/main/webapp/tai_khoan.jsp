@@ -172,56 +172,30 @@
                 <div class="page-content update-key-content">
                     <span class="fs-1 title-page-content">Cập nhật khóa</span>
                     <div class="body-page-content mt-2">
-                        <form action="update-key" method="post">
-                            <div class="input-group mb-3">
-                                <span class="input-group-text bg-body" id="basic-addon1"><i class="fa-solid fa-key"
-                                                                                            style="color: #FFD43B;"></i></span>
-                                <input type="text" id="public-key" name="public-key" class="form-control" placeholder="Khóa công cộng"
-                                       aria-label="PublicKey" aria-describedby="basic-addon1">
-                            </div>
-                            <div class="action-btn row justify-content-end">
-                                <button type="button" id="update-key"
-                                        disabled
-                                        class="btn update-key btn-outline-primary mx-3 col-3" data-bs-toggle="modal"
-                                        data-bs-target="#confirmModal">Cập nhật
-                                </button>
-                                <button type="button" id="delete-key"
-                                        class="btn delete-key btn-outline-danger mx-3 col-3" data-bs-toggle="modal"
-                                        data-bs-target="#confirmModal">Hủy khóa
-                                </button>
-                                <button type="button" id="download-app"
-                                        class="btn download-app btn-outline-success mx-3 col-3">
-                                    <a class=""
-                                       href="<%=System.getProperty("os.name").contains("Windows") ? "./tool/Kimi Sign Tool-1.0.exe" : "./tool/kimi-sign-tool_1.0_amd64.deb"%>"
-                                       download="<%=System.getProperty("os.name").contains("Windows") ? "Kimi Sign Tool-1.0.exe" : "kimi-sign-tool_1.0_amd64.deb"%>"
-                                    >
-                                        Tải phần mềm
-                                    </a>
-                                </button>
-                            </div>
-                            <!-- Modal -->
-                            <div class="modal fade " id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel"
-                                 aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                                    <div class="modal-content">
-                                        <div class="modal-header fw-bold">
-                                            <h5 class="modal-title" id="confirmModalLabel">Modal title</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            ...
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                                Hủy
-                                            </button>
-                                            <button type="button" class="btn btn-primary">Xác nhận</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        <div class="d-flex justify-content-end ">
+                           <span class="fs-3"><i class="fa-solid fa-key text-warning"></i></span>
+                            <span id="status-key" class="fs-3 mx-2"><i class="non-key fa-solid fa-x text-danger"></i></span>
+                        </div>
+                        <input type="file" size="50" id="public-key" name="public-key" class="form-control mb-1 mt-2"
+                               placeholder="Nhập khóa công cộng"
+                               aria-label="PublicKey" aria-describedby="basic-addon1">
+                        <div class="action-btn mt-3 row justify-content-end">
+                            <button type="button" id="update-key"
+                                    disabled
+                                    class="btn update-key btn-outline-primary mx-3 col-3" data-bs-toggle="modal"
+                                    data-bs-target="#confirmModal">Cập nhật
+                            </button>
+                            <button type="button" id="delete-key"
+                                    class="btn delete-key btn-outline-danger mx-3 col-3" data-bs-toggle="modal"
+                                    data-bs-target="#confirmModal">Hủy khóa
+                            </button>
+                            <a type="button" class="download-app btn btn-outline-success mx-3 col-3"
+                               href="<%=System.getProperty("os.name").contains("Windows") ? "./tool/Kimi Sign Tool-1.0.exe" : "./tool/kimi-sign-tool_1.0_amd64.deb"%>"
+                               download="<%=System.getProperty("os.name").contains("Windows") ? "Kimi Sign Tool-1.0.exe" : "kimi-sign-tool_1.0_amd64.deb"%>"
+                            >
+                                Tải phần mềm
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <!--Kết thúc page-->
