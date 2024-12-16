@@ -7,7 +7,7 @@ import com.lamnguyen.mat_kinh_kimi.model.ProductCart;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.HashAlgorithms;
-import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
+import com.lamnguyen.mat_kinh_kimi.util.helper.DocumentHelper;
 import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
 
 import javax.servlet.ServletException;
@@ -130,7 +130,7 @@ public class PayBuyNowAction implements Action {
             bill.setId(billId);
             var products = List.of((ProductCart) request.getSession().getAttribute("product"));
             BillDTO billDTO = BillMapper.billDTO(bill, products);
-            var file = PDFDocumentHelper.createBillFileText(billDTO, request);
+            var file = DocumentHelper.createBillFileBinary(billDTO, request);
             session.setAttribute("products", products);
             session.setAttribute("billPayed", bill);
             session.setAttribute("file", file);

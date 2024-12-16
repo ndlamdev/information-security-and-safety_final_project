@@ -18,13 +18,12 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.text.NumberFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class PDFDocumentHelper {
+public class DocumentHelper {
     public static String createBillFilePDF(BillDTO billDTO, HttpServletRequest request, boolean copy) throws IOException {
         String uploadDir = request.getServletContext().getRealPath("doc/bills/");
         Path uploadPath = Path.of(uploadDir);
@@ -272,7 +271,7 @@ public class PDFDocumentHelper {
 
     public static String dateTimeVietnamese(LocalDateTime dateTime) {
         Locale vietnameseLocale = Locale.forLanguageTag("vi");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss", vietnameseLocale);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm", vietnameseLocale);
         return dateTime.format(formatter);
     }
 }

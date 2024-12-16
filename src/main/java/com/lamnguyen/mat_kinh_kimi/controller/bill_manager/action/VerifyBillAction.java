@@ -14,7 +14,7 @@ import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.service.VerifyService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
-import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
+import com.lamnguyen.mat_kinh_kimi.util.helper.DocumentHelper;
 import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
 import org.json.JSONObject;
 
@@ -36,7 +36,7 @@ public class VerifyBillAction implements Action {
         try {
             var id = Integer.parseInt(request.getParameter("bill-id"));
             var bill = service.getBill(id);
-            var pathFile = PDFDocumentHelper.createBillTempFileText(BillMapper.billDTO(bill, service.getProductInBill(id)), request);
+            var pathFile = DocumentHelper.createBillTempFileBinary(BillMapper.billDTO(bill, service.getProductInBill(id)), request);
             var signature = BillService.getInstance().findSignature(id);
             if (verifyService.verifyBill(bill.getUserId(), signature.getAlgorithm(), signature.getSignature(), pathFile)) {
                 var status = BillStatus.builder()
@@ -49,11 +49,11 @@ public class VerifyBillAction implements Action {
                 billStatusService.insert(status);
                 response.getWriter().println(new JSONObject() {{
                     put("message", "success");
-                    put("status", status);
+                    put("status", new JSONObject(status).toString());
                 }});
-                new File(pathFile).delete();
                 return;
             }
+            new File(pathFile).delete();
             Action.errorAPI(request, response);
         } catch (Exception e) {
             e.printStackTrace(System.out);

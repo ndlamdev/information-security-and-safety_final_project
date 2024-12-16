@@ -37,7 +37,7 @@ public class VerifyService {
         return KeyFactory.getInstance("DSA").generatePublic(x509EncodedKeySpec);
     }
 
-    public boolean verifyBill(int userId, String algorithm, String signature, String pathFile) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException, NoSuchProviderException {
+    public boolean  verifyBill(int userId, String algorithm, String signature, String pathFile) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
         Security.addProvider(new BouncyCastleProvider());
         var signatureObj = Signature.getInstance(algorithm + "withDSA");
         signatureObj.initVerify(loadPublicKey(userId));

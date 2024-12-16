@@ -423,7 +423,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <button type="reset" class="btn btn-secondary" id="cancel-verify-bill" data-bs-dismiss="modal">
                             Hủy
                         </button>
                         <button id="verify-bill" bill-id="<%=bill.getId()%>" type="button" class="btn"

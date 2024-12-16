@@ -1,9 +1,6 @@
 package com.lamnguyen.mat_kinh_kimi.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -12,6 +9,7 @@ import java.util.Comparator;
 @Getter
 @Builder
 @AllArgsConstructor
+@ToString
 public class BillStatus implements Comparator<BillStatus> {
     private Integer billId;
     private String status;
@@ -29,7 +27,7 @@ public class BillStatus implements Comparator<BillStatus> {
         this.date = LocalDateTime.now();
         this.canEdit = canEdit;
     }
-
+    
     @Override
     public int compare(BillStatus o1, BillStatus o2) {
         return o1.getDate().compareTo(o2.getDate());

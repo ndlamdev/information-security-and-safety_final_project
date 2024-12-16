@@ -77,7 +77,7 @@
             </div>
             <!-- hiện thị danh sách sản phẩm-->
             <div class="list-bill" id="display-bills">
-                <!-- bắt đầu một hàng hiện thị sản phẩm-->
+               <%-- <!-- bắt đầu một hàng hiện thị sản phẩm-->
                 <div class="item-bill row  align-items-center py-md-3 ps-4" value="Nguyễn Đình A">
                     <div class="id-item col-2"><span>#12345</span></div>
                     <div class="time-order col-2"><span>dd/mm/yy, </span><span>hh:mm</span></div>
@@ -92,7 +92,7 @@
                     <div class="option-edit col-1"><a href="chi_tiet_hoa_don.jsp"><i class="fa-solid fa-eye"></i></a>
                     </div>
                 </div>
-                <!-- kết thúc một hàng hiện thị sản phẩm-->
+                <!-- kết thúc một hàng hiện thị sản phẩm-->--%>
             </div>
         </div>
         <!--        Tổng tiền và hiển thị nút phân trang-->

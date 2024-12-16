@@ -173,8 +173,9 @@ function verifyBill() {
             dataType: "json",
             method: "POST",
             success: function (data) {
-                renderStatus(data.status)
+                renderStatus(JSON.parse(data.status))
                 $.notify("Xác nhận hóa đơn thành công!", "success");
+                $("#cancel-verify-bill").click()
             },
             error: function (e, x, h) {
                 $.notify("Xác nhận hóa đơn thất bại!", "error");

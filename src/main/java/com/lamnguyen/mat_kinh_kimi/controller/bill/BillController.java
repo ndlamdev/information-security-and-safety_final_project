@@ -5,7 +5,7 @@ import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.HashAlgorithms;
-import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
+import com.lamnguyen.mat_kinh_kimi.util.helper.DocumentHelper;
 import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
 
 import javax.servlet.ServletException;
@@ -142,7 +142,7 @@ public class BillController extends HttpServlet implements Action {
         if (billId != -1) {
             bill.setId(billId);
             var products = billService.getProductInBill(billId);
-            var file = PDFDocumentHelper.createBillFileText(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request);
+            var file = DocumentHelper.createBillFileBinary(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request);
             session.setAttribute("products", products);
             session.setAttribute("billPayed", bill);
             session.setAttribute("file", file);
