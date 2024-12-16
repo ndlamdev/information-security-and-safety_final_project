@@ -23,17 +23,20 @@ public class UploadKeyAction implements Action {
 
         var user = (User) request.getSession().getAttribute("user");
         var filePart = (Part) request.getAttribute("publicKey");
-        StringBuilder publicKey = new StringBuilder();
-        try (InputStream inputStream = filePart.getInputStream();
-             Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8)) { // Specify encoding
-            scanner.useDelimiter("\\A"); // Match the entire input
-            while (scanner.hasNextLine()) {
-                publicKey.append(scanner.nextLine());
+        boolean result = false;
+        if(filePart.getContentType().equals("text/plain")) {
+            StringBuilder publicKey = new StringBuilder();
+            try (InputStream inputStream = filePart.getInputStream();
+                 Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8)) { // Specify encoding
+                scanner.useDelimiter("\\A"); // Match the entire input
+                while (scanner.hasNextLine()) {
+                    publicKey.append(scanner.nextLine());
+                }
             }
-        }
 
-        PublicKeyService publicKeyService = PublicKeyService.getInstance();
-        boolean result = publicKeyService.uploadPublicKey(publicKey.toString(), user.getId());
+            PublicKeyService publicKeyService = PublicKeyService.getInstance();
+            result = publicKeyService.uploadPublicKey(publicKey.toString(), user.getId());
+        }
 
         JSONObject json = new JSONObject();
         json.put("uploadKey", result);

@@ -69,7 +69,7 @@ $(document).ready(function () {
                 processData: false,
                 method: "POST",
                 success: (data) => {
-                    if(data){
+                    if(data.uploadKey){
                         Swal.fire("Saved!", "", "success");
                         $('#status-key').after().html(`<i class="has-key fa-solid fa-check text-success"></i>`)
                     }
@@ -119,7 +119,6 @@ $(document).ready(function () {
 
     $('#public-key').on('input', (() => {
         let str = $('#public-key').val()
-        console.log( str)
         if (!str.trim().length) $('#update-key').attr('disabled', true)
         else $('#update-key').attr('disabled', false)
     }))
