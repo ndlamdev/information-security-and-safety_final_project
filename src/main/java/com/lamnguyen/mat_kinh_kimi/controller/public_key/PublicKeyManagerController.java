@@ -1,6 +1,7 @@
 package com.lamnguyen.mat_kinh_kimi.controller.public_key;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
+import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.ExistsPublicKeyAction;
 import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.LockPublicAction;
 import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.UploadKeyAction;
 import org.json.JSONObject;
@@ -26,29 +27,21 @@ public class PublicKeyManagerController extends HttpServlet implements Action {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
-     try {
-         // 1. Retrieve the "action" parameter
-         String actionString = request.getParameter("action");
-
-         // 2. Process the uploaded file
-         Part filePart = request.getPart("publicKeyFile"); // Get the file part
-         request.setAttribute("publicKey", filePart);
-
-         Action action = switch (actionString) {
-             case "upload-key" ->  new UploadKeyAction();
-             case "lock-key" -> new LockPublicAction();
-             default -> throw new NullPointerException();
-         };
-
+        String actionString = request.getParameter("action");
+        Action action = switch (actionString) {
+            case "upload-key" -> new UploadKeyAction();
+            case "lock-key" -> new LockPublicAction();
+            case "exists-key" -> new ExistsPublicKeyAction();
+            default -> throw new NullPointerException();
+        };
          action.action(request, response);
-     }catch (Exception e) {
-         e.printStackTrace();
-         response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error uploading file.");
-     }
-
     }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        action(req, resp);
+    }
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         action(req, resp);
     }
 }

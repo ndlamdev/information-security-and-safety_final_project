@@ -21,8 +21,8 @@ public class UploadKeyAction implements Action {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
+        Part filePart = request.getPart("publicKeyFile"); // Get the file part
         var user = (User) request.getSession().getAttribute("user");
-        var filePart = (Part) request.getAttribute("publicKey");
         boolean result = false;
         if(filePart.getContentType().equals("text/plain")) {
             StringBuilder publicKey = new StringBuilder();

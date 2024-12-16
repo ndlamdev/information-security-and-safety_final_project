@@ -23,4 +23,8 @@ public class PublicKeyService {
     public boolean lockPublicKey(int userId, LocalDateTime dateTime) {
         return PUBLIC_KEY_REPOSITORY.lockPublicKey(userId, dateTime);
     }
+
+    public boolean existsPublicKey(int userId) {
+        return PUBLIC_KEY_REPOSITORY.existsPublicKey(userId);
+    }
 }

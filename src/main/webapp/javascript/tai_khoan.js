@@ -75,7 +75,7 @@ $(document).ready(function () {
                     }
                     else {
                         Swal.fire("Error!", "", "error");
-                        $('#status-key').after().html(`<i class="non-key fa-solid fa-x text-danger">`)
+                       // $('#status-key').after().html(`<i class="non-key fa-solid fa-x text-danger">`)
                     }
 
                 },
@@ -122,6 +122,29 @@ $(document).ready(function () {
         if (!str.trim().length) $('#update-key').attr('disabled', true)
         else $('#update-key').attr('disabled', false)
     }))
+
+    $('.workspace-key').click(() => {
+       $.ajax({
+           url:"public-key",
+           data: {'action': 'exists-key'},
+           dataType: "JSON",
+           method: "GET",
+           success: (data) => {
+               if(data.existsKey){
+                   console.log(data.existsKey)
+                   $('#status-key').html(`<i class="has-key fa-solid fa-check text-success"></i>`)
+               }
+               else {
+                   $('#status-key').html(`<i class="non-key fa-solid fa-x text-danger">`)
+               }
+           },
+           error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+           }
+         })
+    })
 });
 
 function lazyLoadBillHistory(objectIndex) {

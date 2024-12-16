@@ -33,4 +33,12 @@ public class PublicKeyRepositoryImpl extends Repository {
         });
     }
 
+    public boolean existsPublicKey(int userId) {
+        return connector.withHandle(handle -> {
+            return handle.createQuery("SELECT COUNT(*) FROM public_keys WHERE userId = ? AND expired IS NULL")
+                    .bind(0, userId)
+                    .mapTo(Integer.class)
+                    .one() > 0;
+        });
+    }
 }

@@ -56,7 +56,7 @@
                             <button data-bs-target="2" class="product-reviews">Đánh giá sản phẩm</button>
                         </li>
                         <li>
-                            <button data-bs-target="3" class="product-reviews">Khóa</button>
+                            <button data-bs-target="3" class="workspace-key">Khóa</button>
                         </li>
                         <li>
                             <a href="logout">
@@ -174,7 +174,7 @@
                     <div class="body-page-content mt-2">
                         <div class="d-flex justify-content-end ">
                            <span class="fs-3"><i class="fa-solid fa-key text-warning"></i></span>
-                            <span id="status-key" class="fs-3 mx-2"><i class="non-key fa-solid fa-x text-danger"></i></span>
+                            <span id="status-key" class="fs-3 mx-2"></span>
                         </div>
                         <input type="file" size="50" id="public-key" name="public-key" class="form-control mb-1 mt-2"
                                placeholder="Nhập khóa công cộng"
