@@ -41,17 +41,21 @@ function saveEdit() {
             dataType: "json",
             method: "POST",
             success: function (data) {
+                if (data.result === 0)
+                    return
+                const address = $("#address");
                 $("#name").text(dataSend.name);
                 $("#phone-number").text(dataSend["phone-number"]);
                 $("#email").text(dataSend.email);
-                $("#address").text(data.addressDetail);
-                $("#address").attr("address", dataSend.address);
-                $("#address").attr("province-code", dataSend["province-code"]);
-                $("#address").attr("district-code", dataSend["district-code"]);
-                $("#address").attr("ward-code", dataSend["ward-code"]);
+                address.html(data.addressDetail);
+                address.attr("address", dataSend.address);
+                address.attr("province-code", dataSend["province-code"]);
+                address.attr("district-code", dataSend["district-code"]);
+                address.attr("ward-code", dataSend["ward-code"]);
                 $.notify("Thay đổi địa chỉ giao hàng thành công!", "success");
-            },
-            error: function (e, x, h) {
+                $("#update-status").addClass("d-none")
+                renderStatus(data.status)
+            }, error: function (e, x, h) {
                 console.error(e.responseText);
                 console.error(x);
                 console.error(h);

@@ -33,7 +33,7 @@ public class BillDetailController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String actionString = request.getParameter("action");
         Action action = switch (actionString) {
-            case "save" -> new SaveEditBillAction();
+            case "save" -> new SaveEditBillAction(false);
             case "cancel-bill" -> new CancelBillAction();
             case "sign-bill" -> new SignBillAction();
             default -> throw new NullPointerException();

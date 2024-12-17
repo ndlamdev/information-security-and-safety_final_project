@@ -34,7 +34,7 @@ public class BillManagerController extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         String actionString = request.getParameter("action");
         Action action = switch (actionString) {
-            case "save" -> new SaveEditBillAction();
+            case "save" -> new SaveEditBillAction(true);
             case "cancel-bill" -> new CancelBillAction();
             case "revert-bill" -> new RevertBillAction();
             case "update-bill-status" -> new UpdateBillStatusAction();

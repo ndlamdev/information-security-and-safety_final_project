@@ -21,9 +21,11 @@ import java.time.LocalDateTime;
 public class SaveEditBillAction implements Action {
     private final AddressService ADDRESS_SERVICE;
     BillService service = BillService.getInstance();
+    private boolean isAdmin;
 
-    public SaveEditBillAction() {
+    public SaveEditBillAction(boolean admin) {
         ADDRESS_SERVICE = AddressService.getInstance();
+        this.isAdmin = admin;
     }
 
     @Override
@@ -54,7 +56,7 @@ public class SaveEditBillAction implements Action {
 
         BillService billService = BillService.getInstance();
         var signature = billService.findSignature(billId);
-        if (signature.getVerify() || (signature.getSignature() != null && !signature.getSignature().equals(oldSignature))) {
+        if (!isAdmin && (signature.getVerify() || (signature.getSignature() != null && !signature.getSignature().equals(oldSignature)))) {
             Action.errorAPI(request, response);
             return;
         }
