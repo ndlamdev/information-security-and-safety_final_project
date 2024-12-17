@@ -9,9 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Base64;
 import java.util.Scanner;
 
 public class UploadKeyAction implements Action {
@@ -21,21 +21,14 @@ public class UploadKeyAction implements Action {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
-        Part filePart = request.getPart("publicKeyFile"); // Get the file part
+        Part filePart = request.getPart("publicKeyFile");
         var user = (User) request.getSession().getAttribute("user");
         boolean result = false;
-        if(filePart.getContentType().equals("text/plain")) {
-            StringBuilder publicKey = new StringBuilder();
-            try (InputStream inputStream = filePart.getInputStream();
-                 Scanner scanner = new Scanner(inputStream, StandardCharsets.UTF_8)) { // Specify encoding
-                scanner.useDelimiter("\\A"); // Match the entire input
-                while (scanner.hasNextLine()) {
-                    publicKey.append(scanner.nextLine());
-                }
-            }
-
+        byte[] data;
+        try (InputStream inputStream = filePart.getInputStream(); ) {
+           String publicKey = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
             PublicKeyService publicKeyService = PublicKeyService.getInstance();
-            result = publicKeyService.uploadPublicKey(publicKey.toString(), user.getId());
+            result = publicKeyService.uploadPublicKey(publicKey, user.getId());
         }
 
         JSONObject json = new JSONObject();
