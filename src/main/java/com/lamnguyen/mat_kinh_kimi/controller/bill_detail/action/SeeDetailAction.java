@@ -16,6 +16,10 @@ public class SeeDetailAction implements Action {
 
     @Override
     public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getSession().getAttribute("user") == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
         int billId;
         try {
             billId = Integer.parseInt(request.getParameter("bill-id"));
@@ -34,7 +38,7 @@ public class SeeDetailAction implements Action {
 
         request.setAttribute("bill", bill);
         request.setAttribute("products", products);
-        request.setAttribute("file", "bill_" + bill.getId() + ".bills");
+        request.setAttribute("file", "bill_" + bill.getId() + ".txt");
         request.getRequestDispatcher("chi_tiet_hoa_don.jsp").forward(request, response);
     }
 }

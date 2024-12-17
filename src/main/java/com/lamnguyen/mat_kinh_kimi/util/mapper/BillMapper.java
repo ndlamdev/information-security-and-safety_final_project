@@ -21,7 +21,7 @@ public class BillMapper {
                 .name(bill.getUserName())
                 .email(bill.getEmail())
                 .phone(bill.getPhoneNumber())
-                .address(bill.getAddress())
+                .address(bill.getCodeProvince() + "\t" + bill.getCodeDistrict() + "\t" + bill.getCodeWard() + "\t" + bill.getAddress())
                 .payment(bill.getTransfer() ? "Chuyển khoản" : "Tiền mặt")
                 .date(bill.getStatuses().getFirst().getDate())
                 .note("")

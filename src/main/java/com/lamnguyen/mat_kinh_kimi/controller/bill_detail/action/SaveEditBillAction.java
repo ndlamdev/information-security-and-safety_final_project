@@ -8,6 +8,8 @@ import com.lamnguyen.mat_kinh_kimi.service.AddressService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
+import com.lamnguyen.mat_kinh_kimi.util.helper.DocumentHelper;
+import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -18,6 +20,7 @@ import java.time.LocalDateTime;
 
 public class SaveEditBillAction implements Action {
     private final AddressService ADDRESS_SERVICE;
+    BillService service = BillService.getInstance();
 
     public SaveEditBillAction() {
         ADDRESS_SERVICE = AddressService.getInstance();
@@ -84,6 +87,7 @@ public class SaveEditBillAction implements Action {
         JSONObject json = new JSONObject();
         json.put("addressDetail", addressDetails);
         json.put("result", result);
+        DocumentHelper.createBillFileText(BillMapper.billDTO(service.getBill(billId), service.getProductInBill(billId)), request);
         if (signature.getSignature() != null) {
             var status = BillStatus.builder()
                     .status(BillStatusEnum.NOT_SIGN.getStatus())
@@ -93,7 +97,7 @@ public class SaveEditBillAction implements Action {
                     .canEdit(true)
                     .build();
             BillStatusService.getInstance().insert(status);
-            json.put("status", new JSONObject(status).toString());
+            json.put("status", new JSONObject(status));
         }
         response.getWriter().println(json);
     }

@@ -156,10 +156,9 @@ public class BillService {
 
     public List<BillManage> getBillManages(String id, String name, String status, int limit, int offset) {
         List<BillManage> billManages = BILL_REPOSITORY.getBillManage(id, name, status, limit, offset);
-        BillStatusService billStatusService = BILL_STATUS_SERVICE;
         for (BillManage billManager : billManages) {
             int billId = billManager.getBillId();
-            billManager.setDate(billStatusService.getDateOrderBill(billId));
+            billManager.setDate(BILL_STATUS_SERVICE.getDateOrderBill(billId));
         }
 
         return billManages;
@@ -167,15 +166,6 @@ public class BillService {
 
     public int totalBillManage(String id, String name, String status) {
         return BILL_REPOSITORY.totalBillManage(id, name, status);
-    }
-
-    public Bill findByUserIdAndId(int userId, int id) {
-        Bill bill = BILL_REPOSITORY.findByUserIdAndId(userId, id);
-        if (bill == null) return null;
-        bill.setAddressDetail(AddressService.getInstance().getAddress(bill.getCodeProvince(), bill.getCodeDistrict(), bill.getCodeWard()) + "</br>" + bill.getAddress());
-        bill.setStatuses(BILL_STATUS_SERVICE.getBillStatus(id));
-        bill.setDetails(BILL_DETAIL_SERVICE.getBillDetails(id));
-        return bill;
     }
 
     public int updateSignature(Integer id, Signature signature) {

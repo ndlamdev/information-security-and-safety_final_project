@@ -115,7 +115,7 @@ public class BillRepositoryImpl extends Repository {
                 handle.createQuery("""
                                 SELECT COUNT(*)
                                 FROM bills b
-                                WHERE b.userId = :id
+                                WHERE b.id = :id
                                 AND b.userName = :userName
                                 AND b.phoneNumber = :phoneNumber
                                 AND b.email = :email
@@ -166,40 +166,8 @@ public class BillRepositoryImpl extends Repository {
         return result == 1 ? result : -1;
     }
 
-    private void insertSampleData() {
-        Random rd = new Random(System.currentTimeMillis());
-        String userName = "Nguyễn Đình Lam";
-        String email = "kiminonawa1305@gmail.com";
-        String numberPhone = "0855354919";
-        int codeProvince = 60;
-        int codeDistrict = 596;
-        int codeWard = 23044;
-        String address = "221 - Bình Đức - Phan Hiệp - Bắc Bình - Bình Thuận";
-        double transportFee = 20000;
-        for (int i = 1; i <= 100; i++) {
-            int billId = i;
-            int userId = rd.nextInt(1, 5);
-            boolean transfer = rd.nextBoolean();
-            connector.withHandle(handle ->
-                    handle.createUpdate("INSERT INTO `mat_kinh_kimi`.`bills` (`id`, `userId`, `userName`, `email`, `phoneNumber`, `codeProvince`, `codeDistrict`, `codeWard`, `address`, `transportFee`, `transfer`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
-                            .bind(0, billId)
-                            .bind(1, userId)
-                            .bind(2, userName)
-                            .bind(3, email)
-                            .bind(4, numberPhone)
-                            .bind(5, codeProvince)
-                            .bind(6, codeDistrict)
-                            .bind(7, codeWard)
-                            .bind(8, address)
-                            .bind(9, transportFee)
-                            .bind(10, transfer)
-                            .execute()
-            );
-        }
-    }
-
     public List<BillManage> getBillManage(String billId, String userName, String billStatus, int limit, int offset) {
-        StringBuilder sqlSB = new StringBuilder("SELECT b.id AS billId, b.userId AS userId, bs.`status` AS status, b.userName AS name, b.email AS email, b.transfer AS transfer\n")
+        StringBuilder sqlSB = new StringBuilder("SELECT DISTINCT b.id AS billId, b.userId AS userId, bs.`status` AS status, b.userName AS name, b.email AS email, b.transfer AS transfer\n")
                 .append("FROM bills AS b\n")
                 .append("JOIN bill_details AS bd ON bd.billId = b.id\n")
                 .append("JOIN bill_statuses AS bs ON bs.billId = b.id\n")
