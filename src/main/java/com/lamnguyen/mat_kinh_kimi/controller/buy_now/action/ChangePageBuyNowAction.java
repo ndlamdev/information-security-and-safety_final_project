@@ -46,6 +46,7 @@ public class ChangePageBuyNowAction implements Action {
         double totalPriceReduced = billService.getTotalPriceReduced();
         double shippingFee = Double.compare(totalBill, 0) == 0 ? 0 : 20000;
 
+        request.getSession().setAttribute("product", productCart);
         request.setAttribute("product-cart", productCart);
         request.setAttribute("totalBill", nf.format(totalBill));
         request.setAttribute("totalPriceReduced", nf.format(totalPriceReduced));

@@ -86,19 +86,15 @@ public class BillService {
         return result;
     }
 
-    public boolean saveBill(Bill bill) {
-        int id = 0;
-//        boolean check = billDetailService.checkQuantity(bill);
-        boolean check = true;
-        if (check) {
-            id = BILL_REPOSITORY.insert(bill);
-            BILL_DETAIL_SERVICE.insert(id, bill.getDetails());
-            bill.setId(id);
-            BillStatus status = new BillStatus(id, BillStatusEnum.WAIL_CONFiRM.getStatus(), "Đã xác nhận đơn hàng của bạn", true);
-            bill.addStatus(status);
-            BILL_STATUS_SERVICE.insert(status);
-        }
-        return check;
+    public int saveBill(Bill bill) {
+        int id;
+        id = BILL_REPOSITORY.insert(bill);
+        BILL_DETAIL_SERVICE.insert(id, bill.getDetails());
+        bill.setId(id);
+        BillStatus status = new BillStatus(id, BillStatusEnum.WAIL_CONFiRM.getStatus(), "Đã xác nhận đơn hàng của bạn", true);
+        bill.addStatus(status);
+        BILL_STATUS_SERVICE.insert(status);
+        return id;
     }
 
     public ProductCart getProductCart(int productId, int modelId) {

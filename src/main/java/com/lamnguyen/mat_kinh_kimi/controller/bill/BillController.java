@@ -1,16 +1,19 @@
 package com.lamnguyen.mat_kinh_kimi.controller.bill;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
-import com.lamnguyen.mat_kinh_kimi.domain.dto.BillDTO;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.CartService;
 import com.lamnguyen.mat_kinh_kimi.util.helper.PDFDocumentHelper;
+import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import javax.servlet.annotation.*;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -48,7 +51,7 @@ public class BillController extends HttpServlet implements Action {
         String ward = request.getParameter("wards").trim();
 
         String fullAddress = request.getParameter("full-address").trim();
-        boolean transfer = request.getParameter("pay-option").equals("transfer") ? true : false;
+        boolean transfer = request.getParameter("pay-option").equals("transfer");
         String message = null, title = null;
 
         if (user == null) {
@@ -61,37 +64,37 @@ public class BillController extends HttpServlet implements Action {
             message = "Vui lòng chọn sản phẩm bạn muốn mua";
         }
 
-        if (userName.equals("")) {
+        if (userName.isEmpty()) {
             title = "Tên người nhận rỗng";
             message = "Vui lòng điền tên người nhận";
         }
 
-        if (email.equals("")) {
+        if (email.isEmpty()) {
             title = "Email người nhận rỗng";
             message = "Vui lòng điền email người nhận";
         }
 
-        if (phoneNumber.equals("")) {
+        if (phoneNumber.isEmpty()) {
             title = "Số điện thoại người nhận rỗng";
             message = "Vui lòng điền số điện thoại người nhận";
         }
 
-        if (province.equals("")) {
+        if (province.isEmpty()) {
             title = "Chưa chọn thành phố/tỉnh người nhận rỗng";
             message = "Vui lòng chọn thành phố/tỉnh người nhận";
         }
 
-        if (district.equals("")) {
+        if (district.isEmpty()) {
             title = "Chưa chọn quận/huyện người nhận rỗng";
             message = "Vui lòng chọn quận/huyện người nhận";
         }
 
-        if (ward.equals("")) {
+        if (ward.isEmpty()) {
             title = "Chưa chọn phường/xã người nhận rỗng";
             message = "Vui lòng chọn phường/xã người nhận";
         }
 
-        if (fullAddress.equals("")) {
+        if (fullAddress.isEmpty()) {
             title = "Địa chỉ cụ thể người nhận rỗng";
             message = "Vui lòng điền địa chỉ cụ thể người nhận";
         }
@@ -136,13 +139,12 @@ public class BillController extends HttpServlet implements Action {
         bill.setAddress(fullAddress);
         bill.setTransportFee(20000.0);
         bill.setTransfer(transfer);
-        if (billService.saveBill(bill)) {
+        bill.setDateTimeSign(LocalDateTime.now());
+        var billId = billService.saveBill(bill);
+        if (billId != -1) {
+            bill.setId(billId);
             CartService cart = (CartService) session.getAttribute("cart");
-            BillDTO billDTO = new BillDTO(userName, email, phoneNumber,
-                    fullAddress,
-                    transfer ? "Chuyển khoản" : "Tiền mặt", "", LocalDateTime.now(), cart.getAllProductCart());
-            String desFile = "/home/lamhongphong/Downloads/file.pdf";
-            PDFDocumentHelper.createBillFile(billDTO, response, desFile);
+            PDFDocumentHelper.createBillFile(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request, response);
             cart.bought(bill);
             session.setAttribute("bill", new BillService());
             session.setAttribute("cart", cart);
