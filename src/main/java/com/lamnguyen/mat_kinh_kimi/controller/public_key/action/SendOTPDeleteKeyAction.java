@@ -20,7 +20,7 @@ public class SendOTPDeleteKeyAction implements Action {
         response.setCharacterEncoding("UTF-8");
 
         LocalDateTime sendMailTime = (LocalDateTime) request.getSession().getAttribute("sendMailTime");
-        if(sendMailTime != null ) return;
+        if(sendMailTime != null && request.getParameter("resend") == null) return;
 
         request.getSession().setAttribute("sendMailTime", LocalDateTime.now());
         var user = (User) request.getSession().getAttribute("user");

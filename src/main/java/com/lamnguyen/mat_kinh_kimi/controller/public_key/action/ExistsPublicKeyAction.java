@@ -18,7 +18,7 @@ public class ExistsPublicKeyAction implements Action {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
 
-        request.getSession().removeAttribute("sendMailTime");
+//        request.getSession().removeAttribute("sendMailTime");
 
         var user = (User) request.getSession().getAttribute("user");
         PublicKeyService publicKeyService = PublicKeyService.getInstance();

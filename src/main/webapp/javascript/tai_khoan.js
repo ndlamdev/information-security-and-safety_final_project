@@ -100,36 +100,51 @@ $(document).ready(function () {
             inputPlaceholder: 'Nhập mã xác thực',
             icon: "question",
             showCancelButton: true,
+            showDenyButton: true,
+            denyButtonText: 'Gửi lại mã',
             confirmButtonText: 'OK',
             preConfirm: (value) => {
                 if(!value) Swal.showValidationMessage("Bạn chưa nhập dữ liệu!");
-                console.log(value)
                 return value
             },
         }).then((result) => {
-            const data = {
-                "action": "lock-key",
-                "mailCodeVerify": result.value,
-            }
-            $.ajax({
-                url: "public-key",
-                data: data,
-                dataType: "JSON",
-                method: "POST",
-                success: (data) => {
-                    if (data.lockKey) {
-                        Swal.fire("Thành công!", "", "success");
-                        $('.workspace-key').trigger('click');
-                    } else {
-                        Swal.fire("Thất bại!", "", "error");
-                    }
-                },
-                error: (jqXHR, textStatus, errorThrown) => {
-                    console.log(jqXHR);
-                    console.log(textStatus);
-                    console.log(errorThrown);
+            if(result.isConfirmed) {
+                const data = {
+                    "action": "lock-key",
+                    "mailCodeVerify": result.value,
                 }
-            })
+                $.ajax({
+                    url: "public-key",
+                    data: data,
+                    dataType: "JSON",
+                    method: "POST",
+                    success: (data) => {
+                        if (data.lockKey) {
+                            Swal.fire("Thành công!", "", "success");
+                            $('.workspace-key').trigger('click');
+                        } else {
+                            Swal.fire("Thất bại!", "", "error");
+                        }
+                    },
+                    error: (jqXHR, textStatus, errorThrown) => {
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                    }
+                })
+            }
+            if(result.isDenied) {
+                Swal.fire("Gửi lại mã!", "", "success");
+                $.ajax({
+                    url: "public-key",
+                    data: {
+                        "action": "send-otp-delete-key",
+                        "resend": true
+                    },
+                    dataType: "JSON",
+                    method: "POST",
+                })
+            }
         })
     })
 
