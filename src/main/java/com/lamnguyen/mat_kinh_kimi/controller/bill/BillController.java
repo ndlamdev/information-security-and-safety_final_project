@@ -35,7 +35,7 @@ public class BillController extends HttpServlet implements Action {
 
         // Set response content type
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment;");
+        response.setHeader("Content-Disposition", "attachment; filename=order_form.pdf");
 
         HttpSession session = request.getSession();
         int codeProvince = 0,
