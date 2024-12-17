@@ -1,5 +1,6 @@
 package com.lamnguyen.mat_kinh_kimi.service;
 
+import com.lamnguyen.mat_kinh_kimi.domain.dto.BillWillDelete;
 import com.lamnguyen.mat_kinh_kimi.model.*;
 import com.lamnguyen.mat_kinh_kimi.repository.impl.BillRepositoryImpl;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillManage;
@@ -173,5 +174,9 @@ public class BillService {
 
     public int totalBillManage(String id, String name, String status) {
         return BILL_REPOSITORY.totalBillManage(id, name, status);
+    }
+
+    public List<BillWillDelete> getBillsWillDelete(Integer userId){
+        return BILL_REPOSITORY.getBillsWillDelete(userId);
     }
 }

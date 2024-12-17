@@ -173,7 +173,7 @@
                     <span class="fs-1 title-page-content">Cập nhật khóa</span>
                     <div class="body-page-content mt-2">
                         <div class="d-flex justify-content-end ">
-                           <span class="fs-3"><i class="fa-solid fa-key text-warning"></i></span>
+                            <span class="fs-3"><i class="fa-solid fa-key text-warning"></i></span>
                             <span id="status-key" class="fs-3 mx-2"></span>
                         </div>
                         <input type="file" size="50" id="public-key" name="public-key" class="form-control mb-1 mt-2"
@@ -203,7 +203,45 @@
         </div>
     </div>
 </main>
-
+<%--modal--%>
+<button type="button" name="showModal" hidden="hidden" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#show-bills-will-delete">
+    Launch demo modal
+</button>
+<div id="show-bills-will-delete" class="modal fade" tabindex="-1" aria-labelledby="deleteBillsModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteBillsModalLabel">Hủy Đơn Hàng</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Thời gian đặt</th>
+                        <th scope="col">Trạng thái</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody class="bills-will-delete">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>@mdo</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" name="display-history-bought" class="btn btn-info" >Xem lịch sử mua hàng</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                <button type="button" name="delete-bills" class="btn btn-danger">Hủy</button>
+            </div>
+        </div>
+    </div>
+</div>
 <jsp:include page="footer.jsp"/>
 
 <script src="javascript/menu_footer.js"></script>

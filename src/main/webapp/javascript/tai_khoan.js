@@ -70,12 +70,11 @@ $(document).ready(function () {
                 method: "POST",
                 success: (data) => {
                     if (data.uploadKey) {
-                        Swal.fire("Thành công!", "", "success");
+                        successNotify("Thành công!",  "success");
                         $('.workspace-key').trigger('click');
                     } else {
-                        Swal.fire("Thất bại!", "", "error");
+                        successNotify("Thất bại!", "error");
                     }
-
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
                     console.log(jqXHR);
@@ -104,11 +103,11 @@ $(document).ready(function () {
             denyButtonText: 'Gửi lại mã',
             confirmButtonText: 'OK',
             preConfirm: (value) => {
-                if(!value) Swal.showValidationMessage("Bạn chưa nhập dữ liệu!");
+                if (!value) Swal.showValidationMessage("Bạn chưa nhập dữ liệu!");
                 return value
             },
         }).then((result) => {
-            if(result.isConfirmed) {
+            if (result.isConfirmed) {
                 const data = {
                     "action": "lock-key",
                     "mailCodeVerify": result.value,
@@ -120,10 +119,23 @@ $(document).ready(function () {
                     method: "POST",
                     success: (data) => {
                         if (data.lockKey) {
-                            Swal.fire("Thành công!", "", "success");
+                            successNotify("Thành công!",  "success");
                             $('.workspace-key').trigger('click');
+                            $.ajax({
+                                url: "bill-will-delete",
+                                method: "GET",
+                                success: (data) => {
+                                    insertDataIntoTable(data.BillsWillDelete)
+                                },
+                                error: (jqXHR, textStatus, errorThrown) => {
+                                    console.log(jqXHR);
+                                    console.log(textStatus);
+                                    console.log(errorThrown);
+                                }
+                            })
+
                         } else {
-                            Swal.fire("Thất bại!", "", "error");
+                            successNotify("Thất bại!", "error");
                         }
                     },
                     error: (jqXHR, textStatus, errorThrown) => {
@@ -133,8 +145,8 @@ $(document).ready(function () {
                     }
                 })
             }
-            if(result.isDenied) {
-                Swal.fire("Gửi lại mã!", "", "success");
+            if (result.isDenied) {
+                successNotify("Gửi lại mã!", "success");
                 $.ajax({
                     url: "public-key",
                     data: {
@@ -175,6 +187,47 @@ $(document).ready(function () {
                 console.log(errorThrown);
             }
         })
+    })
+
+    $(`button[name=delete-bills]`).click(() => {
+        // Get all checked checkboxes
+        const checkedItems = $("input[type=checkbox]:checked");
+
+        // Array to store the id order of checked checkboxes
+        const values = [];
+
+        // Loop through each checked checkbox
+        checkedItems.each(function () {
+            values.push($(this).attr("data-index-id"));
+        });
+
+        if(!values.length) Swal.fire("Vui lòng chọn đơn hàng muốn hủy!", "", "error");
+
+        $.ajax({
+            url: "set-bills-status-cancel",
+            data: {
+                "billIds" : `${values}`
+            },
+            dataType: "JSON",
+            method: "GET",
+            success: (data) => {
+                if(data.result) {
+                    successNotify("Thành công!",  "success");
+                    $(`button[data-bs-dismiss=modal]`).click()
+                }
+                else  successNotify("Thất bại!", "error");
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    })
+
+    $(`button[name="display-history-bought"]`).click(() => {
+        displayPageContent(1)
+        $(`button[data-bs-dismiss=modal]`).click()
     })
 });
 
@@ -467,5 +520,35 @@ function changePassword({email}) {
 
 
         }
+    });
+}
+
+function insertDataIntoTable(data) {
+    $(`button[name=showModal]`).click()
+    // $(`.bills-will-delete`).html()
+    const $tableBody = $("#show-bills-will-delete tbody");
+    $tableBody.empty(); // Clear existing rows (if any)
+    // Iterate through the data array and append rows
+    $.each(data, function (index, item) {
+        const formattedDate = new Date(item.date).toLocaleString();
+        let row = `
+                        <tr>
+                            <th scope="row">${item.id}</th>
+                            <td>${formattedDate}</td>
+                            <td>${item.status}</td>
+                            <td><input type="checkbox" data-index-id="${item.id}" /></td>
+                        </tr>
+                    `;
+        if(!data.length) row = `<tr><td colspan="4">Không có dữ liệu</td></tr>`
+        $tableBody.append(row);
+    });
+}
+
+function successNotify(result, icon){
+    Swal.fire({
+        icon: icon,
+        title: result,
+        showConfirmButton: false,
+        timer: 1000
     });
 }

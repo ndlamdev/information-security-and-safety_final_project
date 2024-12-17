@@ -1,8 +1,10 @@
 package com.lamnguyen.mat_kinh_kimi.repository.impl;
 
+import com.lamnguyen.mat_kinh_kimi.domain.dto.BillWillDelete;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillManage;
 import com.lamnguyen.mat_kinh_kimi.repository.Repository;
+import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 
 import java.util.List;
 import java.util.Random;
@@ -210,7 +212,7 @@ public class BillRepositoryImpl extends Repository {
 
     public static void main(String[] args) {
         BillRepositoryImpl billDAO = new BillRepositoryImpl();
-        billDAO.insertSampleData();
+        System.out.println(billDAO.getBillsWillDelete(37));
     }
 
     public boolean exists(int billId) {
@@ -224,5 +226,15 @@ public class BillRepositoryImpl extends Repository {
                         .mapTo(Integer.class)
                         .findFirst().orElse(-9999)
         ) != -9999;
+    }
+
+    public List<BillWillDelete> getBillsWillDelete(Integer userId){
+        return connector.withHandle(handle ->
+                handle.createQuery("select b.id, bs.date, bs.status from bills as b\n" +
+                                "join bill_statuses bs on b.id = bs.billId\n" +
+                                "where bs.status IN (" + "'" + BillStatusEnum.WAIL_CONFiRM.getStatus() +"'" +", "+ "'" +BillStatusEnum.CONFIRM_SUCCESS.getStatus()+"')" + " and b.userId = ?" )
+                        .bind(0, userId)
+                        .mapToBean(BillWillDelete.class)
+                        .list());
     }
 }

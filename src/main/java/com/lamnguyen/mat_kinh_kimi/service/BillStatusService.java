@@ -43,4 +43,8 @@ public class BillStatusService {
         if (id == -999) throw new NullPointerException();
         BILL_STATUS_REPOSITORY.remove(id);
     }
+
+    public boolean setStatusBillsCancel(List<Integer> billIds){
+        return BILL_STATUS_REPOSITORY.setStatusBillsCancel(billIds);
+    }
 }
