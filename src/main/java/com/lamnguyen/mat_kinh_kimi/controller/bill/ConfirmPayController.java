@@ -34,6 +34,7 @@ public class ConfirmPayController extends HttpServlet implements Action {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.sendRedirect("index.jsp");
     }
 
     @Override
@@ -46,6 +47,10 @@ public class ConfirmPayController extends HttpServlet implements Action {
         var session = request.getSession();
         var bill = session.getAttribute("billPayed");
         var back = session.getAttribute("back");
+        if (back == null) {
+            response.sendRedirect("index.jsp");
+            return;
+        }
         if (bill == null) {
             response.sendRedirect(back.toString());
             return;

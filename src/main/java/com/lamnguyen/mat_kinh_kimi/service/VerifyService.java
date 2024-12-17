@@ -8,10 +8,9 @@
 
 package com.lamnguyen.mat_kinh_kimi.service;
 
+import com.lamnguyen.mat_kinh_kimi.service.impl.VerifySignatureFileImpl;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
-import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
@@ -37,19 +36,9 @@ public class VerifyService {
         return KeyFactory.getInstance("DSA").generatePublic(x509EncodedKeySpec);
     }
 
-    public boolean  verifyBill(int userId, String algorithm, String signature, String pathFile) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException {
+    public boolean verifyBill(int userId, String algorithm, String signature, String pathFile) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException, NoSuchProviderException {
         Security.addProvider(new BouncyCastleProvider());
-        var signatureObj = Signature.getInstance(algorithm + "withDSA");
-        signatureObj.initVerify(loadPublicKey(userId));
-        signVerifyHelper(signatureObj, pathFile);
-        return signatureObj.verify(Base64.getDecoder().decode(signature));
-    }
-
-    private void signVerifyHelper(Signature signature, String file) throws IOException, SignatureException {
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-        byte[] buffer = new byte[1024 * 10];
-        int bytesRead;
-        while ((bytesRead = bis.read(buffer)) != -1) signature.update(buffer, 0, bytesRead);
-        bis.close();
+        var signatureObj = VerifySignatureFileImpl.getInstance(algorithm, loadPublicKey(userId));
+        return signatureObj.verifyFile(pathFile, signature);
     }
 }

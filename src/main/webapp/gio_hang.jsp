@@ -269,6 +269,15 @@
                             </a>
                         </div>
                         <%}%>
+                        <%if (session.getAttribute("title") != null && ((String) session.getAttribute("title")).contains("cập nhật khóa")) {%>
+                        <div class="modal-footer">
+                            <a href="tai_khoan.jsp#keys" style="color:#fff;">
+                                <button type="button" class="btn btn-primary">
+                                    OK
+                                </button>
+                            </a>
+                        </div>
+                        <%}%>
                     </div>
                 </div>
             </div>

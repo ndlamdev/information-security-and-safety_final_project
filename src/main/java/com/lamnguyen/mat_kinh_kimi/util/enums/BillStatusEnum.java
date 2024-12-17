@@ -29,7 +29,7 @@ public enum BillStatusEnum {
     }
 
     public BillStatusJson nextStep() {
-        return mapToJson(Arrays.stream(BillStatusEnum.values()).filter(billStatus -> billStatus.step == this.step + 1).findFirst().get());
+        return mapToJson(Arrays.stream(BillStatusEnum.values()).filter(billStatus -> billStatus.step == this.step + 1).findFirst().orElse(null));
     }
 
     public List<BillStatusJson> listAfterThisStep() {
@@ -45,6 +45,7 @@ public enum BillStatusEnum {
     }
 
     private static BillStatusJson mapToJson(BillStatusEnum e) {
+        if (e == null) return null;
         return BillStatusJson.builder()
                 .status(e.getStatus())
                 .step(e.getStep())

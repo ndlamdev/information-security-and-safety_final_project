@@ -166,6 +166,7 @@ public class DocumentHelper {
         }
         writer.writeInt(20000);
         writer.writeUTF(currentVietnamese(total));
+        writer.writeUTF(currentVietnamese(total + 2000));
         writer.close();
 
         return desFile;
@@ -188,46 +189,37 @@ public class DocumentHelper {
 
         PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(new FileOutputStream(copy ? uploadPath.resolve(desFile).toString() : desFile))), true);
 
-        writer.print("Ngày: ");
-        writer.println(dateTimeVietnamese(billDTO.getDate()));
-        writer.print("Mã Đơn Hàng: ");
-        writer.println(billDTO.getId());
+        writer.println("Ngày: " + dateTimeVietnamese(billDTO.getDate()));
+        writer.println("Mã Đơn Hàng: " + billDTO.getId());
         writer.println("----------------------------------------------------------------");
-        writer.print("Tên: ");
-        writer.println(billDTO.getName());
-        writer.print("Địa Chỉ: ");
-        writer.println(billDTO.getAddress());
-        writer.print("Số Điện Thoại: ");
-        writer.println(billDTO.getPhone());
-        writer.print("E-mail: ");
-        writer.println(billDTO.getEmail());
-        writer.print("Thanh Toán: ");
-        writer.println(billDTO.getPayment());
+        writer.println("Tên: " + billDTO.getName());
+        writer.println("Địa Chỉ: " + billDTO.getAddress());
+        writer.println("Số Điện Thoại: " + billDTO.getPhone());
+        writer.println("E-mail: " + billDTO.getEmail());
+        writer.println("Thanh Toán: " + billDTO.getPayment());
         writer.println("----------------------------------------------------------------");
+        writer.println("Tổng số đơn sản phẩm: " + billDTO.getProducts().size());
         double total = 0;
-        writer.print("Tổng số đơn sản phẩm: ");
-        writer.println(billDTO.getProducts().size());
         for (var product : billDTO.getProducts()) {
-            writer.print("|");
-            writer.print(product.getProductId());
-            writer.print("|");
-            writer.print(product.getName());
-            writer.print("|");
-            writer.print(product.getModel().getName());
-            writer.print("|");
-            writer.print(currentVietnamese(product.getPrice()));
-            writer.print("|");
-            writer.print(product.getQuantity());
-            writer.print("|");
-            writer.print(currentVietnamese(product.totalPrice()));
-            writer.print("|");
+            writer.println(new StringBuilder("|\t")
+                    .append(product.getProductId())
+                    .append("\t|\t")
+                    .append(product.getName())
+                    .append("\t|\t")
+                    .append(product.getModel().getName())
+                    .append("\t|\t")
+                    .append(currentVietnamese(product.getPrice()))
+                    .append("\t|\t")
+                    .append(product.getQuantity())
+                    .append("\t|\t")
+                    .append(currentVietnamese(product.totalPrice()))
+                    .append("\t|\n").toString());
             total += product.totalPrice();
         }
-        writer.println("\n----------------------------------------------------------------");
-        writer.print("Phí Ship: ");
-        writer.println(20000);
-        writer.print("Tổng: ");
-        writer.println(currentVietnamese(total));
+        writer.println("----------------------------------------------------------------");
+        writer.println("Phí Ship: " + currentVietnamese(20000));
+        writer.println("Tổng bill: " + currentVietnamese(total));
+        writer.println("Tổng trả: " + currentVietnamese(total + 2000));
         writer.close();
 
         return desFile;

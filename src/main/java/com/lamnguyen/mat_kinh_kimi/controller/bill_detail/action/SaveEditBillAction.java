@@ -58,7 +58,6 @@ public class SaveEditBillAction implements Action {
 
         Bill bill = new Bill();
         bill.setId(billId);
-        bill.setSignature(null);
         bill.setUserName(name);
         bill.setPhoneNumber(phoneNumber);
         bill.setEmail(email);

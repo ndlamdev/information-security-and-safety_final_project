@@ -21,8 +21,7 @@ public class CancelBillAction implements Action {
         try {
             billId = Integer.parseInt(billIdString);
         } catch (NumberFormatException e) {
-            response.setStatus(404);
-            response.getWriter().println(new JSONObject());
+            Action.errorAPI(request, response);
             return;
         }
 

@@ -36,9 +36,10 @@ public class VerifyBillAction implements Action {
         try {
             var id = Integer.parseInt(request.getParameter("bill-id"));
             var bill = service.getBill(id);
-            var pathFile = DocumentHelper.createBillTempFileBinary(BillMapper.billDTO(bill, service.getProductInBill(id)), request);
+            var pathFile = DocumentHelper.createBillTempFileText(BillMapper.billDTO(bill, service.getProductInBill(id)), request);
             var signature = BillService.getInstance().findSignature(id);
-            if (verifyService.verifyBill(bill.getUserId(), signature.getAlgorithm(), signature.getSignature(), pathFile)) {
+            var verify = verifyService.verifyBill(bill.getUserId(), signature.getAlgorithm(), signature.getSignature(), pathFile);
+            if (!signature.getVerify() && verify) {
                 var status = BillStatus.builder()
                         .date(LocalDateTime.now())
                         .status(BillStatusEnum.CONFIRM_SUCCESS.getStatus())
@@ -46,10 +47,12 @@ public class VerifyBillAction implements Action {
                         .canEdit(false)
                         .describe("Đơn hàng đã được xác nhận")
                         .build();
+                service.updateVerify(id, true);
                 billStatusService.insert(status);
                 response.getWriter().println(new JSONObject() {{
                     put("message", "success");
                     put("status", new JSONObject(status).toString());
+                    put("next-status", new JSONObject(BillStatusEnum.CONFIRM_SUCCESS.nextStep()));
                 }});
                 return;
             }

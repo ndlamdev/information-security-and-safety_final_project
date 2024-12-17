@@ -173,9 +173,13 @@ function verifyBill() {
             dataType: "json",
             method: "POST",
             success: function (data) {
+                const nextStatus = data["next-status"];
                 renderStatus(JSON.parse(data.status))
                 $.notify("Xác nhận hóa đơn thành công!", "success");
                 $("#cancel-verify-bill").click()
+                $("#update-status").removeAttr("data-bs-target").attr("data-bs-target", "#model-update-status")
+                $("#status").text(nextStatus.status)
+                $("#update-bill-status").data("status", nextStatus.name)
             },
             error: function (e, x, h) {
                 $.notify("Xác nhận hóa đơn thất bại!", "error");
@@ -269,9 +273,40 @@ function displayWards() {
 }
 
 function updateStatus() {
-    $("#update-status").click(function (e) {
-        const status = $(this).data("status")
-        console.log(status)
+    $("#update-bill-status").click(function (e) {
+        const button = $(this);
+        const data = {
+            "bill-id": button.data("bill-id"),
+            status: button.data("status"),
+            note: $("#note-status").val(),
+            action: "update-bill-status"
+        }
+        $.ajax({
+            url: "bill_manager",
+            data: data,
+            dataType: "json",
+            method: "POST",
+            success: function (data) {
+                let nextStatus = data["next-status"];
+                renderStatus(data.status)
+                $.notify("Cập nhật hóa đơn thành công!", "success");
+                $("#cancel-update-bill-status").click()
+                if (!nextStatus) {
+                    $("#update-status").remove()
+                    return;
+                }
+                $("#status").text(nextStatus.status)
+                $("#note-status").val("")
+                $("#update-bill-status").data("status", nextStatus.name)
+            },
+            error: function (e, x, h) {
+                const response = e.responseJSON;
+                if (response)
+                    $.notify(response.message, "error");
+                else
+                    $.notify("Cập nhật hóa đơn thất bại!", "error");
+            }
+        });
     })
 }
 

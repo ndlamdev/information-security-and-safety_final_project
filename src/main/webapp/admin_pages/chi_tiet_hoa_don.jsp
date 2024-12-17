@@ -6,6 +6,7 @@
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.*" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.domain.dto.Signature" %>
+<%@ page import="java.util.Objects" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -14,6 +15,10 @@
     BannerImage logo = (BannerImage) application.getAttribute("logo");
     Signature signature = (Signature) request.getAttribute("signature");
     String publicKey = (String) request.getAttribute("publicKey");
+    Object billStatusObject = request.getAttribute("next-status");
+    BillStatusEnum.BillStatusJson nextStatus = null;
+    if (billStatusObject != null)
+        nextStatus = (BillStatusEnum.BillStatusJson) billStatusObject;
 %>
 <head>
     <meta charset="UTF-8">
@@ -64,7 +69,7 @@
                 <div class="time-order py-2"><p><span><%=dateFormat.format(lastStatus.getDate())%></span></p></div>
             </div>
             <div id="bill-action">
-                <%if (!lastStatus.getStatus().equals("Đã hủy")) {%>
+                <%if (nextStatus != null && !lastStatus.getStatus().equals("Đã hủy")) {%>
                 <div class="in4-right cancel-bill">
                     <button type="button" data-bs-toggle="modal"
                             data-bs-target="#confirm-cancel-bill">
@@ -159,15 +164,16 @@
                             <h4>Lộ trình vận chuyển hàng</h4>
                         </div>
                         <div class="col-4 d-flex justify-content-end">
+                            <%if (nextStatus != null) {%>
                             <button class="py-1 px-2 border-0 rounded-2 text-white bg-success <%=lastStatus.getStatus().equals("Đã hủy") || lastStatus.getStatus().equals("Chưa ký") ? "d-none" : ""%>"
                                     id="update-status"
-                                    data-status="<%=((BillStatusEnum.BillStatusJson)request.getAttribute("status")).getName()%>"
-                                    data-bs-target="<%=lastStatus.getStatus().equals("Chờ xác nhận") ?"#model-verify-bill" : "" %>"
+                                    data-bs-target="<%=lastStatus.getStatus().equals("Chờ xác nhận") ?"#model-verify-bill" : "#model-update-status" %>"
                                     data-bs-toggle="modal"
                             >
                                 <i class="fa-solid fa-pen"></i>
                                 <span>Cập nhật trạng thái</span>
                             </button>
+                            <%}%>
                         </div>
                     </div>
                     <div class="show-list-trip body-trip-ship p-3">
@@ -382,7 +388,7 @@
             </div>
         </div>
 
-        <!-- Modal confirm revert bill-->
+        <!-- Modal verify bill-->
         <div class="modal fade" id="model-verify-bill" tabindex="-1"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -434,6 +440,55 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal update bill status-->
+        <%
+            if (nextStatus != null) {
+        %>
+        <div class="modal fade" id="model-update-status" tabindex="-1"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <i class="fa-solid fa-circle-exclamation me-1 text-warning fs-3"></i>
+                        <h1 class="modal-title fs-5">Cập nhật trạng thái đơn hàng!</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="d-flex align-items-center mb-3">
+                            <span class="text-primary fs-6 px-3 py-2 rounded-2 me-3 text-nowrap"
+                                  style="background-color: #F5F5F5">
+                               Trạng thái
+                            </span>
+                            <p class="text-nowrap fs-5 overflow-hidden m-0" id="status">
+                                <%=nextStatus.getStatus()%>
+                            </p>
+                        </div>
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="basic-addon1">Ghi chú</span>
+                            <input id="note-status" type="text" class="form-control" name="note" placeholder="Ghi chú"
+                                   aria-label="Note"
+                                   aria-describedby="basic-addon1">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="reset" class="btn btn-secondary" id="cancel-update-bill-status"
+                                data-bs-dismiss="modal">
+                            Hủy
+                        </button>
+                        <button id="update-bill-status"
+                                data-status="<%=nextStatus.getName()%>"
+                                data-bill-id="<%=bill.getId()%>"
+                                type="button" class="btn"
+                                style="background-color: var(--color-blue-origin); color: #FFFFFF">
+                            Xác nhận
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%}%>
     </section>
 </main>
 
