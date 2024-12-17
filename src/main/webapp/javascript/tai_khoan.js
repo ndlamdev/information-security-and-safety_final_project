@@ -64,18 +64,16 @@ $(document).ready(function () {
             formData.append("publicKeyFile", fileInput);
             $.ajax({
                 url: "public-key",
-                data:  formData,
+                data: formData,
                 contentType: false,
                 processData: false,
                 method: "POST",
                 success: (data) => {
-                    if(data.uploadKey){
-                        Swal.fire("Saved!", "", "success");
-                        $('#status-key').after().html(`<i class="has-key fa-solid fa-check text-success"></i>`)
-                    }
-                    else {
-                        Swal.fire("Error!", "", "error");
-                       // $('#status-key').after().html(`<i class="non-key fa-solid fa-x text-danger">`)
+                    if (data.uploadKey) {
+                        Swal.fire("Thành công!", "", "success");
+                        $('.workspace-key').trigger('click');
+                    } else {
+                        Swal.fire("Thất bại!", "", "error");
                     }
 
                 },
@@ -89,31 +87,60 @@ $(document).ready(function () {
     })
 
     $(`#delete-key`).click(function () {
+        $.ajax({
+            url: "public-key",
+            data: {"action": "send-otp-delete-key"},
+            dataType: "JSON",
+            method: "POST",
+        })
+
         Swal.fire({
             title: "Hủy khóa",
-            text: "vui lòng nhập thời gian lộ khóa.",
-            html: `<form action="lock-key">
-                        <div class="row d-flex">
-                          <input type="date" name="date" class="mx-1 col-4 border-1 rounded-1 border-primary" id="dateInput" required>
-                          <input type="number" name="hour" placeholder="HH" aria-label="hour" class="mx-1 col-2"   min="0" max="24" step="1" required>
-                          <input type="number" name="second" placeholder="mm" aria-label="second" class="mx-1 col-2 "   min="0" max="60" step="1" required>
-                          <input type="number" name="milli" placeholder="ss" aria-label="milli" class="mx-1 col-2 rounded-0 " value="00" min="0" max="60" step="1" required>
-                        </div>
-                    </form>`,
+            html: `
+                        <p class="fs-5">Vui lòng kiểm tra email của bạn.<br> Nhập mã dưới đây.</p>
+                        <input type="text" class="p-2 mt-3" name="otp" placeholder="Mã xác thực" aria-label="otp" required>
+                    `,
             icon: "question",
             showCancelButton: true,
-            confirmButtonText: 'Hủy khóa',
+            confirmButtonText: 'OK',
+            preConfirm: (value) => {
+                return new Promise((resolve, reject) => {
+                    const data = {
+                        "action": "lock-key",
+                        "mailCodeVerify": $('input[name=otp]').val(),
+                    }
+                    $.ajax({
+                        url: "public-key",
+                        data: data,
+                        dataType: "JSON",
+                        method: "POST",
+                        success: (data) => {
+                            if (data.lockKey) {
+                                resolve();
+                            } else {
+                                reject(Swal.showValidationMessage("Mã xác thực không hợp lệ."))
+                            }
+                        },
+                        error: (jqXHR, textStatus, errorThrown) => {
+                            console.log(jqXHR);
+                            console.log(textStatus);
+                            console.log(errorThrown);
+                        }
+                    })
+                    $(`input[name=otp]`).on('focus',() =>{
+                        // Disable the buttons initially
+                        const confirmButton = Swal.getConfirmButton();
+                        confirmButton.disabled = false;
+
+                        const cancelButton = Swal.getCancelButton();
+                        cancelButton.disabled = false;
+                    });
+                });
+            },
         }).then((result) => {
-            const data = {
-                "action": "lock-key",
-                "hashKey": $('#public-key').val(),
-            }
-            $.ajax({
-                url: "",
-                data: data,
-                dataType: "JSON",
-                method: "POST",
-            })
+            if(result.isConfirmed)
+                Swal.fire("Thành công!", "", "success");
+                $('.workspace-key').trigger('click');
         })
     })
 
@@ -124,26 +151,26 @@ $(document).ready(function () {
     }))
 
     $('.workspace-key').click(() => {
-       $.ajax({
-           url:"public-key",
-           data: {'action': 'exists-key'},
-           dataType: "JSON",
-           method: "GET",
-           success: (data) => {
-               if(data.existsKey){
-                   console.log(data.existsKey)
-                   $('#status-key').html(`<i class="has-key fa-solid fa-check text-success"></i>`)
-               }
-               else {
-                   $('#status-key').html(`<i class="non-key fa-solid fa-x text-danger">`)
-               }
-           },
-           error: (jqXHR, textStatus, errorThrown) => {
+        $.ajax({
+            url: "public-key",
+            data: {'action': 'exists-key'},
+            dataType: "JSON",
+            method: "GET",
+            success: (data) => {
+                if (data.existsKey) {
+                    $('#status-key').html(`<i class="has-key fa-solid fa-check text-success"></i>`)
+                    $('.delete-key').attr('disabled', false)
+                } else {
+                    $('#status-key').html(`<i class="non-key fa-solid fa-x text-danger">`)
+                    $('.delete-key').attr('disabled', true)
+                }
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
                 console.log(jqXHR);
                 console.log(textStatus);
                 console.log(errorThrown);
-           }
-         })
+            }
+        })
     })
 });
 

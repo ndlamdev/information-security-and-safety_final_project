@@ -24,10 +24,10 @@ public class PublicKeyRepositoryImpl extends Repository {
         });
     }
 
-    public boolean lockPublicKey(int userId, LocalDateTime dateTime) {
+    public boolean lockPublicKey(int userId) {
         return connector.withHandle(handle -> {
-            return handle.createUpdate("UPDATE public_keys SET expired = ? WHERE user_id = ?")
-                    .bind(0, dateTime)
+            return handle.createUpdate("UPDATE public_keys SET expired = ? WHERE userId = ?")
+                    .bind(0, LocalDateTime.now())
                     .bind(1, userId)
                     .execute() > 0;
         });
@@ -40,5 +40,16 @@ public class PublicKeyRepositoryImpl extends Repository {
                     .mapTo(Integer.class)
                     .one() > 0;
         });
+    }
+
+    public void updateCodeVerify(String code, int userId) {
+        connector.withHandle(handle ->
+                handle.createUpdate("UPDATE public_keys SET " +
+                                "verify = ? " +
+                                "WHERE userId = ?;")
+                        .bind(0, code)
+                        .bind(1, userId)
+                        .execute()
+        );
     }
 }

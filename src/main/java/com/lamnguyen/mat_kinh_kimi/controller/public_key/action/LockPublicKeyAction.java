@@ -4,6 +4,7 @@ import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.PublicKeyService;
 import org.json.JSONObject;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -11,8 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 
-public class LockPublicAction implements Action {
+public class LockPublicKeyAction implements Action {
     @Override
     public void action(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
@@ -20,16 +22,16 @@ public class LockPublicAction implements Action {
         response.setContentType("application/json");
 
         var user = (User) request.getSession().getAttribute("user");
-        Integer[] date = Arrays.stream(request.getParameter("date").split("/")).map(Integer::parseInt).toArray(Integer[]::new);
-        int hour = Integer.parseInt(request.getParameter("hour"));
-        int second = Integer.parseInt(request.getParameter("second"));
-        int milli = Integer.parseInt(request.getParameter("milli"));
-        LocalDateTime dateTime = LocalDateTime.of(date[0], date[1], date[2], hour, second, milli);
-        PublicKeyService publicKeyService = PublicKeyService.getInstance();
-        boolean result = publicKeyService.lockPublicKey(user.getId(), dateTime);
-
+        var hashCodeVerify = (String) request.getSession().getAttribute("codeVerify");
+        var mailCodeVerify = request.getParameter("mailCodeVerify");
+        boolean result = false;
+        if(BCrypt.checkpw(mailCodeVerify, hashCodeVerify)) {
+            PublicKeyService publicKeyService = PublicKeyService.getInstance();
+            result = publicKeyService.lockPublicKey(user.getId());
+        }
+        request.getSession().removeAttribute("codeVerify");
         JSONObject json = new JSONObject();
-        json.put("upload-key", result);
+        json.put("lockKey", result);
         response.getWriter().println(json);
     }
 }

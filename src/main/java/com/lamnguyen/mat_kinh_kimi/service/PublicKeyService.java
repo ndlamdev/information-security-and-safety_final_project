@@ -20,11 +20,15 @@ public class PublicKeyService {
         return PUBLIC_KEY_REPOSITORY.uploadPublicKey(hashKey, userId);
     }
 
-    public boolean lockPublicKey(int userId, LocalDateTime dateTime) {
-        return PUBLIC_KEY_REPOSITORY.lockPublicKey(userId, dateTime);
+    public boolean lockPublicKey(int userId) {
+        return PUBLIC_KEY_REPOSITORY.lockPublicKey(userId);
     }
 
     public boolean existsPublicKey(int userId) {
         return PUBLIC_KEY_REPOSITORY.existsPublicKey(userId);
+    }
+
+    public void updateCodeVerify(String code, int userId) {
+        PUBLIC_KEY_REPOSITORY.updateCodeVerify(code, userId);
     }
 }

@@ -2,9 +2,9 @@ package com.lamnguyen.mat_kinh_kimi.controller.public_key;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.ExistsPublicKeyAction;
-import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.LockPublicAction;
+import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.LockPublicKeyAction;
+import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.SendOTPDeleteKeyAction;
 import com.lamnguyen.mat_kinh_kimi.controller.public_key.action.UploadKeyAction;
-import org.json.JSONObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -12,8 +12,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
-import java.io.BufferedReader;
 import java.io.IOException;
 @WebServlet(name = "publicKey", value = "/public-key")
 @MultipartConfig(
@@ -30,8 +28,9 @@ public class PublicKeyManagerController extends HttpServlet implements Action {
         String actionString = request.getParameter("action");
         Action action = switch (actionString) {
             case "upload-key" -> new UploadKeyAction();
-            case "lock-key" -> new LockPublicAction();
+            case "lock-key" -> new LockPublicKeyAction();
             case "exists-key" -> new ExistsPublicKeyAction();
+            case "send-otp-delete-key" -> new SendOTPDeleteKeyAction();
             default -> throw new NullPointerException();
         };
          action.action(request, response);
