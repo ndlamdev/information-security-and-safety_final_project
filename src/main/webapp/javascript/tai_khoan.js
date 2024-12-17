@@ -93,54 +93,43 @@ $(document).ready(function () {
             dataType: "JSON",
             method: "POST",
         })
-
         Swal.fire({
             title: "Hủy khóa",
-            html: `
-                        <p class="fs-5">Vui lòng kiểm tra email của bạn.<br> Nhập mã dưới đây.</p>
-                        <input type="text" class="p-2 mt-3" name="otp" placeholder="Mã xác thực" aria-label="otp" required>
-                    `,
+            input: 'text',
+            inputLabel: 'Kiểm tra email của bạn.',
+            inputPlaceholder: 'Nhập mã xác thực',
             icon: "question",
             showCancelButton: true,
             confirmButtonText: 'OK',
             preConfirm: (value) => {
-                return new Promise((resolve, reject) => {
-                    const data = {
-                        "action": "lock-key",
-                        "mailCodeVerify": $('input[name=otp]').val(),
-                    }
-                    $.ajax({
-                        url: "public-key",
-                        data: data,
-                        dataType: "JSON",
-                        method: "POST",
-                        success: (data) => {
-                            if (data.lockKey) {
-                                resolve();
-                            } else {
-                                reject(Swal.showValidationMessage("Mã xác thực không hợp lệ."))
-                            }
-                        },
-                        error: (jqXHR, textStatus, errorThrown) => {
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
-                        }
-                    })
-                    $(`input[name=otp]`).on('focus',() =>{
-                        // Disable the buttons initially
-                        const confirmButton = Swal.getConfirmButton();
-                        confirmButton.disabled = false;
-
-                        const cancelButton = Swal.getCancelButton();
-                        cancelButton.disabled = false;
-                    });
-                });
+                if(!value) Swal.showValidationMessage("Bạn chưa nhập dữ liệu!");
+                console.log(value)
+                return value
             },
         }).then((result) => {
-            if(result.isConfirmed)
-                Swal.fire("Thành công!", "", "success");
-                $('.workspace-key').trigger('click');
+            const data = {
+                "action": "lock-key",
+                "mailCodeVerify": result.value,
+            }
+            $.ajax({
+                url: "public-key",
+                data: data,
+                dataType: "JSON",
+                method: "POST",
+                success: (data) => {
+                    if (data.lockKey) {
+                        Swal.fire("Thành công!", "", "success");
+                        $('.workspace-key').trigger('click');
+                    } else {
+                        Swal.fire("Thất bại!", "", "error");
+                    }
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            })
         })
     })
 

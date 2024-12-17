@@ -9,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class SendOTPDeleteKeyAction implements Action {
@@ -17,6 +19,10 @@ public class SendOTPDeleteKeyAction implements Action {
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
 
+        LocalDateTime sendMailTime = (LocalDateTime) request.getSession().getAttribute("sendMailTime");
+        if(sendMailTime != null ) return;
+
+        request.getSession().setAttribute("sendMailTime", LocalDateTime.now());
         var user = (User) request.getSession().getAttribute("user");
         String codeVerify = UUID.randomUUID().toString().substring(0, 4);
         String hashCode =  BCrypt.hashpw(codeVerify, BCrypt.gensalt(4));

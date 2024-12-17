@@ -197,8 +197,10 @@ public class SendMail {
 
     public static String getFormDeletePublicKey(String email, String code) {
         return "<div style=\"width: 500px; background: #2F189A; color: #fff; padding: 15px; border-radius: 10px\">" +
-                "    <h3 style=\"margin-top: 0;\">Xin chào " + email + "</h3>" +
-                "    <p style=\"color: #ffffff;\">Bạn vừa gửi lệnh yêu cầu hủy khóa công cộng của mình. <br>" +
+                "    <h3 style=\"margin-top: 0; color: #ffffff\">Xin chào " + email + "</h3>" +
+                "    <p style=\"color: #ffffff;\">Bạn vừa gửi lệnh yêu cầu hủy khóa công cộng của mình." +
+                "    </p>" +
+                "    <p style=\"color: #ffffff;\">" +
                 "       Đây là mã xác thực: " + code +
                 "    </p>" +
                 "    <p style=\"color: #fff;\">Mã xác thực chỉ khả dụng tối đa 10' tính từ thời điểm nhận mail.</p>" +
