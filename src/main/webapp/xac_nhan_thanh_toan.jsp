@@ -160,7 +160,10 @@
     </div>
 
     <div class="text-center">
-        <a href="<%=session.getAttribute("back")%>" class="btn btn-danger">Hủy đơn hàng</a>
+        <button class="btn btn-danger" id="cancel-bill" data-id="<%=bill.getId()%>"
+                data-back="<%=session.getAttribute("back")%>">
+            Hủy đơn hàng
+        </button>
     </div>
 </main>
 

@@ -17,4 +17,5 @@ import lombok.*;
 @AllArgsConstructor
 public class Signature {
     private String algorithm, signature;
+    private Boolean verify;
 }

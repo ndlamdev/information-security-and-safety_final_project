@@ -150,7 +150,7 @@ public class BillService {
         return products;
     }
 
-    public boolean updateContact(Bill bill) {
+    public int updateContact(Bill bill) {
         return BILL_REPOSITORY.updateContact(bill);
     }
 
@@ -178,11 +178,19 @@ public class BillService {
         return bill;
     }
 
-    public int updateSignature(Integer id, String algorithm, String signature) {
-        return BILL_REPOSITORY.updateSignature(id, algorithm, signature);
+    public int updateSignature(Integer id, Signature signature) {
+        return BILL_REPOSITORY.updateSignature(id, signature);
     }
 
     public Signature findSignature(Integer id) {
         return BILL_REPOSITORY.findSignature(id);
+    }
+
+    public boolean isVerify(int billId) {
+        return BILL_REPOSITORY.isVerify(billId);
+    }
+
+    public void updateVerify(int billId, boolean verify) {
+        BILL_REPOSITORY.updateVerify(billId, verify);
     }
 }

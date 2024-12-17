@@ -11,6 +11,7 @@ package com.lamnguyen.mat_kinh_kimi.filter;
 import com.lamnguyen.mat_kinh_kimi.model.BannerImage;
 import com.lamnguyen.mat_kinh_kimi.service.BannerService;
 import com.lamnguyen.mat_kinh_kimi.service.CartService;
+import com.lamnguyen.mat_kinh_kimi.util.enums.HashAlgorithms;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -59,6 +60,8 @@ public class BaseFilter implements Filter {
         if (request.getServletContext().getAttribute("authBanner") == null)
             request.getServletContext().setAttribute("authBanner", BannerService.getInstance().getBannerByDescription("%banner%auth%"));
 
+        if (request.getServletContext().getAttribute("algorithms") == null)
+            request.getServletContext().setAttribute("algorithms", HashAlgorithms.ALGORITHMS);
 
         chain.doFilter(request, response);
     }

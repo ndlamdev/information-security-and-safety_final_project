@@ -129,11 +129,14 @@
                             <button type="button" class="menu-item menu-bill-item active" data-action="">
                                 Tất cả
                             </button>
+                            <button type="button" class="menu-item menu-bill-item" data-action="Chưa ký">
+                                Chưa ký
+                            </button>
                             <button type="button" class="menu-item menu-bill-item" data-action="Chờ xác nhận">
                                 Chờ xác nhận
                             </button>
-                            <button type="button" class="menu-item menu-bill-item" data-action="Đang vận chuyển">
-                                Vận chuyển
+                            <button type="button" class="menu-item menu-bill-item" data-action="Xác nhận thành công" style="width: 250px">
+                                Xác nhận thành công
                             </button>
                             <button type="button" class="menu-item menu-bill-item" data-action="Thành công">
                                 Thành công

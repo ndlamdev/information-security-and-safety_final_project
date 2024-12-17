@@ -147,7 +147,6 @@ public class BillController extends HttpServlet implements Action {
             session.setAttribute("billPayed", bill);
             session.setAttribute("file", file);
             session.setAttribute("back", "gio_hang.jsp");
-            request.getServletContext().setAttribute("algorithms", HashAlgorithms.ALGORITHMS);
             response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             title = "Thanh toán không thành công";

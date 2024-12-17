@@ -2,6 +2,7 @@ package com.lamnguyen.mat_kinh_kimi.controller.bill_detail;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action.CancelBillAction;
+import com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action.SignBillAction;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_manager.action.RevertBillAction;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action.SaveEditBillAction;
 import com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action.SeeDetailAction;
@@ -34,6 +35,7 @@ public class BillDetailController extends HttpServlet {
         Action action = switch (actionString) {
             case "save" -> new SaveEditBillAction();
             case "cancel-bill" -> new CancelBillAction();
+            case "sign-bill" -> new SignBillAction();
             default -> throw new NullPointerException();
         };
         action.action(request, response);

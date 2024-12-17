@@ -10,6 +10,7 @@ package com.lamnguyen.mat_kinh_kimi.controller.bill;
 
 import com.lamnguyen.mat_kinh_kimi.config.mail.SendMail;
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
+import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
 import com.lamnguyen.mat_kinh_kimi.service.AddressService;
@@ -59,7 +60,7 @@ public class ConfirmPayController extends HttpServlet implements Action {
                 .status(BillStatusEnum.WAIL_CONFiRM.getStatus())
                 .describe("Đơn hàng của bạn đang chờ xác nhận!")
                 .build());
-        var update = billService.updateSignature(billObj.getId(), algorithm, signature);
+        var update = billService.updateSignature(billObj.getId(), Signature.builder().signature(signature).algorithm(algorithm).verify(false).build());
         if (update == 0) {
             response.sendRedirect(back.toString());
             return;

@@ -34,4 +34,20 @@ $(document).ready(function (e) {
             }
         });
     })
+
+    $("#cancel-bill").click(function () {
+        const button = $(this);
+        $.ajax({
+            url: "bill_detail",
+            type: "post",
+            datatype: "application/json",
+            data: {
+                "action": "cancel-bill",
+                "bill-id": button.data("id")
+            },
+            success: function () {
+                window.location = button.data("back")
+            }
+        })
+    })
 })

@@ -34,6 +34,7 @@ public class SeeDetailAction implements Action {
 
         request.setAttribute("bill", bill);
         request.setAttribute("products", products);
+        request.setAttribute("file", "bill_" + bill.getId() + ".bills");
         request.getRequestDispatcher("chi_tiet_hoa_don.jsp").forward(request, response);
     }
 }

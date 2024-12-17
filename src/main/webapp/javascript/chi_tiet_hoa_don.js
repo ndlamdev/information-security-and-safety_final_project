@@ -11,6 +11,8 @@ $(document).ready(function () {
     });
 
     cancelBill();
+
+    signBill();
 });
 
 function saveEdit() {
@@ -25,6 +27,7 @@ function saveEdit() {
             "province-code": $("#provinces").val(),
             "district-code": $("#districts").val(),
             "ward-code": $("#wards").val(),
+            "old-signature": $("#input-old-signature").val(),
         };
 
         $.ajax({
@@ -42,8 +45,10 @@ function saveEdit() {
                 $("#address").attr("district-code", dataSend["district-code"]);
                 $("#address").attr("ward-code", dataSend["ward-code"]);
                 $.notify("Thay đổi địa chỉ giao hàng thành công!", "success");
-            },
-            error: function (e, x, h){
+                $("#sign-bill").removeClass("d-none")
+                console.log(data.status)
+                // renderStatus(JSON.parse(JSON.stringify(data.status)))
+            }, error: function (e, x, h) {
                 console.error(e.responseText);
                 console.error(x);
                 console.error(h);
@@ -56,21 +61,15 @@ function saveEdit() {
 function cancelBill() {
     $("#cancel-bill").click(function () {
         const dataSend = {
-            "action": "cancel-bill",
-            "bill-id": $(this).attr("bill-id"),
+            "action": "cancel-bill", "bill-id": $(this).attr("bill-id"),
         };
 
         $.ajax({
-            url: "bill_detail",
-            data: dataSend,
-            dataType: "json",
-            method: "POST",
-            success: function () {
+            url: "bill_detail", data: dataSend, dataType: "json", method: "POST", success: function () {
                 $.notify("Hủy đơn hàng thành công!", "success");
                 $(".button-show-dialog-cancel-bill").remove();
                 $("#edit").remove();
-            },
-            error: function (e, x, h){
+            }, error: function (e, x, h) {
                 console.error(e.responseText);
                 console.error(x);
                 console.error(h);
@@ -97,41 +96,29 @@ function displayProvinces() {
 }
 
 function displayDistricts() {
-    const provinceId = $("#address").attr("province-code"),
-        districtsId = $("#address").attr("district-code");
+    const provinceId = $("#address").attr("province-code"), districtsId = $("#address").attr("district-code");
     $.ajax({
-        url: "address",
-        data: {
-            action: "districts",
-            code: provinceId,
-        },
-        method: "GET",
-        dataType: "JSON",
-        success: function (data) {
+        url: "address", data: {
+            action: "districts", code: provinceId,
+        }, method: "GET", dataType: "JSON", success: function (data) {
             for (var i = 0; i < data.districts.length; i++) {
                 let htmlOption = `<option `;
                 if (districtsId === data.districts[i].code) {
                     htmlOption += `selected="selected"`;
                 }
                 htmlOption += `value="${data.districts[i].code}">${data.districts[i].fullName}</option>`;
-                $("#districts").html( $("#districts").html() + htmlOption);
+                $("#districts").html($("#districts").html() + htmlOption);
             }
         },
     });
 }
 
 function displayWards() {
-    const districtsId = $("#address").attr("district-code"),
-        wardsId = $("#address").attr("ward-code");
+    const districtsId = $("#address").attr("district-code"), wardsId = $("#address").attr("ward-code");
     $.ajax({
-        url: "address",
-        data: {
-            action: "wards",
-            code: districtsId,
-        },
-        method: "GET",
-        dataType: "JSON",
-        success: function (data) {
+        url: "address", data: {
+            action: "wards", code: districtsId,
+        }, method: "GET", dataType: "JSON", success: function (data) {
             $("#wards").html("");
             for (var i = 0; i < data.wards.length; i++) {
                 let htmlOption = `<option `;
@@ -145,4 +132,49 @@ function displayWards() {
     });
 }
 
+function signBill() {
+    $("#submit-signature").click(function (e) {
+        $.ajax({
+            url: "bill_detail", method: "post", dataType: "json", data: {
+                action: "sign-bill",
+                "bill-id": $(this).data("id"),
+                signature: $("#signature").val(),
+                algorithm: $("#hashAlgorithm").val()
+            }, success: function (data) {
+                $("#hidden-modal-sign").click()
+                renderStatus(data)
+                $.notify("Ký thành công!", "success");
+                $("#sign-bill").addClass("d-none")
+            }, error: function (e) {
+                console.log(e)
+                $.notify("Ký thất bại!", "error");
+            }
+        })
+    })
+}
 
+function renderStatus(status) {
+    $("#current-status").text(status.status)
+    $(".show-list-trip").append(`
+                        <div class="trip d-flex justify-content-between">
+                            <div class="in4-trip">
+                                <div class="icon-trip d-flex justify-content-between">
+                                    <span><i class="fa-solid fa-circle"></i></span>
+                                    <div class="has-one-line px-2">
+                                        <p>
+                                            ${status.status}
+                                        </p>
+                                        <p>
+                                            ${status.describe}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="time-trip">
+                                <span>
+                                    ${formatData(status.date)}
+                                </span>
+                            </div>
+                        </div>
+    `)
+}

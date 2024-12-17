@@ -137,8 +137,15 @@
                 <!--lộ trình vận chuyển-->
                 <div class="trip-ship mt-4">
                     <div class="row mx-0 header-trip-ship">
-                        <div class="col-12 ps-4 py-3">
+                        <div class="col-12 ps-4 py-3 d-flex justify-content-between align-items-center">
                             <h4>Lộ trình vận chuyển hàng</h4>
+                            <button class="bg-success text-white p-2 rounded-2 border-0 <%=bill.getStatuses().getLast().getStatus().equals("Chưa ký") ? "" : "d-none"%>"
+                                    data-bs-toggle="modal" data-bs-target="#signatureModal"
+                                    id="sign-bill"
+                            >
+                                <img src="./images/icon/pen.png" alt="signature" width="20" height="20">
+                                Ký hóa đơn
+                            </button>
                         </div>
                     </div>
                     <div class="show-list-trip body-trip-ship p-3">
@@ -239,6 +246,12 @@
                     </div>
                     <div class="modal-body" id="form">
                         <div class="mb-3">
+                            <label for="input-old-signature" class="form-label">Chữ ký cũ <span
+                                    class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="input-old-signature"
+                                   placeholder="Vui lòng nhập chữ ký cũ">
+                        </div>
+                        <div class="mb-3">
                             <label for="input-name" class="form-label">Họ và tên <span
                                     class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="input-name"
@@ -298,7 +311,6 @@
             </div>
         </div>
 
-
         <!-- Modal accept-->
         <div class="modal fade" id="accept-cancel" tabindex="-1" aria-labelledby="exampleModalLabel"
              aria-hidden="true">
@@ -319,6 +331,46 @@
                         <button id="cancel-bill" bill-id="<%=bill.getId()%>" type="button" class="btn"
                                 data-bs-dismiss="modal"
                                 style="background-color: var(--color-blue-origin); color: #FFFFFF">OK
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="signatureModal" tabindex="-1" aria-labelledby="signatureModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="signatureModalLabel">Nhập chữ ký điện tử</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="signature" class="form-label">Chữ ký điện tử</label>
+                            <input type="text" required class="form-control" id="signature"
+                                   name="signature"
+                                   placeholder="Nhập chữ ký điện tử">
+                        </div>
+                        <div class="mb-3">
+                            <label for="hashAlgorithm" class="form-label">Thuật toán hash</label>
+                            <select class="form-select" id="hashAlgorithm" name="algorithm">
+                                <%for (String alg : (List<String>) application.getAttribute("algorithms")) {%>
+                                <option value="<%=alg%>"><%=alg%>
+                                </option>
+                                <%}%>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button hidden="" id="hidden-modal-sign" data-bs-dismiss="modal"></button>
+                        <a class="btn btn-secondary text-decoration-none"
+                           href="./doc/bills/<%=request.getAttribute("file")%>"
+                           download="<%=request.getAttribute("file")%>">
+                            Tải hóa đơn
+                        </a>
+                        <button type="button" class="btn btn-success" data-id="<%=bill.getId()%>" id="submit-signature">
+                            Xác nhận ký
                         </button>
                     </div>
                 </div>

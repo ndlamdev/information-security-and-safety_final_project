@@ -22,8 +22,8 @@ public class BillRepositoryImpl extends Repository {
         int transfer = bill.isTransfer() ? 1 : 0;
         int billId = getNextId();
         connector.withHandle(handle ->
-                handle.createUpdate("INSERT INTO bills(id, userId, userName, email, phoneNumber, codeProvince, codeDistrict, codeWard, address, transportFee, transfer) " +
-                                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
+                handle.createUpdate("INSERT INTO bills(id, userId, userName, email, phoneNumber, codeProvince, codeDistrict, codeWard, address, transportFee, transfer, verify) " +
+                                    "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)")
                         .bind(0, billId)
                         .bind(1, bill.getUserId())
                         .bind(2, bill.getUserName())
@@ -35,6 +35,7 @@ public class BillRepositoryImpl extends Repository {
                         .bind(8, bill.getAddress())
                         .bind(9, bill.getTransportFee())
                         .bind(10, transfer)
+                        .bind(11, bill.getVerify())
                         .execute()
         );
 
@@ -109,8 +110,37 @@ public class BillRepositoryImpl extends Repository {
                         .findFirst().orElse(null));
     }
 
-    public boolean updateContact(Bill bill) {
-        return connector.withHandle(handle ->
+    public int updateContact(Bill bill) {
+        var count = connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT COUNT(*)
+                                FROM bills b
+                                WHERE b.userId = :id
+                                AND b.userName = :userName
+                                AND b.phoneNumber = :phoneNumber
+                                AND b.email = :email
+                                AND b.address = :address
+                                AND b.codeProvince = :codeProvince
+                                AND b.codeDistrict = :codeDistrict
+                                AND b.codeWard = :codeWard
+                                """)
+                        .bind("userName", bill.getUserName())
+                        .bind("email", bill.getEmail())
+                        .bind("phoneNumber", bill.getPhoneNumber())
+                        .bind("address", bill.getAddress())
+                        .bind("codeProvince", bill.getCodeProvince())
+                        .bind("codeDistrict", bill.getCodeDistrict())
+                        .bind("codeWard", bill.getCodeWard())
+                        .bind("id", bill.getId())
+                        .mapTo(Integer.class)
+                        .findFirst().orElse(-9999)
+        );
+
+        if (count >= 1)
+            return 0;
+
+
+        var result = connector.withHandle(handle ->
                 handle.createUpdate("""
                                 UPDATE bills SET
                                 userName = :userName,
@@ -131,7 +161,9 @@ public class BillRepositoryImpl extends Repository {
                         .bind("codeDistrict", bill.getCodeDistrict())
                         .bind("codeWard", bill.getCodeWard())
                         .bind("billId", bill.getId())
-                        .execute()) == 1;
+                        .execute());
+
+        return result == 1 ? result : -1;
     }
 
     private void insertSampleData() {
@@ -245,18 +277,20 @@ public class BillRepositoryImpl extends Repository {
                         .findFirst().orElse(null));
     }
 
-    public int updateSignature(Integer id, String algorithm, String signature) {
+    public int updateSignature(Integer id, Signature signature) {
         return connector.withHandle(handle ->
                 handle.createUpdate("""
                                 UPDATE bills b
                                 set b.algorithm = :algorithm,
                                 b.signature = :signature,
+                                b.verify = :verify,
                                 b.dateTimeSign = NOW()
                                 WHERE b.id = :id;
                                 """)
                         .bind("id", id)
-                        .bind("algorithm", algorithm)
-                        .bind("signature", signature)
+                        .bind("algorithm", signature.getAlgorithm())
+                        .bind("signature", signature.getSignature())
+                        .bind("verify", signature.getVerify())
                         .execute()
         );
     }
@@ -266,12 +300,39 @@ public class BillRepositoryImpl extends Repository {
                 handle.createQuery("""
                                 SELECT
                                 b.algorithm as algorithm,
-                                b.signature as signature
+                                b.signature as signature,
+                                b.verify as verify
                                 FROM bills AS b
                                 WHERE b.id = :id;
                                 """)
                         .bind("id", id)
                         .mapToBean(Signature.class)
                         .findFirst().orElse(null));
+    }
+
+    public int updateVerify(int billId, boolean verify) {
+        return connector.withHandle(handle ->
+                handle.createUpdate("""
+                                UPDATE bills b
+                                   set b.verify = :verify
+                                WHERE b.id = :id;
+                                """)
+                        .bind("verify", verify)
+                        .bind("id", billId)
+                        .execute()
+        );
+    }
+
+    public boolean isVerify(int billId) {
+        return connector.withHandle(handle ->
+                handle.createQuery("""
+                                SELECT
+                                    b.verify
+                                FROM bills AS b
+                                WHERE b.id = :id;
+                                """)
+                        .bind("id", billId)
+                        .mapTo(Boolean.class)
+                        .findFirst().orElse(true));
     }
 }
