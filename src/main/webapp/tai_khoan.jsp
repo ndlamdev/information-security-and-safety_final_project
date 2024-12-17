@@ -47,16 +47,24 @@
                 <div class="account-sidebar-menu mt-3">
                     <ul>
                         <li>
-                            <button class="active" data-bs-target="0">Thông tin tài khoản</button>
+                            <a href="#inf">
+                                <button class="active" data-bs-target="0">Thông tin tài khoản</button>
+                            </a>
                         </li>
                         <li>
-                            <button data-bs-target="1" class="bill-history">Lịch sử mua hàng</button>
+                            <a href="#histories">
+                                <button data-bs-target="1" class="bill-history">Lịch sử mua hàng</button>
+                            </a>
                         </li>
                         <li>
-                            <button data-bs-target="2" class="product-reviews">Đánh giá sản phẩm</button>
+                            <a href="#reviews">
+                                <button data-bs-target="2" class="product-reviews">Đánh giá sản phẩm</button>
+                            </a>
                         </li>
                         <li>
-                            <button data-bs-target="3" class="product-reviews">Khóa</button>
+                            <a href="#keys">
+                                <button data-bs-target="3" class="product-reviews">Khóa</button>
+                            </a>
                         </li>
                         <li>
                             <a href="logout">
@@ -135,7 +143,8 @@
                             <button type="button" class="menu-item menu-bill-item" data-action="Chờ xác nhận">
                                 Chờ xác nhận
                             </button>
-                            <button type="button" class="menu-item menu-bill-item" data-action="Xác nhận thành công" style="width: 250px">
+                            <button type="button" class="menu-item menu-bill-item" data-action="Xác nhận thành công"
+                                    style="width: 250px">
                                 Xác nhận thành công
                             </button>
                             <button type="button" class="menu-item menu-bill-item" data-action="Thành công">

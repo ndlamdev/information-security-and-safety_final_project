@@ -3,7 +3,7 @@ $(document).ready(function () {
         bill: 1,
         review: 1,
     }
-    const button = $(".account-sidebar-menu").find("li>button");
+    const button = $(".account-sidebar-menu").find("li button");
     button.click(function () {
         button.removeClass("active");
         const index = $(this).attr("data-bs-target");
@@ -53,12 +53,12 @@ $(document).ready(function () {
     $(`#update-key`).click(function () {
         $('.body-page-content>form').attr('action', 'update-key')
         customModal('Cập nhật khóa',
-          `<p>Bạn muốn cập nhật khóa không?</p>`)
+            `<p>Bạn muốn cập nhật khóa không?</p>`)
     })
 
     $(`#delete-key`).click(function () {
         $('.body-page-content').attr('action', 'delete-key')
-        console.log( $('.body-page-content>form').attr('action'))
+        console.log($('.body-page-content>form').attr('action'))
         customModal('Hủy khóa',
             `
                 <p>Vui lòng nhập thời gian lộ khóa.</p><br>
@@ -73,9 +73,13 @@ $(document).ready(function () {
 
     $('#public-key').on('input', (() => {
         let str = $('#public-key').val()
-        if(!str.trim().length) $('#update-key').attr('disabled', true)
+        if (!str.trim().length) $('#update-key').attr('disabled', true)
         else $('#update-key').attr('disabled', false)
     }))
+
+    const hash = window.location.hash;
+    if (hash)
+        $(`a[href="${hash}"] > button`).click()
 });
 
 function lazyLoadBillHistory(objectIndex) {
