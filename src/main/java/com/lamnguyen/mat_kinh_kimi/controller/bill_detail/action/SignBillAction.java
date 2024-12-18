@@ -2,9 +2,7 @@ package com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
-import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
-import com.lamnguyen.mat_kinh_kimi.service.AddressService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
@@ -43,7 +41,7 @@ public class SignBillAction implements Action {
                 .canEdit(true)
                 .billId(billId)
                 .date(LocalDateTime.now())
-                .status(BillStatusEnum.WAIL_CONFiRM.getStatus())
+                .status(BillStatusEnum.WAIL_CONFIRM.getStatus())
                 .describe("Đơn hàng của bạn đang chờ xác nhận!")
                 .build();
         billStatusService.insert(status);

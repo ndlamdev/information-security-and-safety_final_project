@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.Objects;
 
 public class LockPublicKeyAction implements Action {
@@ -23,28 +22,35 @@ public class LockPublicKeyAction implements Action {
         response.setContentType("application/json");
 
         boolean result = false;
-        var sendMailTime = (LocalDateTime) request.getSession().getAttribute("sendMailTime");
+        var sendMailTime = (LocalDateTime) request.getSession().getAttribute("time");
+        var user = (User) request.getSession().getAttribute("user");
+        var code = (String) request.getSession().getAttribute("code");
+        var verifyCode = request.getParameter("verifyCode");
         sendMailTime = Objects.requireNonNullElse(sendMailTime, LocalDateTime.of(2000, 1, 1, 0, 0));
-        if(timeOut(sendMailTime)) {
-            request.getSession().removeAttribute("sendMailTime");
-            request.getSession().removeAttribute("codeVerify");
-        }else {
-            var user = (User) request.getSession().getAttribute("user");
-            var hashCodeVerify = (String) request.getSession().getAttribute("codeVerify");
-            var mailCodeVerify = request.getParameter("mailCodeVerify");
-            if(BCrypt.checkpw(mailCodeVerify, hashCodeVerify)) {
-                PublicKeyService publicKeyService = PublicKeyService.getInstance();
-                result = publicKeyService.lockPublicKey(user.getId());
-                request.getSession().removeAttribute("sendMailTime");
-                request.getSession().removeAttribute("codeVerify");
-            }
+
+        if (user == null) {
+            Action.errorAPI(request, response);
+            return;
         }
+
+        var equals = BCrypt.checkpw(verifyCode, code);
+        if (timeOut(sendMailTime) || equals) {
+            request.getSession().removeAttribute("time");
+            request.getSession().removeAttribute("code");
+        }
+
+        if (equals) {
+            PublicKeyService publicKeyService = PublicKeyService.getInstance();
+            result = publicKeyService.lockPublicKey(user.getId());
+        }
+
 
         JSONObject json = new JSONObject();
         json.put("lockKey", result);
         response.getWriter().println(json);
     }
+
     private boolean timeOut(LocalDateTime sendMailTime) {
-        return sendMailTime.until(LocalDateTime.now(), ChronoUnit.MINUTES) > 10;
+        return sendMailTime.until(LocalDateTime.now(), ChronoUnit.MINUTES) > 5;
     }
 }

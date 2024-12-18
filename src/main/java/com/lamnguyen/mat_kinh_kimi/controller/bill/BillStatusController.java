@@ -15,12 +15,12 @@ import java.util.List;
 @WebServlet(name = "billStatus", value = "/set-bills-status-cancel")
 public class BillStatusController extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("application/json");
 
-        var values =  req.getParameter("billIds");
+        var values = req.getParameter("billIds");
         var arrValues = values.split(",");
         List<Integer> billIds = Arrays.stream(arrValues).map(Integer::parseInt).toList();
         BillStatusService billStatusService = BillStatusService.getInstance();

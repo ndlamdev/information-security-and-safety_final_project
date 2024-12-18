@@ -30,15 +30,10 @@ public class VerifyService {
         return (instance = instance != null ? instance : new VerifyService());
     }
 
-    private PublicKey loadPublicKey(int userId) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        String base64PublicKey = userService.getPublicKey(userId);
-        X509EncodedKeySpec x509EncodedKeySpec = new X509EncodedKeySpec(Base64.getDecoder().decode(base64PublicKey));
-        return KeyFactory.getInstance("DSA").generatePublic(x509EncodedKeySpec);
-    }
 
     public boolean verifyBill(int userId, String algorithm, String signature, String pathFile) throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, SignatureException, IOException, NoSuchProviderException {
         Security.addProvider(new BouncyCastleProvider());
-        var signatureObj = VerifySignatureFileImpl.getInstance(algorithm, loadPublicKey(userId));
+        var signatureObj = VerifySignatureFileImpl.getInstance(algorithm, PublicKeyService.getInstance().getPublicKey(userId));
         return signatureObj.verifyFile(pathFile, signature);
     }
 }

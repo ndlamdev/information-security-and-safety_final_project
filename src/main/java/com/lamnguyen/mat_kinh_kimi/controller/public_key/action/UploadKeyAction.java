@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Base64;
 import java.util.Scanner;
 
@@ -23,16 +25,38 @@ public class UploadKeyAction implements Action {
 
         Part filePart = request.getPart("publicKeyFile");
         var user = (User) request.getSession().getAttribute("user");
-        boolean result = false;
-        byte[] data;
-        try (InputStream inputStream = filePart.getInputStream(); ) {
-           String publicKey = Base64.getEncoder().encodeToString(inputStream.readAllBytes());
+        if (user == null) {
+            Action.errorAPI(request, response, new JSONObject() {{
+                put("message", "Vui lòng đăng nhập trước khi thực hiện cập nhật khóa!");
+            }});
+            return;
+        }
+        if (PublicKeyService.getInstance().existsPublicKey(user.getId())) {
+            Action.errorAPI(request, response, new JSONObject() {{
+                put("message", "Bạn đã cập khóa công khai!");
+            }});
+            return;
+        }
+
+        boolean result;
+        try {
+            InputStream inputStream = filePart.getInputStream();
             PublicKeyService publicKeyService = PublicKeyService.getInstance();
-            result = publicKeyService.uploadPublicKey(publicKey, user.getId());
+            result = publicKeyService.uploadPublicKey(PublicKeyService.readPublicKey(inputStream), user.getId());
+
+            if (result) return;
+            Action.errorAPI(request, response, new JSONObject() {{
+                put("message", "Cập nhật khóa thất bại!");
+            }});
+        } catch (Exception e) {
+            Action.errorAPI(request, response, new JSONObject() {{
+                put("message", "Khóa không hợp lệ! Vui lòng nhập fil khóa hợp lệ hoặc tạo khóa mới bằng phần mềm của chúng tôi!");
+            }});
+            return;
         }
 
         JSONObject json = new JSONObject();
-        json.put("uploadKey", result);
+        json.put("message", "Cập nhật khóa thành công!");
         response.getWriter().println(json);
     }
 }

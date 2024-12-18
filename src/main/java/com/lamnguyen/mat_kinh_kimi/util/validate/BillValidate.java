@@ -11,6 +11,7 @@ package com.lamnguyen.mat_kinh_kimi.util.validate;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
+import com.lamnguyen.mat_kinh_kimi.service.PublicKeyService;
 import com.lamnguyen.mat_kinh_kimi.service.UserService;
 
 import javax.servlet.ServletException;
@@ -18,6 +19,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
 
 public class BillValidate {
     public static Bill validateBill(HttpServletRequest request, HttpServletResponse response, String dispatcher, boolean buyNow) throws ServletException, IOException {
@@ -111,9 +115,14 @@ public class BillValidate {
             return null;
         }
 
-        var signature = UserService.getInstance().getPublicKey(user.getId());
+        PublicKey publicKey = null;
+        try {
+            publicKey = PublicKeyService.getInstance().getPublicKey(user.getId());
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new RuntimeException(e);
+        }
 
-        if (signature == null || signature.isEmpty()) {
+        if (publicKey == null) {
             session.setAttribute("title", "Lỗi chưa cập nhật khóa!");
             session.setAttribute("message", "Vui lòng cập nhật khóa công khai trước khi mua hàng!. Nhấn \"OK\" để chuyển đến trang cập nhật khóa.");
             request.getRequestDispatcher(dispatcher).forward(request, response);

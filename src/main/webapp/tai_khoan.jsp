@@ -18,6 +18,7 @@
     <script src="jquery/jquery-3.7.1.slim.min.js"></script>
     <script src="jquery/jquery-3.7.1.min.js"></script>
 
+    <script src="notify/notify.js"></script>
     <title>Tài khoản</title>
 </head>
 
@@ -216,10 +217,12 @@
     </div>
 </main>
 <%--modal--%>
-<button type="button" name="showModal" hidden="hidden" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#show-bills-will-delete">
+<button type="button" name="showModal" hidden="hidden" class="btn btn-primary" data-bs-toggle="modal"
+        data-bs-target="#show-bills-will-delete">
     Launch demo modal
 </button>
-<div id="show-bills-will-delete" class="modal fade" tabindex="-1" aria-labelledby="deleteBillsModalLabel" aria-hidden="true">
+<div id="show-bills-will-delete" class="modal fade" tabindex="-1" aria-labelledby="deleteBillsModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
@@ -237,17 +240,11 @@
                     </tr>
                     </thead>
                     <tbody class="bills-will-delete">
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
             <div class="modal-footer">
-                <button type="button" name="display-history-bought" class="btn btn-info" >Xem lịch sử mua hàng</button>
+                <button type="button" name="display-history-bought" class="btn btn-info">Xem lịch sử mua hàng</button>
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
                 <button type="button" name="delete-bills" class="btn btn-danger">Hủy</button>
             </div>

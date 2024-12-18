@@ -310,16 +310,5 @@ public class UserRepositoryImpl extends Repository {
                         .findFirst().orElse(null)
         );
     }
-
-    public String getPublicKey(int userId) {
-        return connector.withHandle(handle ->
-                handle.createQuery("""
-                                SELECT u.publicKey
-                                FROM users AS u
-                                WHERE u.id = ?;
-                                """)
-                        .bind(0, userId)
-                        .mapTo(String.class).findFirst().orElse(null));
-    }
 }
 

@@ -12,7 +12,7 @@ $(document).ready(function () {
     });
 
     $("#input-avatar").change(function () {
-        var selectedFile = this.files[0];
+        let selectedFile = this.files[0];
         const imageUrl = window.URL.createObjectURL(selectedFile);
         $("#avatar").attr("src", imageUrl);
     });
@@ -69,14 +69,13 @@ $(document).ready(function () {
                 processData: false,
                 method: "POST",
                 success: (data) => {
-                    if (data.uploadKey) {
-                        successNotify("Thành công!",  "success");
-                        $('.workspace-key').trigger('click');
-                    } else {
-                        successNotify("Thất bại!", "error");
-                    }
+                    const message = data.message;
+                    notify("Thành công!", "success", message);
+                    $('.workspace-key').trigger('click');
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
+                    const message = jqXHR.responseJSON.message;
+                    notify("Thất bại!", "error", message);
                     console.log(jqXHR);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -91,71 +90,11 @@ $(document).ready(function () {
             data: {"action": "send-otp-delete-key"},
             dataType: "JSON",
             method: "POST",
-        })
-        Swal.fire({
-            title: "Hủy khóa",
-            input: 'text',
-            inputLabel: 'Kiểm tra email của bạn.',
-            inputPlaceholder: 'Nhập mã xác thực',
-            icon: "question",
-            showCancelButton: true,
-            showDenyButton: true,
-            denyButtonText: 'Gửi lại mã',
-            confirmButtonText: 'OK',
-            preConfirm: (value) => {
-                if (!value) Swal.showValidationMessage("Bạn chưa nhập dữ liệu!");
-                return value
+            success: function (data) {
+                notifyCancelKey(data.time)
             },
-        }).then((result) => {
-            if (result.isConfirmed) {
-                const data = {
-                    "action": "lock-key",
-                    "mailCodeVerify": result.value,
-                }
-                $.ajax({
-                    url: "public-key",
-                    data: data,
-                    dataType: "JSON",
-                    method: "POST",
-                    success: (data) => {
-                        if (data.lockKey) {
-                            successNotify("Thành công!",  "success");
-                            $('.workspace-key').trigger('click');
-                            $.ajax({
-                                url: "bill-will-delete",
-                                method: "GET",
-                                success: (data) => {
-                                    insertDataIntoTable(data.BillsWillDelete)
-                                },
-                                error: (jqXHR, textStatus, errorThrown) => {
-                                    console.log(jqXHR);
-                                    console.log(textStatus);
-                                    console.log(errorThrown);
-                                }
-                            })
-
-                        } else {
-                            successNotify("Thất bại!", "error");
-                        }
-                    },
-                    error: (jqXHR, textStatus, errorThrown) => {
-                        console.log(jqXHR);
-                        console.log(textStatus);
-                        console.log(errorThrown);
-                    }
-                })
-            }
-            if (result.isDenied) {
-                successNotify("Gửi lại mã!", "success");
-                $.ajax({
-                    url: "public-key",
-                    data: {
-                        "action": "send-otp-delete-key",
-                        "resend": true
-                    },
-                    dataType: "JSON",
-                    method: "POST",
-                })
+            error: function (data) {
+                notify("Lỗi xóa khóa!", "error", data.responseJSON.message);
             }
         })
     })
@@ -165,10 +104,6 @@ $(document).ready(function () {
         if (!str.trim().length) $('#update-key').attr('disabled', true)
         else $('#update-key').attr('disabled', false)
     }))
-
-    const hash = window.location.hash;
-    if (hash)
-        $(`a[href="${hash}"] > button`).click()
 
     $('.workspace-key').click(() => {
         $.ajax({
@@ -186,6 +121,7 @@ $(document).ready(function () {
                 }
             },
             error: (jqXHR, textStatus, errorThrown) => {
+                notify("Thất bại!", "success", error.responseText);
                 console.log(jqXHR);
                 console.log(textStatus);
                 console.log(errorThrown);
@@ -205,23 +141,23 @@ $(document).ready(function () {
             values.push($(this).attr("data-index-id"));
         });
 
-        if(!values.length) Swal.fire("Vui lòng chọn đơn hàng muốn hủy!", "", "error");
+        if (!values.length) notify("Vui lòng chọn đơn hàng muốn hủy!", "error");
 
         $.ajax({
             url: "set-bills-status-cancel",
             data: {
-                "billIds" : `${values}`
+                "billIds": `${values}`
             },
             dataType: "JSON",
-            method: "GET",
+            method: "POST",
             success: (data) => {
-                if(data.result) {
-                    successNotify("Thành công!",  "success");
+                if (data.result) {
+                    notify("Thành công!", "success");
                     $(`button[data-bs-dismiss=modal]`).click()
-                }
-                else  successNotify("Thất bại!", "error");
+                } else notify("Thất bại!", "error");
             },
             error: (jqXHR, textStatus, errorThrown) => {
+                notify("Thất bại!", "error");
                 console.log(jqXHR);
                 console.log(textStatus);
                 console.log(errorThrown);
@@ -230,18 +166,21 @@ $(document).ready(function () {
     })
 
     $(`button[name="display-history-bought"]`).click(() => {
-        displayPageContent(1)
-        $(`button[data-bs-dismiss=modal]`).click()
+        $(`a[href="#histories"] > button`).click()
     })
+
+    const hash = window.location.hash;
+    if (hash)
+        $(`a[href="${hash}"] > button`).click()
 });
 
 function lazyLoadBillHistory(objectIndex) {
     const indexOld = objectIndex.bill;
-    var myDiv = $('#display-bills');
-    var totalScrollHeight = myDiv.prop('scrollHeight');
+    let myDiv = $('#display-bills');
+    let totalScrollHeight = myDiv.prop('scrollHeight');
 
     // Tính tổng chiều cao đã cuộn (scrollTop + clientHeight)
-    var scrolledHeight = myDiv.scrollTop() + myDiv.height();
+    let scrolledHeight = myDiv.scrollTop() + myDiv.height();
 
     // Kiểm tra xem người dùng đã cuộn đến cuối chưa
     if (Math.ceil(scrolledHeight) === totalScrollHeight) {
@@ -253,11 +192,11 @@ function lazyLoadBillHistory(objectIndex) {
 
 function lazyLoadReviews(objectIndex) {
     const indexOld = objectIndex.review;
-    var myDiv = $('#display-product-reviews');
-    var totalScrollHeight = myDiv.prop('scrollHeight');
+    let myDiv = $('#display-product-reviews');
+    let totalScrollHeight = myDiv.prop('scrollHeight');
 
     // Tính tổng chiều cao đã cuộn (scrollTop + clientHeight)
-    var scrolledHeight = myDiv.scrollTop() + myDiv.height();
+    let scrolledHeight = myDiv.scrollTop() + myDiv.height();
 
     // Kiểm tra xem người dùng đã cuộn đến cuối chưa
     if (Math.ceil(scrolledHeight) === totalScrollHeight) {
@@ -408,15 +347,15 @@ function formatNumber(number) {
 }
 
 function uploadProfile() {
-    var fullName = document.getElementById('fullname_edit').value;
-    var sex = document.getElementById('sex_edit').value;
-    var birthday = document.getElementById('birthday_edit').value;
-    var avatarInput = document.getElementById('input-avatar');
+    let fullName = document.getElementById('fullname_edit').value;
+    let sex = document.getElementById('sex_edit').value;
+    let birthday = document.getElementById('birthday_edit').value;
+    let avatarInput = document.getElementById('input-avatar');
     if (avatarInput.files.length > 0) {
-        var avatarFile = avatarInput.files[0];
+        let avatarFile = avatarInput.files[0];
     }
 
-    var formData = new FormData();
+    let formData = new FormData();
     formData.append('full_name', fullName);
     formData.append('sex', sex);
     formData.append('birthday', birthday);
@@ -430,22 +369,11 @@ function uploadProfile() {
         success: function (response) {
             console.log('Upload successful');
             console.log(response);
-            Swal.fire({
-                title: 'Thành công!',
-                text: 'Cập nhật thành công',
-                icon: 'susscess',
-                confirmButtonText: 'Oke',
-                timer: 1500
-            }).then(rs => location.reload())
+            notify('Thành công!', "success", 'Cập nhật thành công', (rs) => location.reload());
         },
         error: function (error) {
             console.error('Error uploading profile');
-            Swal.fire({
-                title: 'Thất bại!',
-                text: error.responseText,
-                icon: 'error',
-                confirmButtonText: 'Oke'
-            })
+            notify('Thất bại!', 'error', error.responseText)
         }
     });
 
@@ -521,18 +449,14 @@ function changePassword({email}) {
                     confirmButtonText: 'OK'
                 });
             }
-
-
         }
     });
 }
 
 function insertDataIntoTable(data) {
     $(`button[name=showModal]`).click()
-    // $(`.bills-will-delete`).html()
     const $tableBody = $("#show-bills-will-delete tbody");
-    $tableBody.empty(); // Clear existing rows (if any)
-    // Iterate through the data array and append rows
+    $tableBody.empty();
     $.each(data, function (index, item) {
         const formattedDate = new Date(item.date).toLocaleString();
         let row = `
@@ -543,16 +467,108 @@ function insertDataIntoTable(data) {
                             <td><input type="checkbox" data-index-id="${item.id}" /></td>
                         </tr>
                     `;
-        if(!data.length) row = `<tr><td colspan="4">Không có dữ liệu</td></tr>`
+        if (!data.length) row = `<tr><td colspan="4">Không có dữ liệu</td></tr>`
         $tableBody.append(row);
     });
 }
 
-function successNotify(result, icon){
+function notify(title, icon = "success", text = "", callback) {
     Swal.fire({
         icon: icon,
-        title: result,
+        title: title,
+        text: text,
         showConfirmButton: false,
         timer: 1000
+    }).then(rs => {
+        if (callback) callback(rs)
     });
+}
+
+function notifyCancelKey(sendMailAt) {
+    const date = new Date(Date.parse(sendMailAt))
+    const now = Date.now();
+    let time = (5 * 60 * 1000 - (now - date)) / 1000
+    let id = 0
+    Swal.fire({
+        title: "Hủy khóa",
+        input: 'text',
+        inputLabel: 'Kiểm tra email của bạn.',
+        inputPlaceholder: 'Nhập mã xác thực',
+        icon: "question",
+        showCancelButton: true,
+        showDenyButton: true,
+        denyButtonText: 'Gửi lại mã',
+        confirmButtonText: 'OK',
+        preConfirm: (value) => {
+            if (!value) Swal.showValidationMessage("Bạn chưa nhập dữ liệu!");
+            else {
+                $.ajax({
+                    url: "public-key",
+                    data: {
+                        "action": "lock-key",
+                        "verifyCode": value,
+                    },
+                    dataType: "JSON",
+                    method: "POST",
+                    success: (data) => {
+                        if (data.lockKey) {
+                            notify("Thành công!", "success");
+                            $('.workspace-key').trigger('click');
+                            $.ajax({
+                                url: "bill-will-delete",
+                                method: "GET",
+                                success: (data) => {
+                                    insertDataIntoTable(data.BillsWillDelete)
+                                },
+                                error: (jqXHR, textStatus, errorThrown) => {
+                                    console.log(jqXHR);
+                                    console.log(textStatus);
+                                    console.log(errorThrown);
+                                }
+                            })
+
+                        } else {
+                            notify("Thất bại!", "error");
+                        }
+                    },
+                    error: (jqXHR, textStatus, errorThrown) => {
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                        notify("Thất bại!", "error");
+                    }
+                })
+            }
+            return value
+        },
+        preDeny: () => {
+            if (id) clearInterval(id)
+            id = setInterval(() => {
+                if (time > 0) {
+                    Swal.showValidationMessage("Vui lòng kiểm tra email của bạn!");
+                    clearInterval(id)
+                    return;
+                }
+
+                clearInterval(id)
+                $.ajax({
+                    url: "public-key",
+                    data: {
+                        "action": "send-otp-delete-key",
+                    },
+                    dataType: "JSON",
+                    method: "POST",
+                    success: function (data) {
+                        $.notify("Gửi lại mã thành công!", "success");
+                    },
+                    error: function (data) {
+                        $.notify("Gửi mail thất bại", "error");
+                    }
+                })
+
+                time = time - 1;
+            }, 1000)
+            return false;
+        },
+    })
 }

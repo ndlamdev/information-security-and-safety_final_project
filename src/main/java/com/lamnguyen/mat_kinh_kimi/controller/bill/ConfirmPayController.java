@@ -62,7 +62,7 @@ public class ConfirmPayController extends HttpServlet implements Action {
                 .canEdit(true)
                 .billId(billObj.getId())
                 .date(LocalDateTime.now())
-                .status(BillStatusEnum.WAIL_CONFiRM.getStatus())
+                .status(BillStatusEnum.WAIL_CONFIRM.getStatus())
                 .describe("Đơn hàng của bạn đang chờ xác nhận!")
                 .build());
         var update = billService.updateSignature(billObj.getId(), Signature.builder().signature(signature).algorithm(algorithm).verify(false).build());
