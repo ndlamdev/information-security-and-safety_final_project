@@ -17,7 +17,6 @@ $(document).ready(function () {
         $("#avatar").attr("src", imageUrl);
     });
 
-
     $(`.product-reviews`).click(function () {
         objectIndex.review = 1;
         $('#display-product-reviews').off('scroll');
@@ -51,24 +50,114 @@ $(document).ready(function () {
     });
 
     $(`#update-key`).click(function () {
-        $('.body-page-content>form').attr('action', 'update-key')
-        customModal('Cập nhật khóa',
-            `<p>Bạn muốn cập nhật khóa không?</p>`)
+        Swal.fire({
+            title: "Cập nhật khóa",
+            text: "Bạn có chắc chắn muốn cập nhật khóa không?",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: 'Ok',
+        }).then((result) => {
+            // Create FormData and append the selected file
+            let formData = new FormData();
+            let fileInput = $('#public-key')[0].files[0];
+            formData.append("action", "upload-key");
+            formData.append("publicKeyFile", fileInput);
+            $.ajax({
+                url: "public-key",
+                data: formData,
+                contentType: false,
+                processData: false,
+                method: "POST",
+                success: (data) => {
+                    if (data.uploadKey) {
+                        successNotify("Thành công!",  "success");
+                        $('.workspace-key').trigger('click');
+                    } else {
+                        successNotify("Thất bại!", "error");
+                    }
+                },
+                error: (jqXHR, textStatus, errorThrown) => {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            })
+        })
     })
 
     $(`#delete-key`).click(function () {
-        $('.body-page-content').attr('action', 'delete-key')
-        console.log($('.body-page-content>form').attr('action'))
-        customModal('Hủy khóa',
-            `
-                <p>Vui lòng nhập thời gian lộ khóa.</p><br>
-                    <div class="row d-flex">
-                      <input type="date" class="mx-1 col-4 border-1 rounded-1 border-primary" id="dateInput">
-                      <input type="number" placeholder="HH" aria-label="hour" class="mx-1 col-2"   min="0" max="24" step="1">
-                      <input type="number" placeholder="mm" aria-label="second" class="mx-1 col-2 "   min="0" max="60" step="1">
-                      <input type="number" placeholder="ss" aria-label="milli" class="mx-1 col-2 rounded-0 " value="00" min="0" max="60" step="1">
-                    </div>
-            `)
+        $.ajax({
+            url: "public-key",
+            data: {"action": "send-otp-delete-key"},
+            dataType: "JSON",
+            method: "POST",
+        })
+        Swal.fire({
+            title: "Hủy khóa",
+            input: 'text',
+            inputLabel: 'Kiểm tra email của bạn.',
+            inputPlaceholder: 'Nhập mã xác thực',
+            icon: "question",
+            showCancelButton: true,
+            showDenyButton: true,
+            denyButtonText: 'Gửi lại mã',
+            confirmButtonText: 'OK',
+            preConfirm: (value) => {
+                if (!value) Swal.showValidationMessage("Bạn chưa nhập dữ liệu!");
+                return value
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const data = {
+                    "action": "lock-key",
+                    "mailCodeVerify": result.value,
+                }
+                $.ajax({
+                    url: "public-key",
+                    data: data,
+                    dataType: "JSON",
+                    method: "POST",
+                    success: (data) => {
+                        if (data.lockKey) {
+                            successNotify("Thành công!",  "success");
+                            $('.workspace-key').trigger('click');
+                            $.ajax({
+                                url: "bill-will-delete",
+                                method: "GET",
+                                success: (data) => {
+                                    insertDataIntoTable(data.BillsWillDelete)
+                                },
+                                error: (jqXHR, textStatus, errorThrown) => {
+                                    console.log(jqXHR);
+                                    console.log(textStatus);
+                                    console.log(errorThrown);
+                                }
+                            })
+
+                        } else {
+                            successNotify("Thất bại!", "error");
+                        }
+                    },
+                    error: (jqXHR, textStatus, errorThrown) => {
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                    }
+                })
+            }
+            if (result.isDenied) {
+                successNotify("Gửi lại mã!", "success");
+                $.ajax({
+                    url: "public-key",
+                    data: {
+                        "action": "send-otp-delete-key",
+                        "resend": true
+                    },
+                    dataType: "JSON",
+                    method: "POST",
+                })
+            }
+        })
     })
 
     $('#public-key').on('input', (() => {
@@ -80,6 +169,70 @@ $(document).ready(function () {
     const hash = window.location.hash;
     if (hash)
         $(`a[href="${hash}"] > button`).click()
+
+    $('.workspace-key').click(() => {
+        $.ajax({
+            url: "public-key",
+            data: {'action': 'exists-key'},
+            dataType: "JSON",
+            method: "GET",
+            success: (data) => {
+                if (data.existsKey) {
+                    $('#status-key').html(`<i class="has-key fa-solid fa-check text-success"></i>`)
+                    $('.delete-key').attr('disabled', false)
+                } else {
+                    $('#status-key').html(`<i class="non-key fa-solid fa-x text-danger">`)
+                    $('.delete-key').attr('disabled', true)
+                }
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    })
+
+    $(`button[name=delete-bills]`).click(() => {
+        // Get all checked checkboxes
+        const checkedItems = $("input[type=checkbox]:checked");
+
+        // Array to store the id order of checked checkboxes
+        const values = [];
+
+        // Loop through each checked checkbox
+        checkedItems.each(function () {
+            values.push($(this).attr("data-index-id"));
+        });
+
+        if(!values.length) Swal.fire("Vui lòng chọn đơn hàng muốn hủy!", "", "error");
+
+        $.ajax({
+            url: "set-bills-status-cancel",
+            data: {
+                "billIds" : `${values}`
+            },
+            dataType: "JSON",
+            method: "GET",
+            success: (data) => {
+                if(data.result) {
+                    successNotify("Thành công!",  "success");
+                    $(`button[data-bs-dismiss=modal]`).click()
+                }
+                else  successNotify("Thất bại!", "error");
+            },
+            error: (jqXHR, textStatus, errorThrown) => {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    })
+
+    $(`button[name="display-history-bought"]`).click(() => {
+        displayPageContent(1)
+        $(`button[data-bs-dismiss=modal]`).click()
+    })
 });
 
 function lazyLoadBillHistory(objectIndex) {
@@ -374,7 +527,32 @@ function changePassword({email}) {
     });
 }
 
-function customModal(title, content) {
-    $('.modal-header>.modal-title').text(title)
-    $('.modal-content>.modal-body').html(content)
+function insertDataIntoTable(data) {
+    $(`button[name=showModal]`).click()
+    // $(`.bills-will-delete`).html()
+    const $tableBody = $("#show-bills-will-delete tbody");
+    $tableBody.empty(); // Clear existing rows (if any)
+    // Iterate through the data array and append rows
+    $.each(data, function (index, item) {
+        const formattedDate = new Date(item.date).toLocaleString();
+        let row = `
+                        <tr>
+                            <th scope="row">${item.id}</th>
+                            <td>${formattedDate}</td>
+                            <td>${item.status}</td>
+                            <td><input type="checkbox" data-index-id="${item.id}" /></td>
+                        </tr>
+                    `;
+        if(!data.length) row = `<tr><td colspan="4">Không có dữ liệu</td></tr>`
+        $tableBody.append(row);
+    });
+}
+
+function successNotify(result, icon){
+    Swal.fire({
+        icon: icon,
+        title: result,
+        showConfirmButton: false,
+        timer: 1000
+    });
 }

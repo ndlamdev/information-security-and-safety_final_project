@@ -24,6 +24,7 @@ public class SendMail {
     private SendMail() {
         Properties props = new Properties();
         props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.port", "587"); // Sử dụng 587 thay vì 25
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.ssl.protocols", "TLSv1.2");
@@ -50,6 +51,7 @@ public class SendMail {
                 e.printStackTrace(System.out);
             }
         });
+        System.out.println("Send mail to " + to);
         executor.shutdown();
     }
 
@@ -191,5 +193,17 @@ public class SendMail {
                 "    </div>" +
                 "</div>";
         return form;
+    }
+
+    public static String getFormDeletePublicKey(String email, String code) {
+        return "<div style=\"width: 500px; background: #2F189A; color: #fff; padding: 15px; border-radius: 10px\">" +
+                "    <h3 style=\"margin-top: 0; color: #ffffff\">Xin chào " + email + "</h3>" +
+                "    <p style=\"color: #ffffff;\">Bạn vừa gửi lệnh yêu cầu hủy khóa công cộng của mình." +
+                "    </p>" +
+                "    <p style=\"color: #ffffff;\">" +
+                "       Đây là mã xác thực: " + code +
+                "    </p>" +
+                "    <p style=\"color: #fff;\">Mã xác thực chỉ khả dụng tối đa 10' tính từ thời điểm nhận mail.</p>" +
+                "</div>";
     }
 }

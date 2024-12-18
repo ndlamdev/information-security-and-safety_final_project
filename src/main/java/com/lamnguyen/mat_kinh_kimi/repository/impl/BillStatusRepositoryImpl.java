@@ -139,4 +139,15 @@ public class BillStatusRepositoryImpl extends Repository {
                         .execute()
         );
     }
+
+    public boolean setStatusBillsCancel(List<Integer> billIds) {
+        return connector.withHandle(handle ->
+                handle.createUpdate("""
+                                    UPDATE bill_statuses bs
+                                    SET bs.status = 'Đã hủy', bs.describe = 'Đơn hàng đã bị hủy!'
+                                    WHERE bs.billId IN (<billIds>);
+                                """.replace("<billIds>", String.join(", ", billIds.stream().map(String::valueOf).toList())))
+                        .execute() > 0
+        );
+    }
 }

@@ -1,9 +1,11 @@
 package com.lamnguyen.mat_kinh_kimi.repository.impl;
 
+import com.lamnguyen.mat_kinh_kimi.domain.dto.BillWillDelete;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillManage;
 import com.lamnguyen.mat_kinh_kimi.repository.Repository;
+import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 
 import java.util.List;
 import java.util.Random;
@@ -46,7 +48,7 @@ public class BillRepositoryImpl extends Repository {
         return connector.withHandle(handle ->
                 handle.createQuery("SELECT MAX(b.id) FROM bills as b;")
                         .mapTo(Integer.class)
-                        .findFirst().orElse(0)
+                        .findFirst().orElse(1)
         ) + 1;
     }
 
@@ -302,5 +304,15 @@ public class BillRepositoryImpl extends Repository {
                         .bind("id", billId)
                         .mapTo(Boolean.class)
                         .findFirst().orElse(true));
+    }
+
+    public List<BillWillDelete> getBillsWillDelete(Integer userId){
+        return connector.withHandle(handle ->
+                handle.createQuery("select b.id, bs.date, bs.status from bills as b\n" +
+                                "join bill_statuses bs on b.id = bs.billId\n" +
+                                "where bs.status IN (" + "'" + BillStatusEnum.WAIL_CONFiRM.getStatus() +"'" +", "+ "'" +BillStatusEnum.CONFIRM_SUCCESS.getStatus()+"')" + " and b.userId = ?" )
+                        .bind(0, userId)
+                        .mapToBean(BillWillDelete.class)
+                        .list());
     }
 }
