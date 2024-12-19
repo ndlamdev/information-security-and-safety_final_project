@@ -56,7 +56,7 @@ $(document).ready(function () {
             icon: "info",
             showCancelButton: true,
             confirmButtonText: 'Ok',
-        }).then((result) => {
+        }).then(() => {
             // Create FormData and append the selected file
             let formData = new FormData();
             let fileInput = $('#public-key')[0].files[0];
@@ -68,14 +68,17 @@ $(document).ready(function () {
                 contentType: false,
                 processData: false,
                 method: "POST",
+                dataType: "JSON",
                 success: (data) => {
+                    console.log(data)
                     const message = data.message;
                     notify("Thành công!", "success", message);
                     $('.workspace-key').trigger('click');
                 },
                 error: (jqXHR, textStatus, errorThrown) => {
-                    const message = jqXHR.responseJSON.message;
-                    notify("Thất bại!", "error", message);
+                    if (jqXHR.responseJSON)
+                        notify("Thất bại!", "error", jqXHR.responseJSON.message, null, 3000);
+                    else notify("Thất bại!", "error");
                     console.log(jqXHR);
                     console.log(textStatus);
                     console.log(errorThrown);
@@ -184,8 +187,7 @@ function lazyLoadBillHistory(objectIndex) {
 
     // Kiểm tra xem người dùng đã cuộn đến cuối chưa
     if (Math.ceil(scrolledHeight) === totalScrollHeight) {
-        const indexNew = indexOld + 1;
-        objectIndex.bill = indexNew;
+        objectIndex.bill = indexOld + 1;
         showBillHistory(false, objectIndex);
     }
 }
@@ -200,8 +202,7 @@ function lazyLoadReviews(objectIndex) {
 
     // Kiểm tra xem người dùng đã cuộn đến cuối chưa
     if (Math.ceil(scrolledHeight) === totalScrollHeight) {
-        const indexNew = indexOld + 1;
-        objectIndex.review = indexNew;
+        objectIndex.review = indexOld + 1;
         showProductReviews(false, objectIndex);
     }
 }
@@ -225,7 +226,8 @@ function showBillHistory(click, objectIndex) {
         dataType: "JSON",
         method: "GET",
         success: function (data) {
-            let html = $(".main-content .display-bills").html();
+            const frame = $(".main-content .display-bills");
+            let html = frame.html();
             if (data.bills.length < 8) {
                 $('#display-bills').off('scroll');
             }
@@ -256,11 +258,12 @@ function showBillHistory(click, objectIndex) {
                 html += httmBill;
             });
 
-            $(".main-content .display-bills").html(html);
+            frame.html(html);
 
             if (click) {
-                $('#display-bills').off('scroll');
-                $('#display-bills').on('scroll', function () {
+                const bill = $('#display-bills');
+                bill.off('scroll');
+                bill.on('scroll', function () {
                     lazyLoadBillHistory(objectIndex);
                 });
             }
@@ -288,7 +291,8 @@ function showProductReviews(click, objectIndex) {
         method: "GET",
         success: function (data) {
             const userId = data["user-id"];
-            let html = $(".main-content .display-product-reviews").html();
+            const frame = $(".main-content .display-product-reviews");
+            let html = frame.html();
             if (data.productReviews.length < 8) {
                 $('#display-product-reviews').off('scroll');
             }
@@ -297,8 +301,8 @@ function showProductReviews(click, objectIndex) {
                   <div class="body-product-reviews-item row  align-items-center ms-2">
                                 <div class="product-review-id col-2"><span class="id">#${productReview.productId}</span></div>
                                 <div class="col-4 d-flex">
-                                    <img style="width: 35px; border: 1px solid #000000" class="product-review-image rounded-circle d-block"
-                                         src="${productReview.urlImage}"></img>
+                                    <img alt="" style="width: 35px; border: 1px solid #000000" class="product-review-image rounded-circle d-block"
+                                         src="${productReview.urlImage}" />
                                     <div class="customer-info ms-2 w-100">
                                         <p class="product-review-name">${productReview.productName}</p>
                                         <p class="product-review-email">Mẫu: ${productReview.modelName}</p>
@@ -319,7 +323,7 @@ function showProductReviews(click, objectIndex) {
                 html += htmlProductReview;
             });
 
-            $(".main-content .display-product-reviews").html(html);
+            frame.html(html);
             if (click) {
                 $('#display-bills').off('scroll');
                 $('#display-product-reviews').on('scroll', function () {
@@ -351,8 +355,9 @@ function uploadProfile() {
     let sex = document.getElementById('sex_edit').value;
     let birthday = document.getElementById('birthday_edit').value;
     let avatarInput = document.getElementById('input-avatar');
+    let avatarFile
     if (avatarInput.files.length > 0) {
-        let avatarFile = avatarInput.files[0];
+        avatarFile = avatarInput.files[0];
     }
 
     let formData = new FormData();
@@ -369,7 +374,7 @@ function uploadProfile() {
         success: function (response) {
             console.log('Upload successful');
             console.log(response);
-            notify('Thành công!', "success", 'Cập nhật thành công', (rs) => location.reload());
+            notify('Thành công!', "success", 'Cập nhật thành công', () => location.reload());
         },
         error: function (error) {
             console.error('Error uploading profile');
@@ -427,7 +432,6 @@ function changePassword({email}) {
                     }),
                 });
 
-                const responseData = await response.json();
                 if (response.ok) {
                     Swal.fire({
                         title: 'Thay đổi mật khẩu thành công',
@@ -472,13 +476,13 @@ function insertDataIntoTable(data) {
     });
 }
 
-function notify(title, icon = "success", text = "", callback) {
+function notify(title, icon = "success", text = "", callback, time = 1000) {
     Swal.fire({
         icon: icon,
         title: title,
         text: text,
         showConfirmButton: false,
-        timer: 1000
+        timer: time
     }).then(rs => {
         if (callback) callback(rs)
     });
@@ -558,7 +562,7 @@ function notifyCancelKey(sendMailAt) {
                     },
                     dataType: "JSON",
                     method: "POST",
-                    success: function (data) {
+                    success: function () {
                         $.notify("Gửi lại mã thành công!", "success");
                     },
                     error: function (data) {

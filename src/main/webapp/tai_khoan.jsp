@@ -255,7 +255,7 @@
 
 <script src="javascript/menu_footer.js"></script>
 <script src="javascript/tai_khoan.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="./swal/sweetalert.js"></script>
 <script type="text/javascript">
     <%if(user != null){%>
     const user = new User();

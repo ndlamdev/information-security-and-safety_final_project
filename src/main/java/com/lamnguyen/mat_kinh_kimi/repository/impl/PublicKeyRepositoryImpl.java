@@ -36,7 +36,7 @@ public class PublicKeyRepositoryImpl extends Repository {
         return connector.withHandle(handle -> handle.createQuery("SELECT pk.`key` from public_keys pk WHERE pk.userId = ? AND pk.expired is NULL;")
                 .bind(0, userId)
                 .mapTo(String.class)
-                .one()
+                .findFirst().orElse(null)
         );
     }
 
@@ -45,7 +45,7 @@ public class PublicKeyRepositoryImpl extends Repository {
                 handle.createQuery("SELECT COUNT(*) FROM public_keys WHERE userId = ? AND expired IS NULL")
                         .bind(0, userId)
                         .mapTo(Integer.class)
-                        .one()
+                        .findFirst().orElse(null)
         ) > 0;
     }
 }
