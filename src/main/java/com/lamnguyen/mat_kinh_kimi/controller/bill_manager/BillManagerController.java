@@ -35,6 +35,7 @@ public class BillManagerController extends HttpServlet {
         String actionString = request.getParameter("action");
         Action action = switch (actionString) {
             case "save" -> new SaveEditBillAction(true);
+            case "resign" -> new ResignBillAction();
             case "cancel-bill" -> new CancelBillAction();
             case "revert-bill" -> new RevertBillAction();
             case "update-bill-status" -> new UpdateBillStatusAction();

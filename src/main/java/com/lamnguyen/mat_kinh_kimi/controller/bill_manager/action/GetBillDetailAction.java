@@ -54,7 +54,6 @@ public class GetBillDetailAction implements Action {
         request.setAttribute("customer", customer);
         request.setAttribute("bill", bill);
         request.setAttribute("products", products);
-        request.setAttribute("status", BillStatusEnum.findEnumByStatus(bill.getStatuses().getLast().getStatus()).nextStep());
         request.setAttribute("next-status", BillStatusEnum.findEnumByStatus(billStatusService.getLastStatus(billId).getFirst().getStatus()).nextStep());
         request.getRequestDispatcher("chi_tiet_hoa_don.jsp").forward(request, response);
     }

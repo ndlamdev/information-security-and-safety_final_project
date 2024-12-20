@@ -19,6 +19,8 @@ $(document).ready(function () {
     updateStatus();
 
     verifyBill();
+
+    resign();
 });
 
 function saveEdit() {
@@ -314,4 +316,50 @@ function updateStatus() {
     })
 }
 
+function resign() {
+    $("#resign").click(function (e) {
+        const button = $(this);
 
+        Swal.fire({
+            title: 'Yêu cầu ký lại',
+            text: "Bạn có chắc muốn yêu cầu người dùng ký lại không!",
+            showCancelButton: true,
+            confirmButtonText: 'Xác nhận',
+            cancelButtonText: 'Hủy',
+            focusConfirm: false,
+        }).then((result) => {
+            if (!result.isConfirmed) return;
+
+            $.ajax({
+                url: "bill_manager",
+                method: "POST",
+                data: {
+                    "action": "resign",
+                    "bill-id": button.data("id")
+                },
+                dataType: "json",
+                success: function (data) {
+                    renderStatus(data)
+                    notify("Thành công", "success", "Yêu cầu ký lại thành công!")
+                    button.addClass("d-none")
+                    $("#update-status").addClass("d-none")
+                },
+                error: function (e) {
+                    notify("Thất bại", "error", "Yêu cầu ký lại thất bại!")
+                }
+            })
+        });
+    })
+}
+
+function notify(title, icon = "success", text = "", callback, time = 1000) {
+    Swal.fire({
+        icon: icon,
+        title: title,
+        text: text,
+        showConfirmButton: false,
+        timer: time
+    }).then(rs => {
+        if (callback) callback(rs)
+    });
+}

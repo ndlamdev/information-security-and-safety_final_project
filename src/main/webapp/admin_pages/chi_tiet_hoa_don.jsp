@@ -6,7 +6,6 @@
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.*" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum" %>
 <%@ page import="com.lamnguyen.mat_kinh_kimi.domain.dto.Signature" %>
-<%@ page import="java.util.Objects" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="vi">
@@ -160,10 +159,18 @@
                 <!--lộ trình vận chuyển-->
                 <div class="trip-ship mt-4">
                     <div class="row mx-0 header-trip-ship py-3 px-4">
-                        <div class="col-8 d-flex align-items-center">
+                        <div class="col-5 d-flex align-items-center">
                             <h4>Lộ trình vận chuyển hàng</h4>
                         </div>
-                        <div class="col-4 d-flex justify-content-end">
+                        <div class="col-7 d-flex justify-content-end gap-2">
+                            <%if (nextStatus != null && nextStatus.getStep() == 1) {%>
+                            <button class="py-1 px-2 border-0 rounded-2 text-white bg-danger <%=lastStatus.getStatus().equals("Đã hủy") || lastStatus.getStatus().equals("Chưa ký") ? "d-none" : ""%>"
+                                    id="resign"
+                                    data-id="<%=bill.getId()%>"
+                            >
+                                <span>Yêu cầu cập nhật lại chữ ký</span>
+                            </button>
+                            <%}%>
                             <%if (nextStatus != null) {%>
                             <button class="py-1 px-2 border-0 rounded-2 text-white bg-success <%=lastStatus.getStatus().equals("Đã hủy") || lastStatus.getStatus().equals("Chưa ký") ? "d-none" : ""%>"
                                     id="update-status"
@@ -494,6 +501,7 @@
 
 <jsp:include page="footer.jsp"/>
 
+<script src="../swal/sweetalert.js"></script>
 <script src="../javascript/menu_footer.js"></script>
 <script src="../javascript/admin_pages/admin_page.js"></script>
 <script src="../javascript/admin_pages/chi_tiet_hoa_don.js"></script>
