@@ -18,39 +18,46 @@ import java.util.Map;
 @WebServlet(name = "ChangePassword", value = "/user/changePassword")
 public class ChangePasswordController extends HttpServlet {
 
-   @Override
-    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       System.out.println(1);
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-       ObjectMapper objectMapper = new ObjectMapper();
-       System.out.println(12);
-       Map<String, String> jsonMap = objectMapper.readValue(request.getReader(), new TypeReference<Map<String, String>>() {});
-       System.out.println(123);
-       String email = jsonMap.get("email");
-       String password = jsonMap.get("password");
-       String rePassword = jsonMap.get("rePassword");
-       response.setContentType("application/json");
-       UserService userService = UserService.getInstance();
-        if (!userService.containsEmail(email)
-                || email == null
-                || email.equals("")) {
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, String> jsonMap = objectMapper.readValue(request.getReader(), new TypeReference<Map<String, String>>() {});
+
+        String email = jsonMap.get("email");
+        String password = jsonMap.get("password");
+        String rePassword = jsonMap.get("rePassword");
+
+        response.setContentType("application/json");
+
+        if (email == null || email.isEmpty() || !UserService.getInstance().containsEmail(email)) {
             Action.error(request, response);
             return;
         }
-
-        if (!password.equals(rePassword)
-                || (password.equals(rePassword) && (password == null || password.equals("")))) {
-                  response.setStatus(500);
-            response.getWriter().println("{\"message\": \"Password Change Error\"}");
+        if (isInvalidPassword(password, rePassword)) {
+            sendErrorResponse(response, "Password Change Error", 500);
+            return;
         }
-        int result = userService.resetPassword(email, BCrypt.hashpw(password, BCrypt.gensalt(12)));
+
+        int result = UserService.getInstance().resetPassword(email, BCrypt.hashpw(password, BCrypt.gensalt(12)));
         if (result != 0) {
-            response.setStatus(202);
-            response.getWriter().println("{\"message\": \"Password Change Success\"}");
-        }else{
-            response.setStatus(500);
-            response.getWriter().println("{\"message\": \"Password Change Error\"}");
+            sendSuccessResponse(response, "Password Change Success", 202);
+        } else {
+            sendErrorResponse(response, "Password Change Error", 500);
         }
+    }
 
+    private boolean isInvalidPassword(String password, String rePassword) {
+        return password == null || password.isEmpty() || !password.equals(rePassword);
+    }
+
+    private void sendSuccessResponse(HttpServletResponse response, String message, int status) throws IOException {
+        response.setStatus(status);
+        response.getWriter().println("{\"message\": \"" + message + "\"}");
+    }
+
+    private void sendErrorResponse(HttpServletResponse response, String message, int status) throws IOException {
+        response.setStatus(status);
+        response.getWriter().println("{\"message\": \"" + message + "\"}");
     }
 }

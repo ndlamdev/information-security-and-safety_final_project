@@ -12,30 +12,47 @@ import java.io.IOException;
 
 @WebServlet(name = "ForgetPasswordController", value = "/forget_password")
 public class ForgetPasswordController extends HttpServlet {
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String actionStr = request.getParameter("action");
-        Action action = switch (actionStr) {
-            case "verify" -> new ForgetPasswordVerifyAction();
-            default -> null;
-        };
+        Action action = getAction(actionStr, HttpMethod.GET);
 
-
-        if (action == null) Action.error(request, response);
-        else action.action(request, response);
+        if (action == null) {
+            Action.error(request, response);
+        } else {
+            action.action(request, response);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String actionStr = request.getParameter("action");
-        Action action = switch (actionStr) {
-            case "check_mail" -> new CheckEmailAction();
-            case "change_password" -> new ChangePasswordAction();
-            default -> null;
-        };
+        Action action = getAction(actionStr, HttpMethod.POST);
 
+        if (action == null) {
+            Action.error(request, response);
+        } else {
+            action.action(request, response);
+        }
+    }
 
-        if (action == null) Action.error(request, response);
-        else action.action(request, response);
+    private Action getAction(String actionStr, HttpMethod method) {
+        switch (method) {
+            case GET:
+                return "verify".equals(actionStr) ? new ForgetPasswordVerifyAction() : null;
+            case POST:
+                return switch (actionStr) {
+                    case "check_mail" -> new CheckEmailAction();
+                    case "change_password" -> new ChangePasswordAction();
+                    default -> null;
+                };
+            default:
+                return null;
+        }
+    }
+
+    private enum HttpMethod {
+        GET, POST
     }
 }
