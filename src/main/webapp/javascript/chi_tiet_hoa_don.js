@@ -65,12 +65,14 @@ function cancelBill() {
         const dataSend = {
             "action": "cancel-bill", "bill-id": $(this).attr("bill-id"),
         };
+        const button  = $(this);
 
         $.ajax({
             url: "bill_detail", data: dataSend, dataType: "json", method: "POST", success: function () {
                 $.notify("Hủy đơn hàng thành công!", "success");
                 $(".button-show-dialog-cancel-bill").remove();
                 $("#edit").remove();
+                button.addClass("d-none");
             }, error: function (e, x, h) {
                 console.error(e.responseText);
                 console.error(x);

@@ -31,14 +31,14 @@ public class BillValidate {
                 codeWard = 0;
         User user = (User) session.getAttribute("user");
         BillService billService = (BillService) session.getAttribute(buyNow ? "bill-buy-now" : "bill");
-        String userName = request.getParameter("full-name").trim();
-        String email = request.getParameter("email").trim();
-        String phoneNumber = request.getParameter("phone-number").trim();
-        String province = request.getParameter("provinces").trim();
-        String district = request.getParameter("districts").trim();
-        String ward = request.getParameter("wards").trim();
+        String userName = request.getParameter("full-name");
+        String email = request.getParameter("email");
+        String phoneNumber = request.getParameter("phone-number");
+        String province = request.getParameter("provinces");
+        String district = request.getParameter("districts");
+        String ward = request.getParameter("wards");
 
-        String fullAddress = request.getParameter("full-address").trim();
+        String fullAddress = request.getParameter("full-address");
         boolean transfer = request.getParameter("pay-option").equals("transfer");
         String message = null, title = null;
 
@@ -52,37 +52,37 @@ public class BillValidate {
             message = "Vui lòng chọn sản phẩm bạn muốn mua";
         }
 
-        if (userName.isEmpty()) {
+        if (userName == null || userName.isBlank()) {
             title = "Tên người nhận rỗng";
             message = "Vui lòng điền tên người nhận";
         }
 
-        if (email.isEmpty()) {
+        if (email == null || email.isBlank()) {
             title = "Email người nhận rỗng";
             message = "Vui lòng điền email người nhận";
         }
 
-        if (phoneNumber.isEmpty()) {
+        if (phoneNumber == null || phoneNumber.isBlank()) {
             title = "Số điện thoại người nhận rỗng";
             message = "Vui lòng điền số điện thoại người nhận";
         }
 
-        if (province.isEmpty()) {
+        if (province == null || province.isBlank()) {
             title = "Chưa chọn thành phố/tỉnh người nhận rỗng";
             message = "Vui lòng chọn thành phố/tỉnh người nhận";
         }
 
-        if (district.isEmpty()) {
+        if (district == null || district.isBlank()) {
             title = "Chưa chọn quận/huyện người nhận rỗng";
             message = "Vui lòng chọn quận/huyện người nhận";
         }
 
-        if (ward.isEmpty()) {
+        if (ward == null || ward.isBlank()) {
             title = "Chưa chọn phường/xã người nhận rỗng";
             message = "Vui lòng chọn phường/xã người nhận";
         }
 
-        if (fullAddress.isEmpty()) {
+        if (fullAddress == null || fullAddress.isBlank()) {
             title = "Địa chỉ cụ thể người nhận rỗng";
             message = "Vui lòng điền địa chỉ cụ thể người nhận";
         }
