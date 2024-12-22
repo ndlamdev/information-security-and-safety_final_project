@@ -6,7 +6,7 @@
 <%@ page import="com.lamnguyen.mat_kinh_kimi.model.*" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%
-    Bill bill = (Bill) request.getAttribute("bill");
+    Bill bill = (Bill) session.getAttribute("billPayed");
     BillStatus lastStatus = bill.getLastStatus();
     List<BillDetail> billDetails = bill.getDetails();
     NumberFormat nfCurrency = NumberFormat.getCurrencyInstance(Locale.of("vi", "VN"));

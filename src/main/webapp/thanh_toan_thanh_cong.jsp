@@ -84,9 +84,9 @@
             <div class="btn-tttc py-md-5">
                 <a href="index.jsp" class="come-home" type="button"><i class="fa-solid fa-house px-2"></i>Quay về trang
                     chủ</a>
-                <a href="chi_tiet_hoa_don.jsp" class="check-bill" type="button"><i
-                        class="fa-solid fa-file-circle-check px-2"></i>Kiểm tra
-                    đơn hàng</a>
+<%--                <a href="chi_tiet_hoa_don.jsp" class="check-bill" type="button"><i--%>
+<%--                        class="fa-solid fa-file-circle-check px-2"></i>Kiểm tra--%>
+<%--                    đơn hàng</a>--%>
             </div>
         </div>
     </div>
