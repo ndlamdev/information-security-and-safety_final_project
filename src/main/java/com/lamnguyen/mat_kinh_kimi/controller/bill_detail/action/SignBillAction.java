@@ -4,6 +4,7 @@ import com.lamnguyen.mat_kinh_kimi.config.mail.SendMail;
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
+import com.lamnguyen.mat_kinh_kimi.service.AutoSendMailNotifyService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
@@ -46,8 +47,9 @@ public class SignBillAction implements Action {
                 .describe("Đơn hàng của bạn đang chờ xác nhận!")
                 .build();
         billStatusService.insert(status);
-
-        SendMail.Send(BillService.getInstance().getBill(billId).getEmail(), "Ký đơn hàng thành công!", """
+        var email = BillService.getInstance().getBill(billId).getEmail();
+        AutoSendMailNotifyService.getInstance().removeAutoSendMail(email, billId);
+        SendMail.Send(email, "Ký đơn hàng thành công!", """
                 <div style="max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
                     <h2 style="margin-bottom: 20px; color: #333;">Thông báo ký đơn hàng thành công</h2>
                     <p style="margin-bottom: 20px; color: #555;">Xin chào,</p>

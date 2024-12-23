@@ -2,6 +2,7 @@ package com.lamnguyen.mat_kinh_kimi.controller.bill;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
+import com.lamnguyen.mat_kinh_kimi.service.AutoSendMailNotifyService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.util.helper.DocumentHelper;
 import com.lamnguyen.mat_kinh_kimi.util.mapper.BillMapper;
@@ -44,6 +45,7 @@ public class BillController extends HttpServlet implements Action {
             session.setAttribute("billPayed", bill);
             session.setAttribute("file", file);
             session.setAttribute("back", "gio_hang.jsp");
+            AutoSendMailNotifyService.getInstance().addAutoSendMail(bill.getEmail(), billId);
             response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             session.setAttribute("title", "Thanh toán không thành công");

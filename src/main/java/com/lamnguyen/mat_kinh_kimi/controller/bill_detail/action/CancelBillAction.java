@@ -2,6 +2,8 @@ package com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action;
 
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
+import com.lamnguyen.mat_kinh_kimi.service.AutoSendMailNotifyService;
+import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 import org.json.JSONObject;
@@ -38,7 +40,7 @@ public class CancelBillAction implements Action {
         billStatus.setDescribe("Hủy bỏ đơn hàng");
         billStatus.setCanEdit(false);
         billStatusService.insert(billStatus);
-
+        AutoSendMailNotifyService.getInstance().removeAutoSendMail(BillService.getInstance().getBill(billId).getEmail(), billId);
         response.getWriter().println(new JSONObject(billStatus));
     }
 }

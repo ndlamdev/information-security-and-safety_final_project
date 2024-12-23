@@ -27,23 +27,21 @@ public class LockPublicKeyAction implements Action {
         var code = (String) request.getSession().getAttribute("code");
         var verifyCode = request.getParameter("verifyCode");
         sendMailTime = Objects.requireNonNullElse(sendMailTime, LocalDateTime.of(2000, 1, 1, 0, 0));
-
-        if (user == null) {
-            Action.errorAPI(request, response);
-            return;
-        }
-
         var equals = BCrypt.checkpw(verifyCode, code);
-        if (timeOut(sendMailTime) || equals) {
+        var timeOut = timeOut(sendMailTime);
+
+        if (timeOut) {
             request.getSession().removeAttribute("time");
             request.getSession().removeAttribute("code");
         }
 
-        if (equals) {
-            PublicKeyService publicKeyService = PublicKeyService.getInstance();
-            result = publicKeyService.lockPublicKey(user.getId());
+        if (user == null || timeOut || !equals) {
+            Action.errorAPI(request, response);
+            return;
         }
 
+        PublicKeyService publicKeyService = PublicKeyService.getInstance();
+        result = publicKeyService.lockPublicKey(user.getId());
 
         JSONObject json = new JSONObject();
         json.put("lockKey", result);
@@ -51,6 +49,6 @@ public class LockPublicKeyAction implements Action {
     }
 
     private boolean timeOut(LocalDateTime sendMailTime) {
-        return sendMailTime.until(LocalDateTime.now(), ChronoUnit.MINUTES) > 5;
+        return sendMailTime.until(LocalDateTime.now(), ChronoUnit.SECONDS) > 600;
     }
 }

@@ -4,7 +4,7 @@ import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.BillDTO;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.ProductCart;
-import com.lamnguyen.mat_kinh_kimi.model.User;
+import com.lamnguyen.mat_kinh_kimi.service.AutoSendMailNotifyService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.HashAlgorithms;
 import com.lamnguyen.mat_kinh_kimi.util.helper.DocumentHelper;
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 public class PayBuyNowAction implements Action {
@@ -40,6 +39,7 @@ public class PayBuyNowAction implements Action {
             session.setAttribute("file", file);
             session.setAttribute("back", "index.jsp");
             request.getServletContext().setAttribute("algorithms", HashAlgorithms.ALGORITHMS);
+            AutoSendMailNotifyService.getInstance().addAutoSendMail(bill.getEmail(), billId);
             response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             session.setAttribute("title", "Thanh toán không thành công");

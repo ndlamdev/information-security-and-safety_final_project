@@ -41,7 +41,7 @@ public class SendOTPDeleteKeyAction implements Action {
 
 
         LocalDateTime sendMailTime = (LocalDateTime) request.getSession().getAttribute("time");
-        if (sendMailTime != null && LocalDateTime.now().minusMinutes(5).isBefore(sendMailTime)) {
+        if (sendMailTime != null && LocalDateTime.now().minusMinutes(10).isBefore(sendMailTime)) {
             response.getWriter().println(new JSONObject() {{
                 put("time", sendMailTime);
                 put("send", false);

@@ -5,8 +5,8 @@ import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
-import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.AddressService;
+import com.lamnguyen.mat_kinh_kimi.service.AutoSendMailNotifyService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
@@ -104,6 +104,7 @@ public class SaveEditBillAction implements Action {
             BillStatusService.getInstance().insert(status);
             json.put("status", new JSONObject(status));
 
+            AutoSendMailNotifyService.getInstance().addAutoSendMail(email, billId);
             if (isAdmin) adminAction(email, billId);
             else userAction(email, billId);
         }

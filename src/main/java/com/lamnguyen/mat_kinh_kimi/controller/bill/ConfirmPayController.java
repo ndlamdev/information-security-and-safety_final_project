@@ -14,6 +14,7 @@ import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
 import com.lamnguyen.mat_kinh_kimi.service.AddressService;
+import com.lamnguyen.mat_kinh_kimi.service.AutoSendMailNotifyService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
@@ -77,6 +78,7 @@ public class ConfirmPayController extends HttpServlet implements Action {
         String addressDetails = AddressService.getInstance().getAddress(billObj.getCodeProvince(), billObj.getCodeDistrict(), billObj.getCodeWard()) +
                                 "<br>" + billObj.getAddress();
         request.setAttribute("addressDetails", addressDetails);
+        AutoSendMailNotifyService.getInstance().removeAutoSendMail(billObj.getEmail(), billObj.getId());
         String url = request.getRequestURL().toString().replace("xac_nhan_thanh_toan.jsp", "policy_pages/kiem_tra_don_hang.jsp");
         SendMail.SendMailWithImage(billObj.getEmail(), "Thanh toán thành công", SendMail.getFormBill(url, billObj, addressDetails));
         request.getRequestDispatcher("thanh_toan_thanh_cong.jsp").forward(request, response);

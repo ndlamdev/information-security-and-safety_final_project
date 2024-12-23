@@ -12,9 +12,9 @@ import com.lamnguyen.mat_kinh_kimi.config.mail.SendMail;
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
+import com.lamnguyen.mat_kinh_kimi.service.AutoSendMailNotifyService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
-import com.lamnguyen.mat_kinh_kimi.service.UserService;
 import com.lamnguyen.mat_kinh_kimi.util.enums.BillStatusEnum;
 import org.json.JSONObject;
 
@@ -59,6 +59,7 @@ public class ResignBillAction implements Action {
                 + "<p style=\"margin-bottom: 20px; color: #555;\">Đơn hàng của bạn đang gặp một vài vấn đề không thể xác thực được.. Vui lòng kiểm tra lại thông tin và thực hiện ký lại để xác nhận đơn hàng. Nhấn vào nút bên dưới để được chuyển hướng đến trang ký xác nhận.</p>"
                 + "<a href=\"http://localhost:8080/mat_kinh_kimi/bill_history?action=see-detail&bill-id=" + billId + "\" style=\"display:block;width:100%;padding:10px;font-size:16px;color:#fff;background-color:#007bff;border:none;border-radius:5px;text-decoration: none;text-align: center;\">Ký lại đơn hàng</a>"
                 + "</div>");
+        AutoSendMailNotifyService.getInstance().addAutoSendMail(bill.getEmail(), billId);
         response.getWriter().println(new JSONObject(billStatus));
     }
 }
