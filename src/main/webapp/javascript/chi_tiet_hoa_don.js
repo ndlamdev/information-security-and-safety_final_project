@@ -64,16 +64,23 @@ function saveEdit() {
 function cancelBill() {
     $("#cancel-bill").click(function () {
         const dataSend = {
-            "action": "cancel-bill", "bill-id": $(this).attr("bill-id"),
+            "action": "cancel-bill",
+            "bill-id": $(this).attr("bill-id"),
         };
         const button = $(this);
 
         $.ajax({
-            url: "bill_detail", data: dataSend, dataType: "json", method: "POST", success: function () {
+            url: "bill_detail",
+            data: dataSend,
+            dataType: "json",
+            method: "POST",
+            success: function (data) {
                 $.notify("Hủy đơn hàng thành công!", "success");
                 $(".button-show-dialog-cancel-bill").remove();
                 $("#edit").remove();
                 button.addClass("d-none");
+                $("#button-show-dialog-cancel-bill").addClass("d-none")
+                renderStatus(data)
             }, error: function (e, x, h) {
                 console.error(e.responseText);
                 console.error(x);

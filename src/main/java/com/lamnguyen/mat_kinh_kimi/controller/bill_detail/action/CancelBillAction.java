@@ -25,6 +25,12 @@ public class CancelBillAction implements Action {
             return;
         }
 
+        var lastStatus = BillStatusService.getInstance().getLastStatus(billId);
+        if(BillStatusEnum.findEnumByStatus(lastStatus.getFirst().getStatus()).getStep() == -1){
+            Action.errorAPI(request, response);
+            return;
+        }
+
         BillStatus billStatus = new BillStatus();
         billStatus.setBillId(billId);
         billStatus.setDate(LocalDateTime.now());
