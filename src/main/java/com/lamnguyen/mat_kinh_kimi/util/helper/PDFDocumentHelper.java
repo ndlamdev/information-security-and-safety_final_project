@@ -27,12 +27,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 public class PDFDocumentHelper {
-    public static void createBillFile(BillDTO billDTO, HttpServletRequest request, HttpServletResponse response, boolean copy) throws IOException {
+    public static String createBillFile(BillDTO billDTO, HttpServletRequest request, boolean copy) throws IOException {
         String uploadDir = request.getServletContext().getRealPath("doc/bills/");
         Path uploadPath = Path.of(uploadDir);
         if (!Files.exists(uploadPath))
             Files.createDirectories(uploadPath);
-        String desFile = "./bill_" + billDTO.getId() + ".pdf";
+        String desFile = "bill_" + billDTO.getId() + ".pdf";
 
         Document document = null;
         try {
@@ -40,8 +40,7 @@ public class PDFDocumentHelper {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             URL resource = classLoader.getResource("DejaVuSans.ttf");
             if (resource == null) {
-                response.sendRedirect("error.jsp");
-                return;
+                return null;
             }
             PdfFont font = PdfFontFactory.createFont(new File(resource.getFile()).getAbsolutePath(), "Identity-H");
             PdfWriter writer = new PdfWriter(desFile);
@@ -127,7 +126,6 @@ public class PDFDocumentHelper {
 
         } catch (Exception e) {
             e.printStackTrace(System.out);
-//            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error generating PDF");
         } finally {
             document.close();
         }
@@ -135,15 +133,15 @@ public class PDFDocumentHelper {
             Files.copy(Path.of(desFile), uploadPath.resolve(desFile), StandardCopyOption.REPLACE_EXISTING);
             new File(desFile).delete();
         }
+        return desFile;
     }
 
-    public static void createBillFile(BillDTO billDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        createBillFile(billDTO, request, response, true);
+    public static String createBillFile(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFile(billDTO, request, true);
     }
 
-    public static String createBillTempFile(BillDTO billDTO, HttpServletRequest request, HttpServletResponse response) throws IOException {
-        createBillFile(billDTO, request, response, false);
-        return "./bill_" + billDTO.getId() + "pdf";
+    public static String createBillTempFile(BillDTO billDTO, HttpServletRequest request) throws IOException {
+        return createBillFile(billDTO, request, false);
     }
 
     // Helper method to create header cells

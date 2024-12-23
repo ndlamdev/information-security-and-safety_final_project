@@ -225,4 +225,19 @@ public class BillRepositoryImpl extends Repository {
                         .findFirst().orElse(-9999)
         ) != -9999;
     }
+
+    public int updateSignature(Integer id, String algorithm, String signature) {
+        return connector.withHandle(handle ->
+                handle.createUpdate("""
+                                UPDATE bills b
+                                set b.algorithm = :algorithm
+                                AND b.signature = :signature
+                                WHERE b.id = :id;
+                                """)
+                        .bind("id", id)
+                        .bind("algorithm", algorithm)
+                        .bind("signature", signature)
+                        .execute()
+        );
+    }
 }

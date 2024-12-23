@@ -16,11 +16,11 @@ import java.util.List;
 public class Bill {
     private Integer id, userId, codeProvince, codeDistrict, codeWard;
     private String userName, phoneNumber, address, email, signature;
-    private Boolean transfer;
+    private Boolean transfer, verify;
     private Double transportFee;
     private List<BillStatus> statuses;
     private List<BillDetail> details;
-    private LocalDateTime dateTimeSign;
+    private LocalDateTime dateTimeSign, date;
 
     private String addressDetail;
 

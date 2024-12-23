@@ -199,13 +199,13 @@ public class ProductRepositoryImpl extends Repository {
         }
 
         if ((idCategoryGroup > 0 && idCategory == 0) || id != 0) {
-            System.out.println("Nhóm danh mục");
+//            System.out.println("Nhóm danh mục");
             sql.append(JOIN_2);
             sql.append(WHERE_JOIN_2);
         }
 
         if (idCategoryGroup > 0 && idCategory != 0) {
-            System.out.println("Danh mục");
+//            System.out.println("Danh mục");
             sql.append(WHERE_NOT_JOIN);
         }
 

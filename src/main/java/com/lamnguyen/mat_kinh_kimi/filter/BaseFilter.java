@@ -17,7 +17,6 @@ import java.io.IOException;
 public class BaseFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        System.out.println("BaseFilter");
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         String host = request.getServerName();
         int port = request.getServerPort();

@@ -1,13 +1,14 @@
 package com.lamnguyen.mat_kinh_kimi.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
 
 @Setter
 @Getter
+@AllArgsConstructor
+@Builder
 public class BillStatus implements Comparator<BillStatus> {
     private Integer billId;
     private String status;

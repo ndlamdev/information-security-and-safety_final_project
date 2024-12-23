@@ -35,7 +35,7 @@ public class BillController extends HttpServlet implements Action {
 
         // Set response content type
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment;");
+        response.setHeader("Content-Disposition", "attachment; filename=order_form.pdf");
 
         HttpSession session = request.getSession();
         int codeProvince = 0,
@@ -68,7 +68,6 @@ public class BillController extends HttpServlet implements Action {
             title = "Tên người nhận rỗng";
             message = "Vui lòng điền tên người nhận";
         }
-
         if (email.isEmpty()) {
             title = "Email người nhận rỗng";
             message = "Vui lòng điền email người nhận";
@@ -128,6 +127,7 @@ public class BillController extends HttpServlet implements Action {
             response.sendRedirect("gio_hang.jsp");
             return;
         }
+
         Bill bill = billService.getBill();
         bill.setUserId(user.getId());
         bill.setUserName(userName);
@@ -139,17 +139,17 @@ public class BillController extends HttpServlet implements Action {
         bill.setAddress(fullAddress);
         bill.setTransportFee(20000.0);
         bill.setTransfer(transfer);
-        bill.setDateTimeSign(LocalDateTime.now());
+        bill.setDate(LocalDateTime.now());
         var billId = billService.saveBill(bill);
         if (billId != -1) {
             bill.setId(billId);
-            CartService cart = (CartService) session.getAttribute("cart");
-            PDFDocumentHelper.createBillFile(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request, response);
-            cart.bought(bill);
-            session.setAttribute("bill", new BillService());
-            session.setAttribute("cart", cart);
+            var products = billService.getProductInBill(billId);
+            var file = PDFDocumentHelper.createBillFile(BillMapper.billDTO(bill, billService.getProductInBill(billId)), request);
+            session.setAttribute("products", products);
             session.setAttribute("billPayed", bill);
-            response.sendRedirect("thanh_toan_thanh_cong.jsp");
+            session.setAttribute("file", file);
+            session.setAttribute("back", "gio_hang.jsp");
+            response.sendRedirect("xac_nhan_thanh_toan.jsp");
         } else {
             title = "Thanh toán không thành công";
             message = "1 trong sản phẩm trong danh sách sản phẩm vừa hết hàng.";

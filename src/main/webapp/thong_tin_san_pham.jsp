@@ -25,7 +25,7 @@
     <%--notify--%>
     <script src="notify/notify.js"></script>
 
-    <%! public String currentVietnames(double amount) {
+    <%! public String currentVietNames(double amount) {
         Locale localeVN = Locale.of("vi", "VN");
         NumberFormat currencyVN = NumberFormat.getCurrencyInstance(localeVN);
         return currencyVN.format(amount);
@@ -479,14 +479,14 @@
                                         <%
                                             if (recentlyViewedProducts.get(index).getDiscount() > 0) {
                                         %>
-                                        <p class="fw-bold d-inline me-3"><%=currentVietnames(recentlyViewedProducts.get(index).getDiscount())%>
+                                        <p class="fw-bold d-inline me-3"><%=currentVietNames(recentlyViewedProducts.get(index).getDiscount())%>
                                         </p>
-                                        <del><%=currentVietnames(recentlyViewedProducts.get(index).getPrice())%>
+                                        <del><%=currentVietNames(recentlyViewedProducts.get(index).getPrice())%>
                                         </del>
                                         <%
                                         } else {
                                         %>
-                                        <p class="fw-bold d-inline me-3"><%=currentVietnames(recentlyViewedProducts.get(index).getPrice())%>
+                                        <p class="fw-bold d-inline me-3"><%=currentVietNames(recentlyViewedProducts.get(index).getPrice())%>
                                         </p>
                                         <%
                                             }
