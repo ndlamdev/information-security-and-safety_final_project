@@ -82,6 +82,13 @@ public class GetBillDetailAction implements Action {
                         + "<a href=\"http://localhost:8080/mat_kinh_kimi/bill_history?action=see-detail&bill-id=" + bill.getId() + "\" style=\"display:block;width:100%;padding:10px;font-size:16px;color:#fff;background-color:#007bff;border:none;border-radius:5px;text-decoration: none;text-align: center;\">Ký lại đơn hàng</a>"
                         + "</div>"
                 );
+                SendMail.Send("matkinhkimi@gmail.com", "Đơn hàng bị thay đổi đáng nghi ngờ.",
+                        "<div style=\"max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\">"
+                                + "<h2 style=\"margin-bottom: 20px; color: #333;\">Đơn hàng có id #" + bill.getId() + " bị thay đổi một cách đáng ngờ.</h2>"
+                                + "<p style=\"margin-bottom: 20px; color: #555;\">Một đang hàng đã được xác thực nghi bị thay đổi ở dưới database mà không thông quá các controller của hệ thống một cách đáng nghi ngờ. Vui lòng kiểm tra lại thông tin đơn hàng. Nhấn vào nút bên dưới để được chuyển hướng đến trang chi tiết đơn hàng bị thay đổi.</p>"
+                                + "<a href=\"http://localhost:8080/mat_kinh_kimi/admin_pages/bill_manager?action=see-detail&bill-id=" + bill.getId() + "\" style=\"display:block;width:100%;padding:10px;font-size:16px;color:#fff;background-color:#007bff;border:none;border-radius:5px;text-decoration: none;text-align: center;\">Kiểm tra đơn hàng</a>"
+                                + "</div>"
+                );
                 signature.setSignature(null);
                 signature.setAlgorithm(null);
                 signature.setVerify(false);
