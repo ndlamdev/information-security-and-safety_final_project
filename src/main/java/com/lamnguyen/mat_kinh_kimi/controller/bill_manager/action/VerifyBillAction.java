@@ -23,11 +23,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SignatureException;
+import java.security.spec.InvalidKeySpecException;
 import java.time.LocalDateTime;
 
 public class VerifyBillAction implements Action {
     BillService service = BillService.getInstance();
-    VerifyService verifyService = VerifyService.getInstance();
     BillStatusService billStatusService = BillStatusService.getInstance();
 
     @Override
@@ -35,11 +39,7 @@ public class VerifyBillAction implements Action {
 
         try {
             var id = Integer.parseInt(request.getParameter("bill-id"));
-            var bill = service.getBill(id);
-            var pathFile = DocumentHelper.createBillTempFileText(BillMapper.billDTO(bill, service.getProductInBill(id)), request);
-            var signature = BillService.getInstance().findSignature(id);
-            var verify = verifyService.verifyBill(bill.getUserId(), signature.getAlgorithm(), signature.getSignature(), pathFile);
-            if (!signature.getVerify() && verify) {
+            if (isValidSignature(id, request)) {
                 var status = BillStatus.builder()
                         .date(LocalDateTime.now())
                         .status(BillStatusEnum.CONFIRM_SUCCESS.getStatus())
@@ -56,11 +56,19 @@ public class VerifyBillAction implements Action {
                 }});
                 return;
             }
-            new File(pathFile).delete();
             Action.errorAPI(request, response);
         } catch (Exception e) {
             e.printStackTrace(System.out);
             Action.errorAPI(request, response);
         }
+    }
+
+    public static boolean isValidSignature(int id, HttpServletRequest request) throws NoSuchAlgorithmException, InvalidKeySpecException, SignatureException, IOException, InvalidKeyException, NoSuchProviderException {
+        var bill =  BillService.getInstance().getBill(id);
+        var pathFile = DocumentHelper.createBillTempFileText(BillMapper.billDTO(bill,  BillService.getInstance().getProductInBill(id)), request);
+        var signature = BillService.getInstance().findSignature(id);
+        var verify = VerifyService.getInstance().verifyBill(bill.getUserId(), signature.getAlgorithm(), signature.getSignature(), pathFile);
+        new File(pathFile).delete();
+        return !signature.getVerify() && verify;
     }
 }

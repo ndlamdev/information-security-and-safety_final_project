@@ -1,9 +1,11 @@
 package com.lamnguyen.mat_kinh_kimi.controller.bill_detail.action;
 
+import com.lamnguyen.mat_kinh_kimi.config.mail.SendMail;
 import com.lamnguyen.mat_kinh_kimi.controller.Action;
 import com.lamnguyen.mat_kinh_kimi.domain.dto.Signature;
 import com.lamnguyen.mat_kinh_kimi.model.Bill;
 import com.lamnguyen.mat_kinh_kimi.model.BillStatus;
+import com.lamnguyen.mat_kinh_kimi.model.User;
 import com.lamnguyen.mat_kinh_kimi.service.AddressService;
 import com.lamnguyen.mat_kinh_kimi.service.BillService;
 import com.lamnguyen.mat_kinh_kimi.service.BillStatusService;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
+@SuppressWarnings("MalformedFormatString")
 public class SaveEditBillAction implements Action {
     private final AddressService ADDRESS_SERVICE;
     BillService service = BillService.getInstance();
@@ -100,7 +103,31 @@ public class SaveEditBillAction implements Action {
                     .build();
             BillStatusService.getInstance().insert(status);
             json.put("status", new JSONObject(status));
+
+            if (isAdmin) adminAction(email, billId);
+            else userAction(email, billId);
         }
+
         response.getWriter().println(json);
+    }
+
+    private void adminAction(String email, int id) {
+        SendMail.Send(email, "Yêu cầu ký lại!",
+                "<div style=\"max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\">"
+                + "<h2 style=\"margin-bottom: 20px; color: #333;\">Đơn hàng của bạn đã bị hệ thống thay đổi.</h2>"
+                + "<p style=\"margin-bottom: 20px; color: #555;\">Đơn hàng của bạn đã bị thay đổi. Vui lòng kiểm tra lại thông tin và thực hiện ký lại để xác nhận đơn hàng. Nhấn vào nút bên dưới để được chuyển hướng đến trang ký xác nhận.</p>"
+                + "<a href=\"http://localhost:8080/mat_kinh_kimi/bill_history?action=see-detail&bill-id=" + id + "\" style=\"display:block;width:100%;padding:10px;font-size:16px;color:#fff;background-color:#007bff;border:none;border-radius:5px;text-decoration: none;text-align: center;\">Ký lại đơn hàng</a>"
+                + "</div>"
+        );
+    }
+
+    private void userAction(String email, int id) {
+        SendMail.Send(email, "Ký lại đơn hàng!",
+                "<div style=\"max-width: 500px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);\">"
+                + "<h2 style=\"margin-bottom: 20px; color: #333;\">Đơn hàng của bạn đã được thay đổi khi đơn hàng đã xác thực.</h2>"
+                + "<p style=\"margin-bottom: 20px; color: #555;\">Đơn hàng của bạn đã bị thay đổi. Vui lòng kiểm tra lại thông tin và thực hiện ký lại để xác nhận đơn hàng. Nhấn vào nút bên dưới để được chuyển hướng đến trang ký xác nhận.</p>"
+                + "<a href=\"http://localhost:8080/mat_kinh_kimi/bill_history?action=see-detail&bill-id=" + id + "\" style=\"display:block;width:100%;padding:10px;font-size:16px;color:#fff;background-color:#007bff;border:none;border-radius:5px;text-decoration: none;text-align: center;\">Ký lại đơn hàng</a>"
+                + "</div>"
+        );
     }
 }

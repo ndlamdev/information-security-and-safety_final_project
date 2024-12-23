@@ -225,16 +225,17 @@ function loadProvinces() {
 
 function displayProvinces() {
     const provinceId = $("#address").attr("province-code");
-    $("#provinces").find(`option[value="${provinceId}"`).attr("selected", "selected");
-    $("#provinces").change();
+    const selector = $("#provinces");
+    selector.find(`option[value="${provinceId}"`).attr("selected", "selected");
+    selector.change();
 }
 
 function displayDistricts() {
-    const provinceId = $("#address").attr("province-code"),
-        districtsId = $("#address").attr("district-code");
+    const parent = $("#address");
+    const selector = $("#districts");
+    const provinceId = parent.attr("province-code"), districtsId = parent.attr("district-code");
     $.ajax({
-        url: "../address",
-        data: {
+        url: "../address", data: {
             action: "districts",
             code: provinceId,
         },
@@ -247,33 +248,35 @@ function displayDistricts() {
                     htmlOption += `selected="selected"`;
                 }
                 htmlOption += `value="${data.districts[i].code}">${data.districts[i].fullName}</option>`;
-                $("#districts").html($("#districts").html() + htmlOption);
+                selector.html(selector.html() + htmlOption);
+                selector.change();
             }
         },
     });
 }
 
 function displayWards() {
-    const districtsId = $("#address").attr("district-code"),
-        wardsId = $("#address").attr("ward-code");
+    const parent = $("#address");
+    const selector = $("#wards");
+    const districtsId = parent.attr("district-code"), wardsId = parent.attr("ward-code");
     $.ajax({
-        url: "../address",
-        data: {
+        url: "../address", data: {
             action: "wards",
             code: districtsId,
         },
         method: "GET",
         dataType: "JSON",
         success: function (data) {
-            $("#wards").html("");
+            selector.html("");
             for (var i = 0; i < data.wards.length; i++) {
                 let htmlOption = `<option `;
                 if (wardsId === data.wards[i].code) {
                     htmlOption += `selected="selected"`;
                 }
                 htmlOption += `value="${data.wards[i].code}">${data.wards[i].fullName}</option>`;
-                $("#wards").html($("#wards").html() + htmlOption);
+                selector.html(selector.html() + htmlOption);
             }
+            selector.change();
         }
     });
 }
